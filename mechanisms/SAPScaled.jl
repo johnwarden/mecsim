@@ -2,7 +2,8 @@ using Statistics
 
 SAPTool = include("SAP.jl")
 
-return (reports::Matrix{Float64}) -> begin
+# same as SAP tool but results are scaled so total equals budget
+return (reports) -> begin
     A = SAPTool(reports)
-    A/sum(A)
+    return sum(A) > 0 ? A/sum(A) : A
 end

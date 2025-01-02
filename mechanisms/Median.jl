@@ -6,6 +6,6 @@ return (reports) -> begin
 
     reports = hcat([reports[i,:] / sum(reports[i,:]) for i in 1:n]...)'
 
-    A = mean(reports, dims=1)[1,:]
+    A = median(reports, dims=1)[1,:]
     return constrainBudget(A)
 end

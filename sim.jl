@@ -1,50 +1,23 @@
 #!/usr/bin/env julia
 
-using LinearAlgebra, Random, Optim, Statistics, Plots, PrettyTables
-using Printf  # for @printf
+using LinearAlgebra, Random, Optim, ForwardDiff, Statistics, Plots, PrettyTables, Printf
 
 ################################################################################
 #                          Preference Utility Helpers                          #
 ################################################################################
 
-function optimalPoint(prefs::Vector{Float64})
-    m = length(prefs)
-    function idealTradeoff(firstItem::Int, secondItem::Int)
-        c1 = prefs[firstItem]
-        c2 = prefs[secondItem]
-        return c1^2 / (c1^2 + c2^2)
-    end
-
-    i = findfirst(prefs .> 0)
-    x = zeros(m)
-    x[i] = 1.0
-    for j in 2:m
-        t = idealTradeoff(i, j)
-        x[j] = (1 - t) / t
-    end
-    return x / sum(x)
-end
-
-function quadraticPreferenceProfile(prefMatrix)
-    n, m = size(prefMatrix)
-
-    Utility = (user::Int, allocation::Vector{Float64}) -> begin
-        dot(prefMatrix[user, :], sqrt.(allocation))
-    end
-
-    optimalPoints = vcat([optimalPoint(prefMatrix[i, :])' for i in 1:n]...)
-    overallOptimalPoint = optimalPoint(sum(prefMatrix, dims=1)[1, :])
-
-    return Utility, optimalPoints, overallOptimalPoint
-end
+include("Preferences.jl")
 
 ################################################################################
 #                          Mechanism Helpers                                   #
 ################################################################################
 
-function tradeoffMatrixFromReport(report::Vector{Float64})
+function tradeoffMatrixFromReport(report)
     n = length(report)
-    return [
+    return[
+        # Infer the relative preference between two items from a report.
+        # The tradeoff is the percentage of a budget that the user prefers to allocate to item i
+        # if those were the only two items.
         report[i] + report[j] == 0 ? 0.5 : report[i] / (report[i] + report[j])
         for i in 1:n, j in 1:n
     ]
@@ -98,20 +71,54 @@ mechanism_files = unique(vcat(map(expand_path, arg_mechanism_files)...))
 preference_files = unique(vcat(map(expand_path, arg_preference_files)...))
 
 if isempty(mechanism_files)
-    throw("No mechanism files found in mechanisms/ directory.")
+    throw("No mechanism files loaded.")
 end
 if isempty(preference_files)
-    throw("No preference files found in preferences/ directory.")
+    throw("No preference files loaded.")
 end
 
 ################################################################################
-#                               Helper Functions                               #
+#                            Progress + Logging                                #
 ################################################################################
 
-function updateResponse(reports::Matrix{Float64}, user::Int, newReport::Vector{Float64})
-    newReports = copy(reports)
-    newReports[user, :] = newReport
-    return newReports
+function logln(io::IO, msg::AbstractString)
+    println(io, msg)
+end
+
+function progressUpdate(
+    mechanismName::String,
+    prefName::String,
+    roundNum::Int,
+    currentAlloc::Vector{Float64},
+    optimality::Float64,
+    incentiveAlignment::Float64
+)
+    # Overwrite the same line using \r
+    @printf("\r[Running] Pref=%s | Mech=%s | Round=%d | Alloc=%.2f,%.2f,... | Optimality=%.1f | Align=%.1f",
+        prefName,
+        mechanismName,
+        roundNum,
+        currentAlloc[1],
+        currentAlloc[min(end, 2)],  # show at most 2 coords
+        optimality*100,
+        incentiveAlignment*100
+    )
+    flush(stdout)
+end
+
+
+
+
+################################################################################
+#                                 Simulation                                   #
+################################################################################
+
+function updateResponse(reports, user, report)
+    n, m = size(reports)
+    return [
+        i == user ? report[j] : reports[i, j]
+        for i in 1:n, j in 1:m
+    ]
 end
 
 function findBestResponse(
@@ -122,76 +129,40 @@ function findBestResponse(
 )
     m = size(reports, 2)
 
-    function objective(x::Vector{Float64})
-        newReports = updateResponse(reports, user, x)
-        alloc = mechanismFunc(newReports)
-        return -Utility(user, alloc)
-    end
-
     x0 = copy(reports[user, :])
     lower = fill(0.0, m)
     upper = fill(1.0, m)
 
+
+    function objective(x)
+        newReports = updateResponse(reports, user, x)
+        newAlloc = mechanismFunc(newReports)
+        return -Utility(user, newAlloc)  # negative for maximization
+    end
+
     function objectiveWithBoundary(x)
-        if any(x .< 0) || any(x .> 1)
-            return 1e6
+        if any(x .< 0.0) || any(x .> 1.0)
+            return 9999.99
         end
         return objective(x)
     end
 
-    Random.seed!(1234)
-    res = optimize(objectiveWithBoundary, lower, upper, x0, NelderMead())
+    function grad!(G, x)
+        # Zero out G (just good practice).
+        # fill!(G, 0.0)
+
+        ForwardDiff.gradient!(G, objectiveWithBoundary, x)
+        return G
+
+        # ForwardDiff.gradient(simpleObjective, optimalPoints[1,:])
+    end
+
+
+    res = optimize(objectiveWithBoundary, x0, BFGS())
+
+    # res = optimize(objectiveWithBoundary, grad!, x0, BFGS())
     return res.minimizer
 end
-
-################################################################################
-#                             Mechanism Helpers                                #
-################################################################################
-# (Keep any sample or default mechanism code here.)
-
-################################################################################
-#                            Progress + Logging                                #
-################################################################################
-
-"""
-    logln(io, msg)
-
-Write a line `msg` to `io`. 
-"""
-function logln(io::IO, msg::AbstractString)
-    println(io, msg)
-end
-
-"""
-    progressUpdate(mechanismName, prefName, roundNum, currentAlloc, totalUtility)
-
-Print a single-line progress message to the console (stdout), overwriting itself.
-This does not know the total number of rounds, so it's an "indefinite" progress line.
-"""
-function progressUpdate(
-    mechanismName::String,
-    prefName::String,
-    roundNum::Int,
-    currentAlloc::Vector{Float64},
-    totalUtility::Float64,
-    incentiveAlignment::Float64
-)
-    # Overwrite the same line using \r
-    @printf("\r[Running] Pref=%s | Mechanism=%s | Round=%d | Alloc=%.2f,%.2f,... | Utility=%.2f | Incent. Align=%.2f",
-        prefName,
-        mechanismName,
-        roundNum,
-        currentAlloc[1],
-        currentAlloc[min(end, 2)],  # show at most 2 coords to avoid clutter
-        totalUtility,
-        incentiveAlignment*100
-    )
-    flush(stdout)
-end
-
-################################################################################
-#                                 Simulation                                   #
-################################################################################
 
 function simulate(
     mechanismName::String,
@@ -200,71 +171,72 @@ function simulate(
     Utility::Function,
     initialReports::Matrix{Float64},
     optimalPoints::Matrix{Float64},
+    overallOptimalPoint,
     logIO::IO,
     prefName::String
 )
+    Random.seed!(92834)
+    terminationThreshold = .0001
+
     n, m = size(initialReports)
+
     reportsCurrent = copy(initialReports)
-    alloc = mechanismFunc(reportsCurrent)
+
+    constrainedMechanismFunc = x -> constrainBudget(mechanismFunc(x))
+
+    alloc = constrainedMechanismFunc(reportsCurrent)
     incentiveAlignment = 1.0
 
     allocHistory = Vector{Vector{Float64}}()
     converged = false
 
-    # Write an initial log line instead of @info
-    logln(logIO, "Starting simulation for mechanism=$mechanismName, preference=$prefName")
-
     totalUtility = (alloc) -> sum(Utility(i, alloc) for i in 1:n)
 
     for roundIdx in 1:maxRounds
-        # Log output to file:
         logln(logIO, "\n=== Round $roundIdx ===")
         logln(logIO, "Current report matrix:")
         show(IOContext(logIO), "text/plain", reportsCurrent)
         logln(logIO, "")  # newline
 
         convergedInRound = true
-
-        # Update progress on console
-        progressUpdate(mechanismName, prefName, roundIdx, alloc, totalUtility(alloc), incentiveAlignment)
+        progressUpdate(mechanismName, prefName, roundIdx, alloc, totalUtility(alloc)/totalUtility(overallOptimalPoint), incentiveAlignment)
+        reportsBeforeRound = reportsCurrent
 
         for u in 1:n
             logln(logIO, "User $u's turn. (Current allocation: $alloc)")
             oldUtility = Utility(u, alloc)
 
-            bestResp = findBestResponse(
-                mechanismFunc,
-                reportsCurrent,
-                u;
-                Utility=Utility
-            )
-            updated  = updateResponse(reportsCurrent, u, bestResp)
-            newAlloc = mechanismFunc(updated)
+            bestResp   = findBestResponse(mechanismFunc, reportsCurrent, u; Utility=Utility)
+            updated    = updateResponse(reportsCurrent, u, bestResp)
+            newAlloc   = constrainedMechanismFunc(updated)
             newUtility = Utility(u, newAlloc)
 
+            # Check honest
             honestRep   = optimalPoints[u, :]
             honestUpdt  = updateResponse(reportsCurrent, u, honestRep)
-            honestAlloc = mechanismFunc(honestUpdt)
+            honestAlloc = constrainedMechanismFunc(honestUpdt)
             honestUtility = Utility(u, honestAlloc)
 
-            incentiveAlignment = 1 - mean(norm(reportsCurrent[i, :] - optimalPoints[i, :]) for i in 1:n)
+            # Very naive measure of "incentive alignment":
+            incentiveAlignment = mean(1 - norm(reportsCurrent[i, :] - optimalPoints[i, :]) for i in 1:n)
 
             logln(logIO, "  Old utility = $oldUtility")
             logln(logIO, "  New utility = $newUtility")
             logln(logIO, "  Honest utility = $honestUtility")
             logln(logIO, "  Incentive Alignment = $incentiveAlignment")
 
-            if newUtility > oldUtility
-                logln(logIO, "  => User $u improves by switching to best response.")
-                convergedInRound = false
+            if newUtility > oldUtility && abs(newUtility - oldUtility) > terminationThreshold
+                logln(logIO, "  Best response = $bestResp")
+                logln(logIO, "  => User $u improves by switching to best response")
                 reportsCurrent = updated
+                convergedInRound = false
                 alloc = newAlloc
             else
                 if honestUtility > oldUtility
                     logln(logIO, "  => Reverting user $u to honest report (better than old).")
-                    convergedInRound = false
                     reportsCurrent = honestUpdt
                     alloc = honestAlloc
+                    convergedInRound = false
                     logln(logIO, "  => User $u's new report: $(reportsCurrent[u, :])")
                 else
                     logln(logIO, "  => No improvement found; user $u stays with old report.")
@@ -277,7 +249,7 @@ function simulate(
 
         if convergedInRound
             converged = true
-            logln(logIO, "Converged! No user benefited from changing their response in this round.")
+            logln(logIO, "Converged! Maximum improvement in utility < $terminationThreshold.")
             break
         end
     end
@@ -288,10 +260,10 @@ function simulate(
 
     ah = transpose(hcat(allocHistory...))
 
-    # 3D scatter to file (unchanged logic, logs not needed on console)
     if m == 3
         plot3d = plot()
         n_rows = size(ah, 1)
+
         for i in 1:n_rows
             user = mod(i-1, n) + 1
             plot!(
@@ -300,17 +272,17 @@ function simulate(
                 [ah[i, 2]],
                 [ah[i, 3]],
                 seriestype = :scatter,
-                title = "Mechanism: $(mechanismName), Preference Profile: ($prefName)",
+                title = "$mechanismName, $prefName",
                 xlabel = "A1", ylabel = "A2", zlabel = "A3",
                 xlim = (0, 1), ylim = (0, 1), zlim = (0, 1),
                 label = i == user ? "User $user" : nothing
             )
         end
 
-        if !isdir("plots")
-            mkdir("plots")
+        if !isdir("output/plots/sims")
+            mkdir("output/plots/sims")
         end
-        outDir = joinpath("plots", prefName)
+        outDir = joinpath("output/plots/sims", prefName)
         if !isdir(outDir)
             mkpath(outDir)
         end
@@ -322,8 +294,23 @@ function simulate(
 end
 
 ################################################################################
-#                           Main Program Execution                             #
+#                           Main Program                                       #
 ################################################################################
+
+# Helper to build pretty-table strings without printing them immediately
+function table_as_string(data, header; alignment=Symbol[])
+
+    io_buf = IOBuffer()
+    pretty_table(
+        io_buf,
+        data,
+        header=header,
+        alignment=alignment,
+        backend=Val(:text)
+    )
+    # Convert IOBuffer to String
+    return String(take!(io_buf))
+end
 
 preference_summaries = Dict{String, Dict{Symbol, Any}}()
 overall_results = Dict{String, Vector{Tuple{Int,Bool,Float64,Float64,Float64}}}()
@@ -332,19 +319,23 @@ for prefFile in preference_files
     prefName = endswith(prefFile, ".jl") ?
         String(chop(basename(prefFile), tail=3)) :
         basename(prefFile)
-    # Instead of printing @info to console, we do a short message:
-    # println("Loading preference $(prefName)...")
 
+    println("Loading preferences $prefFile")
     prefProfile = include(prefFile)
     Utility, optimalPoints, overallOptimalPoint = prefProfile
 
-    n, m = size(optimalPoints)
+
+    (n, m) = size(optimalPoints)
+    plotPreferenceProfile(Utility, n, m, prefName)
+
+
+    println("optimalPoints = ")
+    display(optimalPoints)
+
+    @show overallOptimalPoint
+
     function totalUtility(allocation::Vector{Float64})
-        s = 0.0
-        for i in 1:n
-            s += Utility(i, allocation)
-        end
-        return s
+        sum(Utility(i, allocation) for i in 1:n)
     end
 
     maxUtility = totalUtility(overallOptimalPoint)
@@ -362,21 +353,15 @@ for prefFile in preference_files
             String(chop(basename(mechFile), tail=3)) :
             basename(mechFile)
 
-        # Print short message for user feedback
-        # println("  Running mechanism $(mechanismName) on $(prefName)...")
         progressUpdate(mechanismName, prefName, 0, Vector{Float64}(zeros(m)), 0.0, 1.0)
         mechanismFunc = include(mechFile)
 
-        # Prepare output directory & file
-        outDir = joinpath("output", prefName)
+        outDir = joinpath("output/log", prefName)
         if !isdir(outDir)
             mkpath(outDir)
         end
         outFile = joinpath(outDir, mechanismName * ".txt")
 
-
-
-        # Open the log file and run the simulation
         open(outFile, "w") do logFile
             reports, allocHistory, converged, incentiveAlignment = simulate(
                 mechanismName,
@@ -385,8 +370,9 @@ for prefFile in preference_files
                 Utility=Utility,
                 initialReports=initialReports,
                 optimalPoints=optimalPoints,
-                logIO=logFile,        # <--- pass file handle
-                prefName=prefName     # <--- pass pref name for progress line
+                overallOptimalPoint=overallOptimalPoint,
+                logIO=logFile,
+                prefName=prefName
             )
 
             finalAlloc = allocHistory[end, :]
@@ -399,7 +385,7 @@ for prefFile in preference_files
                 numRounds,
                 converged,
                 round.(finalAlloc, digits=3),
-                round(meanUtility, digits=2),
+                round(meanUtility, digits=3),
                 round(optPercent, digits=1),
                 round(incentiveAlignment*100, digits=1)
             ])
@@ -413,8 +399,7 @@ for prefFile in preference_files
                 (numRounds, converged, meanUtility, optPercent, incentiveAlignment)
             )
 
-            # After finishing, print a newline on console so the progress line doesn't linger
-            println()
+            println()  # Let the progress line end
         end
     end
 
@@ -430,22 +415,27 @@ for prefFile in preference_files
 end
 
 ################################################################################
-#                    PRINTING ALL PREFERENCE RESULTS AT THE END               #
+#                    OUTPUT FOR EACH PREFERENCE PROFILE                        #
 ################################################################################
 
+# We will collect the final “table text” in a vector or dictionary.
+final_table_texts = String[]
+
 for (prefName, infoDict) in preference_summaries
-    println("\nPreference: $prefName")
+    # 1) Title for this preference
+    push!(final_table_texts, "\nPreference: $prefName")
 
-    optData = infoDict[:optimal]
+    # 2) Optimal Points and Utilities
+    push!(final_table_texts, "\nOptimal Points and Utilities:")
+    optData  = infoDict[:optimal]
     mechData = infoDict[:mechanisms]
-
-    println("\nOptimal Points and Utilities:")
-    optimal_table_data = []
 
     user_opt_allocs = optData.user_opt_allocations
     user_opt_utils  = optData.user_opt_utilities
-
     n = length(user_opt_utils)
+
+    # Build the rows for optimal allocations
+    optimal_table_data = []
     for i in 1:n
         push!(optimal_table_data, [
             i,
@@ -456,19 +446,24 @@ for (prefName, infoDict) in preference_summaries
     push!(optimal_table_data, [
         "ALL",
         round.(optData.overall_opt_allocation, digits=2),
-        round(optData.overall_max_utility/n, digits=2)
+        round(optData.overall_max_utility/n, digits=3)
     ])
 
     opt_header = ["User", "Optimal Allocation", "Optimal Utility"]
-    r_opt = vcat([reshape(optimal_table_data[i], 1, :) for i in 1:length(optimal_table_data)]...)
-    pretty_table(
-        r_opt,
-        header=opt_header,
-        alignment=[:r, :c, :r],
-        backend=Val(:text)
-    )
+    # Turn them into a suitable matrix for pretty_table
+    r_opt = vcat([reshape(optimal_table_data[i], 1, :) for i in eachindex(optimal_table_data)]...)
 
-    println("\nMechanism Outcomes:")
+    # Generate text for the “optimal points” table
+    optimal_points_table_text = table_as_string(
+        r_opt,
+        opt_header,
+        alignment=[:r, :c, :r]
+    )
+    push!(final_table_texts, optimal_points_table_text)
+
+    # 3) Mechanism outcomes
+    push!(final_table_texts, "\nMechanism Outcomes:")
+
     mech_header = [
         "Mechanism",
         "Rounds",
@@ -478,22 +473,24 @@ for (prefName, infoDict) in preference_summaries
         "Optimality (%)",
         "Incent. Align. (%)"
     ]
-    r_mech = vcat([reshape(mechData[i], 1, :) for i in 1:length(mechData)]...)
-    pretty_table(
+    r_mech = vcat([reshape(mechData[i], 1, :) for i in eachindex(mechData)]...)
+
+    # Generate text for the “mechanism outcomes” table
+    mechanism_outcomes_table_text = table_as_string(
         r_mech,
-        header=mech_header,
-        alignment=[:l, :r, :r, :c, :r, :r, :r],
-        backend=Val(:text)
+        mech_header,
+        alignment=[:l, :r, :r, :c, :r, :r, :r]
     )
+    push!(final_table_texts, mechanism_outcomes_table_text)
 end
 
 ################################################################################
-#               OVERALL SUMMARY ACROSS ALL PREFERENCES (AVERAGE)              #
+#               OVERALL SUMMARY (across all preferences)                       #
 ################################################################################
 
-println("\n" * "="^80)
-println("OVERALL SUMMARY ACROSS ALL PREFERENCES")
-println("="^80)
+push!(final_table_texts, "\n" * "="^80)
+push!(final_table_texts, "OVERALL SUMMARY ACROSS ALL PREFERENCES")
+push!(final_table_texts, "="^80)
 
 mechanism_summary_rows = []
 
@@ -536,12 +533,23 @@ summary_header = [
     "Mean Optimality (%)",
     "Mean Incent. Align. (%)"
 ]
-rsum = vcat([reshape(mechanism_summary_rows[i], 1, :) for i in 1:length(mechanism_summary_rows)]...)
-pretty_table(
-    rsum,
-    header=summary_header,
-    alignment=[:l, :r, :r, :r, :r, :r],
-    backend=Val(:text)
-)
+rsum = vcat([reshape(mechanism_summary_rows[i], 1, :) for i in eachindex(mechanism_summary_rows)]...)
 
-println("\nDone.")
+overall_summary_table_text = table_as_string(
+    rsum,
+    summary_header,
+    alignment=[:l, :r, :r, :r, :r, :r]
+)
+push!(final_table_texts, overall_summary_table_text)
+
+push!(final_table_texts, "\nDone.")
+
+################################################################################
+#           Finally, print out all the tables (in one place at the end).       #
+################################################################################
+
+for table_str in final_table_texts
+    println(table_str)
+end
+
+

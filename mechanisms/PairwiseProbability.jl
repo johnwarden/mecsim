@@ -1,11 +1,11 @@
 using LinearAlgebra, Statistics
 
-# Pairwise preferences as described in (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3317445 and https://blog.zaratan.world/p/quadratic-v-pairwise)
+# Pairwise preferences somewhat similar to the method described in (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3317445 and https://blog.zaratan.world/p/quadratic-v-pairwise)
 # Convert each user's report into a matrix of binary pairwise preferences. 
-# Then calculates an overall percentage for each pair. 
+# Then calculates an overall percentage for each pair.
 # Final allocations proportional to eigenvector of the overall matrix.
 
-function pairwiseMatrixFromReports(report::Vector{Float64})
+function pairwiseMatrixFromReports(report)
     n = length(report)
 
     return [
@@ -14,7 +14,7 @@ function pairwiseMatrixFromReports(report::Vector{Float64})
     ]
 end
 
-return (reports::Matrix{Float64}) -> begin
+return (reports) -> begin
     n, m = size(reports)
 
     # Build a list of 1 matrix per user
@@ -31,7 +31,10 @@ return (reports::Matrix{Float64}) -> begin
     E = eigen(pairwisePercentages)
     vec = real(E.vectors[:, m])
 
-    # Scale so the sum equals 1 
-    return vec ./ sum(vec)
+    if minimum(vec) < 0
+        vec = vec * -1 
+    end
+
+    return constrainBudget(vec)
 end
 

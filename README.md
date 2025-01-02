@@ -2,22 +2,106 @@
 
 This repository contains a simulator for comparing budget allocation mechanisms. It simulates strategic users who modify their reported preferred allocations in an attempt to maximize their individual utility.
 
-## Overview
-
-`n` users need to allocate a budget across `m` items. Each user has a utility functions that returns their total utility given an allocation vector.
-
-Each user submits a report indicating proposing allocation for each item. A *mechanism* takes the set of users reports and returns a final allocations.
-
-Users then strategically update their reports to maximize their own utility given the reports of other users and the mechanism.
+The most surprising result of the simulation is that, for a wide variety of preference profiles, the final results are close to the optimal.
 
 ## Motivation
 
-It can be hard or impossible to prove certain aspects of mechanisms. But simulation can give us an idea of how a mechanism plays out as users try to maximize their utility. It can show us, for a variety of preference profiles:
+### Incentive Compatible Budget Allocation
 
-- if an equilibrium is reached (though not that no other equilibriums are possible)
-- if users fall into a stable cycle
-- how close the final allocations are to optimal
-- how incentive-aligned the mechanism is (how close users reports are to their "true optimal" allocation)
+The theoretical problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been extensively studied. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the early social choice theorists such as Condorcet and Arrow tried this, they ran into difficulties. Never mind that there are many different ways you could define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+
+This may seem counter-intuitive. Normally when you vote, if you vote for the person you want to win, that person is more likely to win! So there is no incentive to lie. We say that majority voting (between two candidates) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for exactly what you want.
+
+But budget allocation voting mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average for the group was 40%; your favorite project is under-funded while other projects are over-funded. So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, thereby raising the final average of your favorite project and lowering the average for the others. If there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean, but with three or more projects, you will be better off exaggerating your preference for your favorite project, no matter what the mechanism.
+
+Try as they might, the great social-choice theorists of yore could not get around this. They couldn't come up with any *strategyproof* mechanism that wasn't limited in some way. Many theorems proved the impossibility of a mechanism that had certain combination of desired properties. 
+
+
+In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism that was fair in any reasonable sense of the word, and that was also strategyproof.
+
+
+### Alternatives
+
+So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we recognize it as a kind of game, where people make a proposal they think will produce the best results for themselves, given the current set of proposals and the mechanism for aggregating them. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
+
+Here is the point where we move from theory to experiment. 
+
+## Goals of the Simulation
+
+Using a variety of profiles of user preferences, the simulation tells us if:
+
+- if an equilibrium is reached
+- if the final allocations are close to the overall optimal
+- if results disproportionately benefit some individuals at the expense of others
+- how incentive-aligned the mechanism is (how close individuals reports are to their "true optimal" allocations)
+
+## Setup
+
+`n` users need to allocate a budget of 1.0 across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
+
+User submits their proposed allocation vectors and the mechanism outputs a final allocation.
+
+Users then take turns updating their reports by best-responding: maximizing their own utility given the reports of other users.
+
+The simulation terminates if no user is able to improve their utility more than some threshhold. 
+
+## Results
+
+The following is the output of the simulation for all combinations of mechanisms and preferences currently implemented. Since these are averages across preference profiles, the averages aren't really that useful for comparing mechanisms -- different mechanisms work better for certain types of preference profiles. The averages are just averages across the preference profiles I happen to have implemented.
+
+But since I have implemented a variety of preference profiles, it is interesting to note how close to optimality many mechanisms are overall.
+
+Another striking result is that most simulations reach an equilibrium for most preference profiles.
+
+    ┌────────────────────────┬─────────────┬─────────────────┬──────────────┬─────────────────────┬─────────────────────────┐
+    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Utility │ Mean Optimality (%) │ Mean Incent. Align. (%) │
+    ├────────────────────────┼─────────────┼─────────────────┼──────────────┼─────────────────────┼─────────────────────────┤
+    │ Mean                   │         3.3 │           100.0 │        0.821 │                89.6 │                    79.9 │
+    │ Median                 │         1.8 │           100.0 │        0.883 │                96.9 │                    91.8 │
+    │ PairwiseMeanTradeoff   │         2.4 │           100.0 │        0.806 │                88.0 │                    73.4 │
+    │ PairwiseMedianTradeoff │         1.7 │           100.0 │        0.816 │                89.1 │                    95.5 │
+    │ PairwiseProbability    │         1.3 │           100.0 │        0.774 │                84.7 │                    96.0 │
+    │ QuadraticFunding       │         4.0 │            90.0 │        0.817 │                89.2 │                    73.0 │
+    │ SAP                    │         1.7 │           100.0 │        0.854 │                92.9 │                    80.6 │
+    │ SAPScaled              │         6.5 │            50.0 │          0.8 │                87.0 │                    79.0 │
+    └────────────────────────┴─────────────┴─────────────────┴──────────────┴─────────────────────┴─────────────────────────┘
+
+### Description of Output Columns 
+
+- Equilibrium is the % of profiles for which equilibrium is reached
+- Utility is the mean utility-per-user
+- Optimality is the difference between this and the maximum possible normalized utility. Each user's utility function is normalized so their maximum utility = 1.0.
+- Incentive Alignment is a mean Euclidian distance between users' "honest" reports and final reports.
+
+## Defining Optimality
+
+The optimality definition is based on an estimate of total utility. But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
+
+So instead of considering user's subjective utility as an absolute quantity, we consider each user's utility as a percentage of their maximum possibility utility.
+
+This is consistent with many intuitive notions of what is fair. For example, if each user gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would be weighted towards users with higher absolute values of subjective utility.
+
+
+### Output Files
+
+The simulation also outputs:
+
+- output/plots/preferences: Plot of each preference profile
+- output/plots/sims: For 3-D preferences, plot how the allocation changes over the course of the simulation for each mechanism
+- output/log: detailed log of simulation for each simulation/mechanism combination
+
+
+
+## Limitations
+
+This simulations aren't a substitute for a more formal equilibrium analysis. It assumes players behave in a certain way:
+
+- Users always start by reporting their ideal point and only change their reports in response to other users.
+- Users play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational user can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next user to best-respond, could produce better outcomes in some cases.
+- There are no attempts by groups to collude
+
+A rational agent trying to optimize their results might behave differently.
+
 
 # Development 
 
@@ -36,23 +120,17 @@ Then to run the simulation for all mechanisms, run
 
     just sim
 
-Or to simulate a single mechanism
+To simulate a single mechanism or mechanisms, pass the mechanism file names:
 
-    just sim mechanisms/mechanism.jl
+    just sim mechanisms/SAP.jl
 
-## Files
+Likewise to simulate a single preference profile:
 
-*   **`justfile`**: Contains commands for running the simulations.
-*   **`sim.jl`**: The main simulation script.
-*   **`mechanisms/`**: A directory containing implementations of different allocation mechanisms (e.g., `SAPTool.jl`).
-*   **`preferences/`**: A directory containing implementations of different preference profiles.
-*   **`output/`**: Detailed output of each simulation -- one for each mechanism and preference profile combination.
-*   **`plots/`**: Plots of the allocation history for each simulation -- one for each mechanism and preference profile combination.
-
+    just sim preferences/CondorcetCycle.jl
 
 ## Defining Mechanisms and Preferences
 
-To implement a new mechanism or preference profile, add a .jl file under the `mechanisms/` or `profile/` folders directory.
+To implement a new mechanism or preference profile, add a .jl file under the `mechanisms/` or `preferences/` folders directory.
 
 The mechanism is simply a function that inputs an allocation matrix and outputs a vector. 
 
@@ -86,13 +164,13 @@ end
 
 ```
 
-A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a quadratic preference profile from a matrix of coefficients.
+A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root or quadratic preference profile from a matrix of coefficients.
 
 #### Example: `preferences/CondorcetCycle.jl`
 
 ```julia
 
-return quadraticPreferenceProfile([
+return sqrtPreferences([
     5.0  2.0  1.0
     1.0  5.0  2.0
     2.0  1.0  5.0
@@ -100,47 +178,3 @@ return quadraticPreferenceProfile([
 
 ```
 
-
-## Results and Observations
-
-The following is the output of the simulation for all combinations of mechanisms and preferences currently implemented.
-
-    ┌──────────────────────┬─────────────┬─────────────────┬──────────────┬─────────────────────┬─────────────────────────┐
-    │ Mechanism            │ Mean Rounds │ Equilibrium (%) │ Mean Utility │ Mean Optimality (%) │ Mean Incent. Align. (%) │
-    ├──────────────────────┼─────────────┼─────────────────┼──────────────┼─────────────────────┼─────────────────────────┤
-    │ CoordinatewiseMedian │         7.0 │            50.0 │        5.126 │                99.0 │                    61.4 │
-    │ Mean                 │        4.67 │            83.3 │        5.097 │                99.0 │                    66.6 │
-    │ PairwiseMean         │         6.0 │            83.3 │        5.103 │                99.1 │                    67.9 │
-    │ PairwiseMedian       │        7.17 │            33.3 │        5.128 │                99.4 │                    62.4 │
-    │ PairwisePercentage   │        1.67 │           100.0 │        5.064 │                98.4 │                    97.8 │
-    │ QuadraticFunding     │        6.33 │            83.3 │        5.125 │                99.3 │                    42.4 │
-    │ SAP                  │        3.33 │            83.3 │        4.991 │                95.6 │                    86.0 │
-    │ SAPScaled            │         8.5 │            16.7 │         4.96 │                95.1 │                    69.1 │
-    └──────────────────────┴─────────────┴─────────────────┴──────────────┴─────────────────────┴─────────────────────────┘
-
-### Description of Output Columns 
-
-- Optimality is the difference between the allocation that maximizes overall utility and the final allocation
-- Equilibrium is the % of profiles for which equilibrium is reached
-- Utility is the mean utility-per-user
-- Optimality is the difference between this and the maximum possible utility
-- Incentive Alignment is a mean Euclidian distance between users' "honest" reports and final reports.
-
-
-
-## Limitations
-
-- I have so far only implemented quadratic preferences of the form `c1*√(allocation1) + c2*√(allocation2) ...` These have "nice" properties like monotonicity, concavity, and additivity, and are probably not bad approximations of real-world preferences. However, different kinds of preference profiles might produce very different results.
-
-- This simulations aren't a substitute for a more formal equilibrium analysis. A rational agent trying to optimize their results might play differently:
-    - Users always start by reporting their ideal point and only change their reports in response to other users.
-    - Users play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational user can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next user to best-respond, could produce better outcomes in some cases.
-    - There are no attempts for groups to collude
-
-## Observations
-
-- The quadratic funding formula is included here even though this settings is *not* what QF was designed for. Specifically, quadratic funding is a *funding mechanism*: users actually contribute their own money. The optimality of quadratic funding is based on the assumption that the amount users choose to contribute to a project is proportional to the *utility* they receive from the project. But this simulator simulates social choice mechanisms, where users don't contribute money.
-
-- The PairwiseMedian preference profile is highly incentive aligned: users rarely gain anything from falsifying preference. This profile ignores the strength of preferences and only considers preference ordering. By ignoring preference strength the mechanism removes much opportunity for users to improve their by lying about preferences, but the tradeoff seems to be less optimality. 
-
-- All of these mechanisms could be implemented with a incentive-aligned mechanism per the revelation principle. Using these simple quadratic preference profiles, we can actually reconstruct a users preference profile from their (honest) reported preferences. Thus we can create a mechanism that "plays" on the users behalf. 

@@ -5,7 +5,7 @@ using Statistics
 # adjusts the allocation in pairs. Finally returns the average allocation
 # across iterations.
 
-return (reports::Matrix{Float64}) -> begin
+return (reports) -> begin
     n, m = size(reports)
 
     # Build a list of tradeoff matrices T[user].
