@@ -1,47 +1,22 @@
 using Statistics
 
-"""
-    buildTradeoffMatrix(report)
 
-Utility function repeated for convenience or distinct import.
-"""
-function buildTradeoffMatrix(report::Vector{Float64})
-    m = length(report)
-    T = Matrix{Float64}(undef, m, m)
-    for i in 1:m
-        for j in 1:m
-            if i == j
-                T[i, j] = 0.0
-            else
-                T[i, j] = report[i] / (report[i] + report[j])
-            end
-        end
-    end
-    return T
-end
+# Builds a "median tradeoff" matrix from user reports, then iteratively
+# adjusts the allocation in pairs. Finally returns the average allocation
+# across iterations.
 
-
-"""
-    meanOfCoordinatewise(reports, prefMatrix)
-
-Builds a "median tradeoff" matrix from user reports, then iteratively
-adjusts the allocation in pairs. Finally returns the average allocation
-across iterations.
-
-`prefMatrix` is unused here but included for a consistent function signature.
-"""
-function meanOfCoordinatewise(reports::Matrix{Float64}, prefMatrix::Matrix{Float64})
+return (reports) -> begin
     n, m = size(reports)
 
     # Build a list of tradeoff matrices T[user].
-    T = [buildTradeoffMatrix(reports[i, :]) for i in 1:n]
+    T = [tradeoffMatrixFromReport(reports[i, :]) for i in 1:n]
+    # T = [relativeValueMatrixFromReport(reports[i, :]) for i in 1:n]
 
     # Build a matrix of median tradeoffs across users:
     medianTradeoffs = [ 
         i == j ? 0.0 : median(T[u][i, j] for u in 1:n)
         for i in 1:m, j in 1:m 
     ]
-
 
     # Start A as the median of the raw reports (coordinatewise).
     A = [median(reports[:, i]) for i in 1:m]
@@ -51,6 +26,14 @@ function meanOfCoordinatewise(reports::Matrix{Float64}, prefMatrix::Matrix{Float
     rounds = 10  # fixed here; could parameterize
     history = Vector{Vector{Float64}}()
 
+    if m < 3        
+        a1 = medianTradeoffs[1,2]
+        return [a1, 1-a1]
+    end
+
+
+    # Now do a coordinate-wise ascent algorithm. For each pair of items, use the median
+    # of ideal tradeoff between those two items.
     for _ in 1:rounds
         for j in 1:(m - 1)
             for k in (j + 1):m
@@ -69,4 +52,3 @@ function meanOfCoordinatewise(reports::Matrix{Float64}, prefMatrix::Matrix{Float
     return meanAlloc
 end
 
-return meanOfCoordinatewise
