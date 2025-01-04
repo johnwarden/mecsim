@@ -1,0 +1,53 @@
+Optional points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
+Starting allocation: [0.5620173672946043, 0.43798263270539567]
+
+=== Round 1 ===
+Current report matrix:
+2×2 Matrix{Float64}:
+ 0.961538  0.0384615
+ 0.1       0.9
+User 1's turn.
+  Best response = [0.9999998309707226, 6.485668652040191e-15]
+  => User 1 improves by switching to best response
+  => User 1's new report: [0.9999998309707226, 6.485668652040191e-15]
+  Old utility = 0.8649100931185952
+  New utility = 0.9101595019941812
+  Honest utility = 0.8649100931185952
+  Incentive Alignment = 0.9728036450997897
+  Allocation after user 1: [0.6581138159135697, 0.34188618408643034]
+User 2's turn.
+  Best response = [1.2844620401495334e-13, 0.9999998776954344]
+  => User 2 improves by switching to best response
+  => User 2's new report: [1.2844620401495334e-13, 0.9999998776954344]
+  Old utility = 0.8112422265287139
+  New utility = 0.894427134092453
+  Honest utility = 0.8112422265287139
+  Incentive Alignment = 0.902093010222361
+  Allocation after user 2: [0.5000001272489394, 0.4999998727510606]
+
+=== Round 2 ===
+Current report matrix:
+2×2 Matrix{Float64}:
+ 1.0          6.48567e-15
+ 1.28446e-13  1.0
+User 1's turn.
+  => No improvement found; user 1 stays with old report.
+  Old utility = 0.8320503649228487
+  New utility = 0.8320503818515722
+  Honest utility = 0.773342270838602
+  Incentive Alignment = 0.902093010222361
+  Allocation after user 1: [0.5000001272489394, 0.4999998727510606]
+User 2's turn.
+  => No improvement found; user 2 stays with old report.
+  Old utility = 0.894427134092453
+  New utility = 0.8944272031029424
+  Honest utility = 0.8112422265287139
+  Incentive Alignment = 0.902093010222361
+  Allocation after user 2: [0.5000001272489394, 0.4999998727510606]
+Converged! Maximum improvement in utility < 0.0001.
+Final reports:
+2×2 Matrix{Float64}:
+ 1.0          6.48567e-15
+ 1.28446e-13  1.0
+Final Allocation: [0.5000001272489394, 0.4999998727510606]
+Overall Utility: 1.7264774990153016
