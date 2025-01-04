@@ -123,22 +123,20 @@ Likewise to simulate a single preference profile:
 
     just sim preferences/CondorcetCycle.jl
 
-## Defining Mechanisms and Preferences
+
+## Example
+
+### Defining Mechanisms and Preferences
 
 To implement a new mechanism or preference profile, add a .jl file under the `mechanisms/` or `preferences/` folders directory.
 
 The mechanism is simply a function that inputs an allocation matrix and outputs a vector. 
 
-
-## Example
-
 A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root profile where $`Uᵢ = ∑ⱼb_{i,j}*x_{i,j}²`$ for some matrix of coefficients b. 
 
-In this scenario, user 1 strongly prefers item 1, and user 2 strongly prefers item 2.
+In this preference profile, user 1 strongly prefers item 1, and user 2 strongly prefers item 2.
 
-### Sample Preferences
-
-#### Example: `preferences/HighConflictTwoUsers.jl`
+#### Example Preferences: `preferences/HighConflictTwoUsers.jl`
 
 ```julia
 
@@ -154,11 +152,9 @@ The simulation generates a plot of the preference profile in output/plots/SAP/Hi
 
 ![Condorcet Cycle Preference Profile](output/plots/preferences/HighConflictTwoUsers.png)
 
-### Sample Mechansim
+#### Example Mechanism: `SAP.jl`
 
 A mechanism is a function that takes an allocation matrix as an input and returns a single allocation vector. The final allocations will be capped by the simulator so that the sum is <= 1.0. 
-
-#### Example: `Mean.jl`
 
 ```julia
 
