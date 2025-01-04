@@ -96,6 +96,7 @@ function simulate(
     alloc = constrained_mechanism_func(current_reports)
     incentive_alignment = 1.0
 
+    initial_allocation = alloc
     alloc_history = Vector{Vector{Float64}}()
     converged = false
 
@@ -188,7 +189,7 @@ function simulate(
 
     # 3D Plot if dimension == 3
     ah = Matrix(transpose(hcat(alloc_history...)))
-    plot_allocation_history(ah, n, mechanism_name, pref_name)
+    plot_allocation_history(ah, n, mechanism_name, pref_name, initial_allocation)
 
     # Calculate envy as percentage difference between max and min normalized utility
     final_utilities = [Utility(i, alloc) for i in 1:n]

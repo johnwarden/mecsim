@@ -1,14 +1,16 @@
 using Plots
 
 """
-Plot the history of allocations in 3D space.
-Only works for m=3 dimensional allocations.
+Plot the history of allocations 
+Only works for m=2 or m=3 dimensional allocations.
 """
+
 function plot_allocation_history(
     allocation_history::Matrix{Float64},
     n::Int,
     mechanism_name::String,
-    pref_name::String
+    pref_name::String,
+    initial_allocation::Vector{Float64}
 )
     m = size(allocation_history, 2)
     if m != 2 && m != 3
@@ -16,69 +18,194 @@ function plot_allocation_history(
     end
 
     n_rows = size(allocation_history, 1)
+    n_rounds = ceil(Int, n_rows/n)
     
+    # Define different markers for each user
+    markers = [:circle, :square, :diamond, :utriangle, :dtriangle, :cross]
+    user_markers = markers[1:min(n, length(markers))]
+    
+    # Create color gradient for rounds using oklab
+    # Handle edge case where there's only one round
+    colors = if n_rounds == 1
+        [colorant"purple"]
+    else
+        range(colorant"purple", colorant"orange", length=n_rounds)
+    end
+    
+    # Add initial allocation color at the start
+    colors = vcat([colorant"blue"], colors)
+    
+    # Create base plot with two legends
     if m == 2
-        # 2D scatter plot
         plot_obj = plot(
             title = "$mechanism_name, $pref_name",
             xlabel = "A1", ylabel = "A2",
             xlim = (0, 1), ylim = (0, 1),
             aspect_ratio = :equal,
-            legend = :outerright
+            right_margin = 20Plots.mm
         )
+    else
+        plot_obj = plot(
+            title = "$mechanism_name, $pref_name",
+            xlabel = "A1", ylabel = "A2", zlabel = "A3",
+            xlim = (0, 1), ylim = (0, 1), zlim = (0, 1),
+            right_margin = 20Plots.mm
+        )
+    end
 
-        for i in 1:n_rows
-            user = mod(i-1, n) + 1
+    # Create a subplot layout with the main plot and two legend boxes
+    l = @layout [grid(1,1) a{0.2w}]
+    
+    # Create legend plot for users (no title)
+    user_legend = plot(
+        showaxis = false,
+        grid = false,
+        legend = :top
+    )
+    
+    # Add user markers to user legend
+    for u in 1:n
+        plot!(
+            user_legend,
+            [NaN], [NaN],
+            seriestype = :scatter,
+            marker = user_markers[u],
+            color = :black,
+            markerstrokecolor = :black,
+            markercolor = :white,
+            label = "User $u",
+            markersize = 4,
+            markerstrokewidth = 1
+        )
+    end
+
+    # Add initial allocation marker to user legend
+    plot!(
+        user_legend,
+        [NaN], [NaN],
+        seriestype = :scatter,
+        marker = :star5,
+        color = :black,
+        markerstrokecolor = :black,
+        markercolor = :white,
+        label = "Initial",
+        markersize = 6,
+        markerstrokewidth = 1
+    )
+    
+    # Create legend plot for rounds (no title)
+    round_legend = plot(
+        showaxis = false,
+        grid = false,
+        legend = :bottom
+    )
+    
+    # Add initial allocation to round legend
+    plot!(
+        round_legend,
+        [NaN], [NaN],
+        seriestype = :path,
+        color = colors[1],
+        label = "Initial",
+        linewidth = 3
+    )
+
+    # Add round colors to round legend
+    for r in 1:n_rounds
+        plot!(
+            round_legend,
+            [NaN], [NaN],
+            seriestype = :path,
+            color = colors[r+1],
+            label = "Round $r",
+            linewidth = 3
+        )
+    end
+
+    # Plot initial allocation
+    if m == 2
+        plot!(
+            plot_obj,
+            [initial_allocation[1]],
+            [initial_allocation[2]],
+            seriestype = :scatter,
+            marker = :star5,
+            markerstrokecolor = colors[1],
+            markercolor = :white,
+            label = nothing,
+            markersize = 6,
+            markerstrokewidth = 1
+        )
+    else
+        plot!(
+            plot_obj,
+            [initial_allocation[1]],
+            [initial_allocation[2]],
+            [initial_allocation[3]],
+            seriestype = :scatter,
+            marker = :star5,
+            markerstrokecolor = colors[1],
+            markercolor = :white,
+            label = nothing,
+            markersize = 6,
+            markerstrokewidth = 1
+        )
+    end
+
+    # Plot actual data points
+    for i in 1:n_rows
+        user = mod(i-1, n) + 1
+        round_num = ceil(Int, i/n)
+        
+        if m == 2
             plot!(
                 plot_obj,
                 [allocation_history[i, 1]],
                 [allocation_history[i, 2]],
                 seriestype = :scatter,
-                label = (i == user) ? "User $user" : nothing,
-                markersize = 4
+                marker = user_markers[user],
+                markerstrokecolor = colors[round_num + 1],
+                markercolor = :white,
+                label = nothing,
+                markersize = 4,
+                markerstrokewidth = 1
             )
             
-            # Draw lines connecting consecutive points for the same user
+            # Draw lines connecting consecutive points
             if i > 1 && mod(i-1, n) == mod(i-2, n)
                 plot!(
                     plot_obj,
                     [allocation_history[i-1, 1], allocation_history[i, 1]],
                     [allocation_history[i-1, 2], allocation_history[i, 2]],
-                    linecolor = plot_obj[end][:markercolor],
+                    color = colors[round_num + 1],
                     label = nothing,
                     linestyle = :dash,
                     linewidth = 1
                 )
             end
-        end
-    else  # m == 3
-        plot_obj = plot(
-            title = "$mechanism_name, $pref_name",
-            xlabel = "A1", ylabel = "A2", zlabel = "A3",
-            xlim = (0, 1), ylim = (0, 1), zlim = (0, 1),
-            legend = :outerright
-        )
-
-        for i in 1:n_rows
-            user = mod(i-1, n) + 1
+        else
+            # 3D case
             plot!(
                 plot_obj,
                 [allocation_history[i, 1]],
                 [allocation_history[i, 2]],
                 [allocation_history[i, 3]],
                 seriestype = :scatter,
-                label = (i == user) ? "User $user" : nothing,
-                markersize = 4
+                marker = user_markers[user],
+                markerstrokecolor = colors[round_num + 1],
+                markercolor = :white,
+                label = nothing,
+                markersize = 4,
+                markerstrokewidth = 1
             )
             
-            # Draw lines connecting consecutive points for the same user
             if i > 1 && mod(i-1, n) == mod(i-2, n)
                 plot!(
                     plot_obj,
                     [allocation_history[i-1:i, 1]],
                     [allocation_history[i-1:i, 2]],
                     [allocation_history[i-1:i, 3]],
-                    linecolor = plot_obj[end][:markercolor],
+                    color = colors[round_num + 1],
                     label = nothing,
                     linestyle = :dash,
                     linewidth = 1
@@ -87,15 +214,23 @@ function plot_allocation_history(
         end
     end
 
-    # Create output directory by mechanism
+    # Combine main plot with legends
+    legends = plot(
+        user_legend,
+        round_legend,
+        layout = grid(2,1, heights=[0.5,0.5]),
+        size = (200, 400)
+    )
+    
+    # Create final combined plot
+    final_plot = plot(plot_obj, legends, layout=l, size=(800,600))
+
+    # Create output directory and save
     out_dir = joinpath("output/plots", mechanism_name)
     mkpath(out_dir)
-    
-    # Save the plot
     out_file = joinpath(out_dir, pref_name * ".png")
-    savefig(plot_obj, out_file)
+    savefig(final_plot, out_file)
 end
-
 function plot_preference_profile(
     utility::Function,
     n::Int,
