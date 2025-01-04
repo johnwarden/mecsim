@@ -185,16 +185,24 @@ function simulate(
     show(IOContext(logIO), "text/plain", current_reports)
     logln(logIO, "")
     logln(logIO, "Final Allocation: $alloc")
-    logln(logIO, "Overall Utility: $(total_utility(alloc))")
+    logln(logIO, "Mean Utility: $(total_utility(alloc)/n)")
+
+    # Calculate optimality (1.0 would be the maximum possible normalized utility)
+    optimality = total_utility(alloc)/n  # Since utilities are already normalized
+
+    # Calculate envy as difference between max and min utilities
+    final_utilities = [Utility(i, alloc) for i in 1:n]
+    envy = maximum(final_utilities) - minimum(final_utilities)
+
+    # Incentive alignment was already being tracked throughout the simulation
+    # It's the mean Euclidean distance between honest and final reports
+
+    logln(logIO, "Optimality: $optimality")
+    logln(logIO, "Envy: $envy") 
+    logln(logIO, "Incentive Alignment: $incentive_alignment")
 
     # 3D Plot if dimension == 3
     ah = Matrix(transpose(hcat(alloc_history...)))
-
-    # Calculate envy as percentage difference between max and min normalized utility
-    final_utilities = [Utility(i, alloc) for i in 1:n]
-    max_possible_utilities = [Utility(i, optimal_points[i,:]) for i in 1:n]
-    normalized_utilities = final_utilities ./ max_possible_utilities
-    envy = (maximum(normalized_utilities) - minimum(normalized_utilities)) * 100
 
     return (final_reports, ah, converged, incentive_alignment, envy)
 end

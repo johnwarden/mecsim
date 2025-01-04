@@ -2,7 +2,7 @@
 
 This repository contains a simulator for comparing budget allocation mechanisms. It simulates strategic users who modify their reported preferred allocations in an attempt to maximize their individual utility.
 
-The most surprising result of the simulation is that, for a wide variety of preference profiles, an equilibrium is reached with at a point close to optimal.
+The most surprising result of the simulation is that, for a wide variety of preference profiles, an equilibrium is reached at a point close to optimal.
 
 ## Motivation
 
@@ -150,7 +150,7 @@ return sqrt_preferences([
 
 ```
 
-The simulation generates a plot of the preference profile in output/plots/SAP/HighConflictTwoUsers.png
+The simulation generates a plot of the preference profile in output/plots
 
 ![Condorcet Cycle Preference Profile](output/plots/preferences/HighConflictTwoUsers.png)
 

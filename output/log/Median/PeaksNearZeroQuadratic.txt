@@ -35,4 +35,7 @@ Final reports:
  0.1  0.12  0.21
  0.2  0.3   0.2
 Final Allocation: [0.2, 0.15, 0.2]
-Overall Utility: 2.577827498620369
+Mean Utility: 0.8592758328734563
+Optimality: 0.8592758328734563
+Envy: 0.03134832300851853
+Incentive Alignment: 1.0
