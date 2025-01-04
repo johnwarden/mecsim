@@ -14,6 +14,6 @@ sampleSAPToolReports = [
     173 130 0   6   12  100 16  0   0   50  150
 ]
 
-prefMatrix = sqrtPreferenceMatrixFromReports(sampleSAPToolReports)
+prefMatrix = sqrt_preference_matrix_from_reports(sampleSAPToolReports)
 
-return sqrtPreferences(prefMatrix)
+return sqrt_preferences(prefMatrix)

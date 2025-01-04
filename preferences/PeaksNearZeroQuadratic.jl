@@ -3,7 +3,7 @@
 # reached, utility turns negative. This results in low optimality for a lot
 # of mechanisms, where users tend to arrive at an equilibrium that users most
 # of the budget.
-return quadraticPreferences([
+return quadratic_preferences([
     .3  .15  .12
     .10  .12  .21
     .2  .3  .2

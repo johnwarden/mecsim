@@ -2,7 +2,7 @@
 # utility of the minority is orders-of-magnitude larger to demonstrate how
 # utilities are normalized.
 
-return sqrtPreferences([
+return sqrt_preferences([
     3.0  1.0
     3.0  1.0
     1000.0  3000.0

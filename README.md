@@ -2,44 +2,40 @@
 
 This repository contains a simulator for comparing budget allocation mechanisms. It simulates strategic users who modify their reported preferred allocations in an attempt to maximize their individual utility.
 
-The most surprising result of the simulation is that, for a wide variety of preference profiles, the final results are close to the optimal.
+The most surprising result of the simulation is that, for a wide variety of preference profiles, an equilibrium is reached with at a point close to optimal.
 
 ## Motivation
 
 ### Incentive Compatible Budget Allocation
 
-The theoretical problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been extensively studied. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the early social choice theorists such as Condorcet and Arrow tried this, they ran into difficulties. Never mind that there are many different ways you could define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been stymieing academics for decades. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Never mind that there are many different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
 
 This may seem counter-intuitive. Normally when you vote, if you vote for the person you want to win, that person is more likely to win! So there is no incentive to lie. We say that majority voting (between two candidates) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for exactly what you want.
 
-But budget allocation voting mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average for the group was 40%; your favorite project is under-funded while other projects are over-funded. So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, thereby raising the final average of your favorite project and lowering the average for the others. If there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean, but with three or more projects, you will be better off exaggerating your preference for your favorite project, no matter what the mechanism.
+But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average for the group was 40%; your favorite project is under-funded while other projects are over-funded. So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, thereby raising the final average of your favorite project and lowering the average for the others. 
 
-Try as they might, the great social-choice theorists of yore could not get around this. They couldn't come up with any *strategyproof* mechanism that wasn't limited in some way. Many theorems proved the impossibility of a mechanism that had certain combination of desired properties. 
-
-
-In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism that was fair in any reasonable sense of the word, and that was also strategyproof.
-
+If there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get ugly. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism for choosing among more than two alternatives that was strategyproof and not severely limited in certain ways. 
 
 ### Alternatives
 
 So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we recognize it as a kind of game, where people make a proposal they think will produce the best results for themselves, given the current set of proposals and the mechanism for aggregating them. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
 
-Here is the point where we move from theory to experiment. 
+Here is the point where we move from theory to experiment. The results of these simulations show that, yes, things kind of do balance out.
 
 ## Goals of the Simulation
 
 Using a variety of profiles of user preferences, the simulation tells us if:
 
 - if an equilibrium is reached
-- if the final allocations are close to the overall optimal
+- how close the allocations are close to the overall [optimal](#defining-optimality)
 - if results disproportionately benefit some individuals at the expense of others
 - how incentive-aligned the mechanism is (how close individuals reports are to their "true optimal" allocations)
 
 ## Setup
 
-`n` users need to allocate a budget of 1.0 across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
+`n` users need to allocate a budget across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
 
-User submits their proposed allocation vectors and the mechanism outputs a final allocation.
+User submits their proposed allocation vectors and the mechanism outputs a final allocation with a total less than the budget.
 
 Users then take turns updating their reports by best-responding: maximizing their own utility given the reports of other users.
 
@@ -53,18 +49,18 @@ But since I have implemented a variety of preference profiles, it is interesting
 
 Another striking result is that most simulations reach an equilibrium for most preference profiles.
 
-    ┌────────────────────────┬─────────────┬─────────────────┬──────────────┬─────────────────────┬─────────────────────────┐
-    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Utility │ Mean Optimality (%) │ Mean Incent. Align. (%) │
-    ├────────────────────────┼─────────────┼─────────────────┼──────────────┼─────────────────────┼─────────────────────────┤
-    │ Mean                   │         3.3 │           100.0 │        0.821 │                89.6 │                    79.9 │
-    │ Median                 │         1.8 │           100.0 │        0.883 │                96.9 │                    91.8 │
-    │ PairwiseMeanTradeoff   │         2.4 │           100.0 │        0.806 │                88.0 │                    73.4 │
-    │ PairwiseMedianTradeoff │         1.7 │           100.0 │        0.816 │                89.1 │                    95.5 │
-    │ PairwiseProbability    │         1.3 │           100.0 │        0.774 │                84.7 │                    96.0 │
-    │ QuadraticFunding       │         4.0 │            90.0 │        0.817 │                89.2 │                    73.0 │
-    │ SAP                    │         1.7 │           100.0 │        0.854 │                92.9 │                    80.6 │
-    │ SAPScaled              │         6.5 │            50.0 │          0.8 │                87.0 │                    79.0 │
-    └────────────────────────┴─────────────┴─────────────────┴──────────────┴─────────────────────┴─────────────────────────┘
+    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
+    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
+    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
+    │ Mean                   │         4.0 │            90.0 │                95.7 │        15.624 │               60.5 │
+    │ Median                 │         2.7 │            90.0 │                99.0 │         11.49 │               84.9 │
+    │ PairwiseMeanTradeoff   │         3.0 │           100.0 │                89.0 │        20.026 │               67.8 │
+    │ PairwiseMedianTradeoff │         4.8 │            90.0 │                89.9 │        21.402 │               73.6 │
+    │ PairwiseProbability    │         1.6 │           100.0 │                87.6 │        19.335 │               96.1 │
+    │ QuadraticFunding       │         3.8 │            90.0 │                89.8 │        20.587 │               56.1 │
+    │ SAP                    │         1.6 │           100.0 │                93.3 │        26.997 │               88.3 │
+    │ SAPScaled              │         5.7 │            50.0 │                86.5 │        33.273 │               77.1 │
+    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
 ### Description of Output Columns 
 
@@ -84,13 +80,13 @@ This is consistent with many intuitive notions of what is fair. For example, if 
 
 ### Output Files
 
-The simulation also outputs:
+The simulation outputs files organized by mechanism:
 
-- output/plots/preferences: Plot of each preference profile
-- output/plots/sims: For 3-D preferences, plot how the allocation changes over the course of the simulation for each mechanism
-- output/log: detailed log of simulation for each simulation/mechanism combination
+- `output/plots/[mechanism_name]/[preference_name].png`: Plot showing how the allocation changes over the course of the simulation
+- `output/log/[mechanism_name]/[preference_name].txt`: Detailed log of the simulation
 
-
+For preference profiles with 2 or 3 dimensions, the simulation also generates preference visualization plots in:
+- `output/plots/preferences/[preference_name].png`
 
 ## Limitations
 
@@ -135,34 +131,7 @@ To implement a new mechanism or preference profile, add a .jl file under the `me
 The mechanism is simply a function that inputs an allocation matrix and outputs a vector. 
 
 
-#### Example: `SAPTool.jl`
-
-```julia
-
-using Statistics
-
-# SAP (based on the SAPTool by Steve Vitka: https://docs.google.com/spreadsheets/d/1y8q7zSCY75UFN-2J_b8ODvUYlfM3AjhyrP19xZjgGow/edit?gid=0#gid=0) 
-# Uses a "Select at Percentage" mechanism. Sort each column, select the highest row where the sum is <= 1.
-# Optionally, scale so sum equals 1.
-return (reports::Matrix{Float64}) -> begin
-    n, m = size(reports)
-
-    # sort each column ascending
-    sorted_votes = hcat([sort(reports[:, j]) for j in 1:m]...)
-
-    # find the selection point: the last row with a sum less than the budget of 1.0
-    row_sums = sum.(eachrow(sorted_votes))
-    sp = findlast(≤(1.0), row_sums)
-
-    # if no row qualifies, return zeros, or the *first* row scaled down
-    if sp == 0
-        return zeros(m)
-    end
-
-    return sorted_votes[sp, :]
-end
-
-```
+## Example
 
 A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root or quadratic preference profile from a matrix of coefficients.
 
@@ -170,11 +139,129 @@ A preference profile is 1) a function that outputs the utility for a given user 
 
 ```julia
 
-return sqrtPreferences([
+return sqrt_preferences([
     5.0  2.0  1.0
     1.0  5.0  2.0
     2.0  1.0  5.0
 ])
 
 ```
+
+
+The simulation also generates a plot showing how the allocation changes over time:
+
+![Condorcet Cycle Preference Profile](output/plots/PairwiseProbability/CondorcetCycle.png)
+
+
+### Sample Preferences
+
+#### Example: `SAPTool.jl`
+
+```julia
+
+using Statistics
+
+# Select at Percentile (SAP) mechanism based on Steve Vitka's SAPTool
+# For each column:
+# 1. Sort values in ascending order
+# 2. Select highest row where sum ≤ 1.0
+# 3. Return those values (may not sum to 1.0)
+function SAP(reports)
+    n, m = size(reports)
+    sorted_votes = hcat([sort(reports[:, j]) for j in 1:m]...)
+    row_sums = sum.(eachrow(sorted_votes))
+    sp = findlast(≤(1.0), row_sums)
+    
+    return isnothing(sp) ? zeros(m) : sorted_votes[sp, :]
+end
+
+return SAP
+
+
+```
+
+
+
+
+In this case, the mechanism quickly converges to an equal split between the three items, which makes sense given the cyclic nature of the preferences.
+
+// ... rest of existing README ...
+
+
+
+
+
+## Simulation Output
+
+    Optional points: [0.8333333333333333 0.13333333333333336 0.033333333333333305; 0.03333333333333333 0.8333333333333334 0.13333333333333333; 0.13333333333333333 0.033333333333333326 0.8333333333333334]
+    Starting allocation: [0.13333333333333333, 0.13333333333333336, 0.13333333333333333]
+
+    === Round 1 ===
+    Current report matrix:
+    3×3 Matrix{Float64}:
+     0.833333   0.133333   0.0333333
+     0.0333333  0.833333   0.133333
+     0.133333   0.0333333  0.833333
+    User 1's turn.
+      Best response = [0.38886292545153467, 0.733327277878881, 0.08812163494697361]
+      => User 1 improves by switching to best response
+      => User 1's new report: [0.38886292545153467, 0.733327277878881, 0.08812163494697361]
+      Old utility = 0.5333333333333333
+      New utility = 0.7126930929583363
+      Honest utility = 0.5333333333333333
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 1: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    User 2's turn.
+      => No improvement found; user 2 stays with old report.
+      Old utility = 0.981732732395841
+      New utility = 0.981732732395841
+      Honest utility = 0.981732732395841
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 2: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    User 3's turn.
+      => No improvement found; user 3 stays with old report.
+      Old utility = 0.6230132131458348
+      New utility = 0.6230132131458348
+      Honest utility = 0.6230132131458348
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 3: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+
+    === Round 2 ===
+    Current report matrix:
+    3×3 Matrix{Float64}:
+     0.388863   0.733327   0.0881216
+     0.0333333  0.833333   0.133333
+     0.133333   0.0333333  0.833333
+    User 1's turn.
+      => No improvement found; user 1 stays with old report.
+      Old utility = 0.7126930929583363
+      New utility = 0.7126930929583363
+      Honest utility = 0.5333333333333333
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 1: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    User 2's turn.
+      => No improvement found; user 2 stays with old report.
+      Old utility = 0.981732732395841
+      New utility = 0.981732732395841
+      Honest utility = 0.981732732395841
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 2: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    User 3's turn.
+      => No improvement found; user 3 stays with old report.
+      Old utility = 0.6230132131458348
+      New utility = 0.6230132131458348
+      Honest utility = 0.6230132131458348
+      Incentive Alignment = 0.7504340579308758
+      Allocation after user 3: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    Converged! Maximum improvement in utility < 0.0001.
+    Final reports:
+    3×3 Matrix{Float64}:
+     0.388863   0.733327   0.0881216
+     0.0333333  0.833333   0.133333
+     0.133333   0.0333333  0.833333
+    Final Allocation: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+    Overall Utility: 2.3174390385000123
+
+
+
 

@@ -6,4 +6,4 @@ instantiate:
     julia --project -e 'using Pkg; Pkg.instantiate()'
 
 sim +args="":
-    time julia --project sim.jl {{args}}
+    time julia --project Main.jl {{args}}

@@ -9,11 +9,11 @@ return (reports) -> begin
     n, m = size(reports)
 
     # Build a list of tradeoff matrices T[user].
-    T = [tradeoffMatrixFromReport(reports[i, :]) for i in 1:n]
+    T = [tradeoff_matrix_from_report(reports[i, :]) for i in 1:n]
     # T = [relativeValueMatrixFromReport(reports[i, :]) for i in 1:n]
 
     # Build a matrix of median tradeoffs across users:
-    medianTradeoffs = [ 
+    median_tradeoffs = [ 
         i == j ? 0.0 : median(T[u][i, j] for u in 1:n)
         for i in 1:m, j in 1:m 
     ]
@@ -27,7 +27,7 @@ return (reports) -> begin
     history = Vector{Vector{Float64}}()
 
     if m < 3        
-        a1 = medianTradeoffs[1,2]
+        a1 = median_tradeoffs[1,2]
         return [a1, 1-a1]
     end
 
@@ -39,7 +39,7 @@ return (reports) -> begin
             for k in (j + 1):m
                 fixedSum = sum(A[l] for l in 1:m if l != j && l != k)
                 remainder = 1.0 - fixedSum
-                A[j] = medianTradeoffs[j, k] * remainder
+                A[j] = median_tradeoffs[j, k] * remainder
                 A[k] = remainder - A[j]
                 push!(history, copy(A))
             end
