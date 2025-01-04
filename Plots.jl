@@ -248,6 +248,12 @@ function plot_preference_profile(
     # Determine a grid layout so it forms a roughly square shape
     rows = cols = ceil(Int, sqrt(n))
 
+    if n == 2
+        rows = 1
+        cols = 2
+    end
+
+
     # Create a single plot with that layout; place a combined legend to the right
     plot_obj = plot(
         layout=(rows, cols),
