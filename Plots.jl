@@ -18,18 +18,21 @@ function plot_allocation_history(
     end
 
     n_rows = size(allocation_history, 1)
-    n_rounds = ceil(Int, n_rows/n)
+    n_rounds = ceil(Int, n_rows/n) - 1
+    
+    # Exclude the last round's points by adjusting n_rows
+    n_rows = n_rows - n
     
     # Define different markers for each user
     markers = [:circle, :square, :diamond, :utriangle, :dtriangle, :cross]
     user_markers = markers[1:min(n, length(markers))]
     
-    # Create color gradient for rounds using oklab
+    # Create color gradient
     # Handle edge case where there's only one round
     colors = if n_rounds == 1
         [colorant"purple"]
     else
-        range(colorant"purple", colorant"orange", length=n_rounds)
+        range(colorant"purple", colorant"orange", length=n_rounds)  # One less round
     end
     
     # Add initial allocation color at the start
