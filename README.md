@@ -43,7 +43,7 @@ The simulation terminates if no user is able to improve their utility more than 
 
 ## Results
 
-The following is the output of the simulation for all combinations of mechanisms and preferences currently implemented. Since these are averages across preference profiles, the averages aren't really that useful for comparing mechanisms -- different mechanisms work better for certain types of preference profiles. The averages are just averages across the preference profiles I happen to have implemented.
+The following is the output of the simulation for all combinations of mechanisms and preferences currently implemented. Since these are averages across preference profiles, the averages aren't really that useful for comparing mechanisms -- different mechanisms work better for certain types of preference profiles. 
 
 But since I have implemented a variety of preference profiles, it is interesting to note how close to optimality many mechanisms are overall.
 
@@ -66,11 +66,12 @@ Another striking result is that most simulations reach an equilibrium for most p
 - Equilibrium is the % of profiles for which equilibrium is reached
 - Utility is the mean utility-per-user
 - Optimality is the difference between this and the maximum possible normalized utility. Each user's utility function is normalized so their maximum utility = 1.0.
+- Envy is the difference between the utility of the user who has the maximum utility in the final allocation and the user with the minimum
 - Incentive Alignment is a mean Euclidian distance between users' "honest" reports and final reports.
 
 ## Defining Optimality
 
-The optimality definition is based on an estimate of total utility. But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
+The mean optimality is calculated based on total utility (the sum of utilities for all users). But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
 
 So instead of considering user's subjective utility as an absolute quantity, we consider each user's utility as a percentage of their maximum possibility utility.
 
@@ -81,10 +82,10 @@ This is consistent with many intuitive notions of what is fair. For example, if 
 
 The simulation outputs files organized by mechanism:
 
-- `output/plots/[mechanism_name]/[preference_name].png`: Plot showing how the allocation changes over the course of the simulation
 - `output/log/[mechanism_name]/[preference_name].txt`: Detailed log of the simulation
 
-For preference profiles with 2 or 3 dimensions, the simulation also generates preference visualization plots in:
+The simulation also generates preference visualization plots in:
+
 - `output/plots/preferences/[preference_name].png`
 
 ## Limitations
@@ -93,10 +94,11 @@ This simulations aren't a substitute for a more formal equilibrium analysis. It 
 
 - Users always start by reporting their ideal point and only change their reports in response to other users.
 - Users play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational user can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next user to best-respond, could produce better outcomes in some cases.
-- There are no attempts by groups to collude
+- There are no attempts by groups to collude.
 
-A rational agent trying to optimize their results might behave differently.
+So rational agent really trying to optimize their results might find other ways to manipulate the output.
 
+On the other hand, the simulation does show that in most cases there seems to be a nash equilibrium where no user can profitably deviate.
 
 # Development 
 
