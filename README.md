@@ -221,11 +221,9 @@ return SAP
 
 #### Simulation Output
 
-A chart of the state of the mechanism is saved to output/plots/SAP/HighConflictTwoUsers.png. The initial allocation is the allocation where all users report truthfully. Then in each round, one or more users can change their allocations. 
+And a detailed log of the simulation is output to: output/logs/SAP/HighConflictTwoUsers.txt
 
-![Condorcet Cycle Preference Profile](output/plots/SAP/HighConflictTwoUsers.png)
-
-And a detailed log is output to: output/logs/SAP/HighConflictTwoUsers.txt
+In this case, user 2 modifies their proposed allocation to best-respond to user 1, and an equilibrium is immediately reached.
 
 
     Optional points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
