@@ -3,7 +3,6 @@
 using LinearAlgebra
 using Random
 using Optim
-using ForwardDiff
 using Statistics
 using Plots
 using PrettyTables
