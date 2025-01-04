@@ -52,16 +52,15 @@ Another striking result is that most simulations reach an equilibrium for most p
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ Mean                   │         4.0 │            90.0 │                95.7 │        15.624 │               60.5 │
-    │ Median                 │         2.7 │            90.0 │                99.0 │         11.49 │               84.9 │
-    │ PairwiseMeanTradeoff   │         3.0 │           100.0 │                89.0 │        20.026 │               67.8 │
-    │ PairwiseMedianTradeoff │         4.8 │            90.0 │                89.9 │        21.402 │               73.6 │
-    │ PairwiseProbability    │         1.6 │           100.0 │                87.6 │        19.335 │               96.1 │
-    │ QuadraticFunding       │         3.8 │            90.0 │                89.8 │        20.587 │               56.1 │
-    │ SAP                    │         1.6 │           100.0 │                93.3 │        26.997 │               88.3 │
-    │ SAPScaled              │         5.7 │            50.0 │                86.5 │        33.273 │               77.1 │
+    │ Mean                   │         4.0 │            90.0 │                95.7 │          15.6 │               60.5 │
+    │ Median                 │         2.7 │            90.0 │                99.0 │          11.5 │               84.9 │
+    │ PairwiseMeanTradeoff   │         3.0 │           100.0 │                89.0 │          20.0 │               67.8 │
+    │ PairwiseMedianTradeoff │         4.8 │            90.0 │                89.9 │          21.4 │               73.6 │
+    │ PairwiseProbability    │         1.6 │           100.0 │                87.6 │          19.3 │               96.1 │
+    │ QuadraticFunding       │         3.9 │            90.0 │                89.8 │          20.6 │               56.0 │
+    │ SAP                    │         1.6 │           100.0 │                93.3 │          27.0 │               88.3 │
+    │ SAPScaled              │         5.7 │            50.0 │                86.5 │          33.3 │               77.1 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
-
 ### Description of Output Columns 
 
 - Equilibrium is the % of profiles for which equilibrium is reached
@@ -133,135 +132,156 @@ The mechanism is simply a function that inputs an allocation matrix and outputs 
 
 ## Example
 
-A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root or quadratic preference profile from a matrix of coefficients.
+A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root profile where $`Uᵢ = ∑ⱼb_{i,j}*x_{i,j}²`$ for some matrix of coefficients b. 
 
-#### Example: `preferences/CondorcetCycle.jl`
+In this scenario, user 1 strongly prefers item 1, and user 2 strongly prefers item 2.
+
+### Sample Preferences
+
+#### Example: `preferences/HighConflictTwoUsers.jl`
 
 ```julia
 
+# Diametrically opposite preferences between two users
 return sqrt_preferences([
-    5.0  2.0  1.0
-    1.0  5.0  2.0
-    2.0  1.0  5.0
+    5.0  1.0
+    1.0  3.0
 ])
 
 ```
 
+The simulation generates a plot of the preference profile in output/plots/Mean/HighConflictTwoUsers.png
 
-The simulation also generates a plot showing how the allocation changes over time:
+![Condorcet Cycle Preference Profile](output/plots/Mean/HighConflictTwoUsers.png)
 
-![Condorcet Cycle Preference Profile](output/plots/PairwiseProbability/CondorcetCycle.png)
+### Sample Mechansim
 
+A mechanism is a function that takes an allocation matrix as an input and returns a single allocation vector. The final allocations will be capped by the simulator so that the sum is <= 1.0. This mechanism, which works surprisngly well, simply takes the mean of the proposed allocations.
 
-### Sample Preferences
-
-#### Example: `SAPTool.jl`
+#### Example: `Mean.jl`
 
 ```julia
 
 using Statistics
 
-# Select at Percentile (SAP) mechanism based on Steve Vitka's SAPTool
-# For each column:
-# 1. Sort values in ascending order
-# 2. Select highest row where sum ≤ 1.0
-# 3. Return those values (may not sum to 1.0)
-function SAP(reports)
+# Take the mean of user reports, constrained to positive values summing to ≤ 1.0
+return reports -> begin
     n, m = size(reports)
-    sorted_votes = hcat([sort(reports[:, j]) for j in 1:m]...)
-    row_sums = sum.(eachrow(sorted_votes))
-    sp = findlast(≤(1.0), row_sums)
-    
-    return isnothing(sp) ? zeros(m) : sorted_votes[sp, :]
+    A = mean(reports, dims=1)[1,:]
+    return A
 end
-
-return SAP
-
 
 ```
 
+#### Run the Simulation
 
 
+    ❯ just sim mechanisms/Mean.jl preferences/HighConflictTwoUsers.jl
+    time julia --project Main.jl mechanisms/Mean.jl preferences/HighConflictTwoUsers.jl
+    Loading preferences /Users/jwarden/Dropbox/social-protocols/mecsim/preferences/HighConflictTwoUsers.jl
+    optimalPoints =
+    2×2 Matrix{Float64}:
+     0.961538  0.0384615
+     0.1       0.9
+    overall_optimal_point = [0.5620173672946042, 0.43798263270539584]
+    [Running] Pref=HighConflictTwoUsers | Mech=Mean | Round=2 | Alloc=0.50,0.50,... | Optimality=99.8 | Align=90.2 ✅
 
-In this case, the mechanism quickly converges to an equal split between the three items, which makes sense given the cyclic nature of the preferences.
+    Preference: HighConflictTwoUsers
 
-// ... rest of existing README ...
+    Optimal Points and Utilities:
+    ┌──────┬────────────────────┬─────────────────┐
+    │ User │ Optimal Allocation │ Optimal Utility │
+    ├──────┼────────────────────┼─────────────────┤
+    │    1 │   [0.962, 0.038]   │             1.0 │
+    │    2 │     [0.1, 0.9]     │             1.0 │
+    │  ALL │   [0.562, 0.438]   │           0.865 │
+    └──────┴────────────────────┴─────────────────┘
 
 
+    Mechanism Outcomes for HighConflictTwoUsers:
+    ┌───────────┬────────┬────┬─────────────────────────┬───────────┬──────┬───────┬────────┐
+    │ Mechanism │ Rounds │ Eq │ Reports                 │ Alloc     │ Opt% │ Envy% │ Align% │
+    ├───────────┼────────┼────┼─────────────────────────┼───────────┼──────┼───────┼────────┤
+    │ Mean      │      2 │ ✓  │ [1.00,0.00];[0.00,1.00] │ 0.50,0.50 │ 99.8 │   6.2 │   90.2 │
+    └───────────┴────────┴────┴─────────────────────────┴───────────┴──────┴───────┴────────┘
 
 
+    ================================================================================
+    OVERALL SUMMARY ACROSS ALL PREFERENCES
+    ================================================================================
+    ┌───────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
+    │ Mechanism │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
+    ├───────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
+    │ Mean      │         2.0 │           100.0 │                99.8 │           6.2 │               90.2 │
+    └───────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
-## Simulation Output
+    Done.
 
-    Optional points: [0.8333333333333333 0.13333333333333336 0.033333333333333305; 0.03333333333333333 0.8333333333333334 0.13333333333333333; 0.13333333333333333 0.033333333333333326 0.8333333333333334]
-    Starting allocation: [0.13333333333333333, 0.13333333333333336, 0.13333333333333333]
+    real    0m7.522s
+    user    0m6.922s
+    sys 0m0.329s
+
+
+#### Simulation Output
+
+A chart of the state of the mechanism is saved to output/plots/Mean/HighConflictTwoUsers.png. The initial allocation is the allocation where all users report truthfully. Then in each round, one or more users can change their allocations. 
+
+![Condorcet Cycle Preference Profile](output/plots/Mean/HighConflictTwoUsers.png)
+
+And a detailed log is output to:
+
+output/logs/Mean/HighConflictTwoUsers.txt
+
+    Optional points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
+    Starting allocation: [0.5307692307692308, 0.46923076923076923]
 
     === Round 1 ===
     Current report matrix:
-    3×3 Matrix{Float64}:
-     0.833333   0.133333   0.0333333
-     0.0333333  0.833333   0.133333
-     0.133333   0.0333333  0.833333
+    2×2 Matrix{Float64}:
+     0.961538  0.0384615
+     0.1       0.9
     User 1's turn.
-      Best response = [0.38886292545153467, 0.733327277878881, 0.08812163494697361]
+      Best response = [0.9999998899520147, 4.217125496948205e-8]
       => User 1 improves by switching to best response
-      => User 1's new report: [0.38886292545153467, 0.733327277878881, 0.08812163494697361]
-      Old utility = 0.5333333333333333
-      New utility = 0.7126930929583363
-      Honest utility = 0.5333333333333333
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 1: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+      => User 1's new report: [0.9999998899520147, 4.217125496948205e-8]
+      Old utility = 0.8487317484738964
+      New utility = 0.8587767619549314
+      Honest utility = 0.8487317484738964
+      Incentive Alignment = 0.9728036391565968
+      Allocation after user 1: [0.5499999449760073, 0.4500000210856275]
     User 2's turn.
-      => No improvement found; user 2 stays with old report.
-      Old utility = 0.981732732395841
-      New utility = 0.981732732395841
-      Honest utility = 0.981732732395841
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 2: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
-    User 3's turn.
-      => No improvement found; user 3 stays with old report.
-      Old utility = 0.6230132131458348
-      New utility = 0.6230132131458348
-      Honest utility = 0.6230132131458348
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 3: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+      Best response = [1.1883109104956927e-7, 0.9999998966333525]
+      => User 2 improves by switching to best response
+      => User 2's new report: [1.1883109104956927e-7, 0.9999998966333525]
+      Old utility = 0.8709168942376995
+      New utility = 0.8944271714563381
+      Honest utility = 0.8709168942376995
+      Incentive Alignment = 0.9020930395967057
+      Allocation after user 2: [0.5000000043915529, 0.49999996940230373]
 
     === Round 2 ===
     Current report matrix:
-    3×3 Matrix{Float64}:
-     0.388863   0.733327   0.0881216
-     0.0333333  0.833333   0.133333
-     0.133333   0.0333333  0.833333
+    2×2 Matrix{Float64}:
+     1.0         4.21713e-8
+     1.18831e-7  1.0
     User 1's turn.
       => No improvement found; user 1 stays with old report.
-      Old utility = 0.7126930929583363
-      New utility = 0.7126930929583363
-      Honest utility = 0.5333333333333333
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 1: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+      Old utility = 0.8320502931397008
+      New utility = 0.8320502944477166
+      Honest utility = 0.8212271142602944
+      Incentive Alignment = 0.9020930395967057
+      Allocation after user 1: [0.5000000043915529, 0.49999996940230373]
     User 2's turn.
       => No improvement found; user 2 stays with old report.
-      Old utility = 0.981732732395841
-      New utility = 0.981732732395841
-      Honest utility = 0.981732732395841
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 2: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
-    User 3's turn.
-      => No improvement found; user 3 stays with old report.
-      Old utility = 0.6230132131458348
-      New utility = 0.6230132131458348
-      Honest utility = 0.6230132131458348
-      Incentive Alignment = 0.7504340579308758
-      Allocation after user 3: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
+      Old utility = 0.8944271714563381
+      New utility = 0.8944271714563381
+      Honest utility = 0.8709168942376995
+      Incentive Alignment = 0.9020930395967057
+      Allocation after user 2: [0.5000000043915529, 0.49999996940230373]
     Converged! Maximum improvement in utility < 0.0001.
     Final reports:
-    3×3 Matrix{Float64}:
-     0.388863   0.733327   0.0881216
-     0.0333333  0.833333   0.133333
-     0.133333   0.0333333  0.833333
-    Final Allocation: [0.13333333333333333, 0.733327277878881, 0.13333333333333333]
-    Overall Utility: 2.3174390385000123
-
-
-
-
+    2×2 Matrix{Float64}:
+     1.0         4.21713e-8
+     1.18831e-7  1.0
+    Final Allocation: [0.5000000043915529, 0.49999996940230373]
+    Overall Utility: 1.726477464596039

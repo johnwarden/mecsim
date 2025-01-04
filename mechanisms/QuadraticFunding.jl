@@ -5,5 +5,5 @@ using Statistics
 return reports -> begin
     n, m = size(reports)
     A = [sum(sqrt.(reports[:,j]))^2 for j in 1:m]
-    return constrain_budget(A)
+    return A
 end
