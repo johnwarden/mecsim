@@ -41,41 +41,75 @@ Users then take turns updating their reports by best-responding: maximizing thei
 
 The simulation terminates if no user is able to improve their utility more than some threshhold. 
 
+## Preference Profiles
+
+I've implemented two different classes of preference profiles, with a variety of concrete profiles under each.
+
+### Square root profiles
+
+Square root profiles have the form $`Uᵢ(x) = ∑ⱼ b_{i,j}√x_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but they never turn negative. In these scenarios, voters would always prefer to use up the whole budget.
+
+### Quadratic Profiles
+
+Quadratic profiles have the form $`Uᵢ(Y) = ∑ⱼ 2b_{i,j}x_j - x_j^2`$. These are concave and single-peaked, which is appropriate for budget allocation settings where marginal utilities eventually turn negative. In these settings, voters may not always prefer to use up the whole budget.
+
 ## Results
 
-The following is the output of the simulation for all combinations of mechanisms and preferences currently implemented. Since these are averages across preference profiles, the averages aren't really that useful for comparing mechanisms -- different mechanisms work better for certain types of preference profiles. 
+The following is the results of the simulation, showing the mean results for each mechanism across a variety of preference profiles, broken down by the class of preference profiles. 
 
-But since I have implemented a variety of preference profiles, it is interesting to note how close to optimality many mechanisms are overall.
+It is interesting to note how close to optimal many mechanisms are for a large variety of preference profiles.
 
-Another striking result is that most simulations reach an equilibrium for most preference profiles.
+### Results for Quadratic Preference Profiles
+
 
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ Mean                   │         4.0 │            90.0 │                95.7 │          15.6 │               60.5 │
-    │ Median                 │         2.7 │            90.0 │                99.0 │          11.5 │               84.9 │
-    │ PairwiseMeanTradeoff   │         3.0 │           100.0 │                89.0 │          20.0 │               67.8 │
-    │ PairwiseMedianTradeoff │         4.8 │            90.0 │                89.9 │          21.4 │               73.6 │
-    │ PairwiseProbability    │         1.6 │           100.0 │                87.6 │          19.3 │               96.1 │
-    │ QuadraticFunding       │         3.9 │            90.0 │                89.8 │          20.6 │               56.0 │
-    │ SAP                    │         1.6 │           100.0 │                93.3 │          27.0 │               88.3 │
-    │ SAPScaled              │         5.7 │            50.0 │                86.5 │          33.3 │               77.1 │
+    │ CoordinatewiseMean     │        5.75 │            75.0 │                90.7 │          28.0 │               56.0 │
+    │ CoordinatewiseMedian   │        1.25 │           100.0 │                99.0 │           6.1 │               94.2 │
+    │ GeometricMedian        │        2.75 │           100.0 │                98.6 │          11.8 │               80.9 │
+    │ PairwiseMeanTradeoff   │         4.0 │           100.0 │                74.9 │          40.3 │               58.9 │
+    │ PairwiseMedianTradeoff │        4.25 │            75.0 │                74.9 │          40.0 │               70.0 │
+    │ PairwiseProbability    │         2.0 │           100.0 │                73.9 │          39.3 │               89.9 │
+    │ QuadraticFunding       │         5.5 │            75.0 │                75.0 │          40.2 │               49.3 │
+    │ QuadraticVariant       │         5.0 │            75.0 │                75.0 │          39.9 │               53.0 │
+    │ SAP                    │         1.5 │           100.0 │                89.9 │          30.3 │               92.0 │
+    │ SAPScaled              │        5.75 │            50.0 │                73.0 │          45.5 │               72.2 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+
+### Results for Square Root Preference Profiles
+
+    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
+    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
+    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
+    │ CoordinatewiseMean     │        2.83 │           100.0 │                98.8 │           8.2 │               69.8 │
+    │ CoordinatewiseMedian   │         2.0 │           100.0 │                98.4 │          16.6 │               89.6 │
+    │ GeometricMedian        │         4.0 │            83.3 │                98.6 │          14.2 │               86.3 │
+    │ PairwiseMeanTradeoff   │        2.17 │           100.0 │                98.2 │           7.8 │               77.2 │
+    │ PairwiseMedianTradeoff │        4.33 │           100.0 │                99.6 │          10.1 │               81.9 │
+    │ PairwiseProbability    │        1.67 │           100.0 │                98.2 │           6.6 │               97.7 │
+    │ QuadraticFunding       │         3.0 │           100.0 │                99.4 │           8.4 │               66.2 │
+    │ QuadraticVariant       │        3.17 │           100.0 │                99.2 │           9.0 │               75.4 │
+    │ SAP                    │        1.67 │           100.0 │                95.1 │          26.9 │               83.7 │
+    │ SAPScaled              │        5.67 │            50.0 │                95.0 │          26.4 │               83.9 │
+    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+
+
 ### Description of Output Columns 
 
 - Equilibrium is the % of profiles for which equilibrium is reached
-- Utility is the mean utility-per-user
-- Optimality is the difference between this and the maximum possible normalized utility. Each user's utility function is normalized so their maximum utility = 1.0.
-- Envy is the difference between the utility of the user who has the maximum utility in the final allocation and the user with the minimum
-- Incentive Alignment is a mean Euclidian distance between users' "honest" reports and final reports.
+- Utility is the mean utility-per-voter
+- Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0.
+- Envy is the difference between the utility of the voter who has the maximum utility in the final allocation and the voter with the minimum
+- Incentive Alignment is a mean Euclidian distance between voters' "honest" reports and final reports.
 
 ## Defining Optimality
 
-The mean optimality is calculated based on total utility (the sum of utilities for all users). But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
+The mean optimality is calculated based on total utility (the sum of utilities for all voters). But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
 
-So instead of considering user's subjective utility as an absolute quantity, we consider each user's utility as a percentage of their maximum possibility utility.
+So instead of considering voter's subjective utility as an absolute quantity, we consider each voter's utility as a percentage of their maximum possibility utility.
 
-This is consistent with many intuitive notions of what is fair. For example, if each user gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would be weighted towards users with higher absolute values of subjective utility.
+This is consistent with many intuitive notions of what is fair. For example, if each voter gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would be weighted towards voters with higher absolute values of subjective utility.
 
 
 ### Output Files
@@ -88,42 +122,16 @@ The simulation also generates preference visualization plots in:
 
 - `output/plots/preferences/[preference_name].png`
 
-## Limitations
+## Limitations and Caveats
 
-This simulations aren't a substitute for a more formal equilibrium analysis. It assumes players behave in a certain way:
+- The simulation uses Julia's Optim.jl with Nelder-Mead, which is pretty good but it might sometimes find a local optimum and not discover the voter's absolute best response.
+- This simulations aren't a substitute for a more formal equilibrium analysis. It assumes players behave in a certain way:
+    - Voters always start by reporting their ideal point and only change their reports in response to other voters.
+    - Voters play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational voter can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next voter to best-respond, could produce better outcomes in some cases.
+    - There are no attempts by groups to collude.
 
-- Users always start by reporting their ideal point and only change their reports in response to other users.
-- Users play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational user can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next user to best-respond, could produce better outcomes in some cases.
-- There are no attempts by groups to collude.
-
-So rational agent really trying to optimize their results might find other ways to manipulate the output.
-
-On the other hand, the simulation does show that in most cases there seems to be a nash equilibrium where no user can profitably deviate.
-
-# Development 
-
-## Dependencies
-
-- just
-- julia
-
-## Running Locally
-
-Once Julia is installed, you can install all the needed packages by running:
-
-    just instantiate
-
-Then to run the simulation for all mechanisms, run
-
-    just sim
-
-To simulate a single mechanism or mechanisms, pass the mechanism file names:
-
-    just sim mechanisms/SAP.jl
-
-Likewise to simulate a single preference profile:
-
-    just sim preferences/CondorcetCycle.jl
+- So rational agent really trying to optimize their results might find other ways to manipulate the output. 
+- On the other hand, the simulation does show that in most cases there seems to be a nash equilibrium where no voter can profitably deviate.
 
 
 ## Example
@@ -134,15 +142,15 @@ To implement a new mechanism or preference profile, add a .jl file under the `me
 
 The mechanism is simply a function that inputs an allocation matrix and outputs a vector. 
 
-A preference profile is 1) a function that outputs the utility for a given user allocation vector and 2) a set of optimal points. Helper function will create a square-root profile where $`Uᵢ = ∑ⱼb_{i,j}*x_{i,j}²`$ for some matrix of coefficients b. 
+A preference profile is 1) a function that outputs the utility for a given voter allocation vector and 2) a set of optimal points. Helper function will create a square-root profile where $`Uᵢ = ∑ⱼb_{i,j}*x_{i,j}²`$ for some matrix of coefficients b. 
 
-In this preference profile, user 1 strongly prefers item 1, and user 2 strongly prefers item 2.
+In this preference profile, voter 1 strongly prefers item 1, and voter 2 strongly prefers item 2.
 
-#### Example Preferences: `preferences/HighConflictTwoUsers.jl`
+#### Example Preferences: `preferences/HighConflictTwoVoters.jl`
 
 ```julia
 
-# Diametrically opposite preferences between two users
+# Diametrically opposite preferences between two voters
 return sqrt_preferences([
     5.0  1.0
     1.0  3.0
@@ -152,7 +160,7 @@ return sqrt_preferences([
 
 The simulation generates a plot of the preference profile in output/plots
 
-![Condorcet Cycle Preference Profile](output/plots/preferences/HighConflictTwoUsers.png)
+![Condorcet Cycle Preference Profile](output/plots/preferences/HighConflictTwoVoters.png)
 
 #### Example Mechanism: `SAP.jl`
 
@@ -181,17 +189,17 @@ return SAP
 
 #### Run the Simulation
 
-    ❯ just sim mechanisms/SAP.jl preferences/HighConflictTwoUsers.jl
-    time julia --project Main.jl mechanisms/SAP.jl preferences/HighConflictTwoUsers.jl
-    Loading preferences /Users/jwarden/Dropbox/social-protocols/mecsim/preferences/HighConflictTwoUsers.jl
+    ❯ just sim mechanisms/SAP.jl preferences/sqrt/HighConflictTwoVoters.jl
+    time julia --project Main.jl mechanisms/SAP.jl preferences/sqrt/HighConflictTwoVoters.jl
+    Loading preferences /Users/jwarden/Dropbox/social-protocols/mecsim/preferences/sqrt/HighConflictTwoVoters.jl
     optimalPoints =
     2×2 Matrix{Float64}:
      0.961538  0.0384615
      0.1       0.9
     overall_optimal_point = [0.5620173672946042, 0.43798263270539584]
-    [Running] Pref=HighConflictTwoUsers | Mech=SAP | Round=2 | Alloc=0.10,0.90,... | Optimality=86.5 | Align=46.6 ✅
+    [Running] Pref=HighConflictTwoVoters | Mech=SAP | Round=2 | Alloc=0.10,0.90,... | Optimality=86.5 | Align=46.6 ✅
 
-    Preference: HighConflictTwoUsers
+    Preference: HighConflictTwoVoters
 
     Optimal Points and Utilities:
     ┌──────┬────────────────────┬─────────────────┐
@@ -203,7 +211,7 @@ return SAP
     └──────┴────────────────────┴─────────────────┘
 
 
-    Mechanism Outcomes for HighConflictTwoUsers:
+    Mechanism Outcomes for HighConflictTwoVoters:
     ┌───────────┬────────┬────┬─────────────────────────┬───────────┬──────┬───────┬────────┐
     │ Mechanism │ Rounds │ Eq │ Reports                 │ Alloc     │ Opt% │ Envy% │ Align% │
     ├───────────┼────────┼────┼─────────────────────────┼───────────┼──────┼───────┼────────┤
@@ -223,10 +231,9 @@ return SAP
 
 #### Simulation Output
 
-And a detailed log of the simulation is output to: output/logs/SAP/HighConflictTwoUsers.txt
+And a detailed log of the simulation is output to: output/logs/SAP/HighConflictTwoVoters.txt
 
-In this case, user 2 modifies their proposed allocation to best-respond to user 1, and an equilibrium is immediately reached.
-
+In this case, voter 2 modifies their proposed allocation to best-respond to voter 1, and an equilibrium is immediately reached.
 
     Optional points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
     Starting allocation: [0.1, 0.038461538461538436]
@@ -236,46 +243,74 @@ In this case, user 2 modifies their proposed allocation to best-respond to user 
     2×2 Matrix{Float64}:
      0.961538  0.0384615
      0.1       0.9
-    User 1's turn.
+    Current allocation: [0.1, 0.038461538461538436]
+    Voter 1's turn.
       Best response = [0.03396559495192303, 0.5661207932692303]
-      => User 1 improves by switching to best response
-      => User 1's new report: [0.03396559495192303, 0.5661207932692303]
+      New allocation: [0.1, 0.9]
+      => Voter 1 improves by switching to best response
       Old utility = 0.34854837493455965
       New utility = 0.49613893835683387
       Honest utility = 0.34854837493455965
       Incentive Alignment = 0.46642345628490733
-      Allocation after user 1: [0.1, 0.9]
-    User 2's turn.
-      => No improvement found; user 2 stays with old report.
+    Voter 2's turn.
+      => No improvement found; voter 2 stays with old report.
       Old utility = 1.0
       New utility = 0.9999969722338864
       Honest utility = 1.0
       Incentive Alignment = 0.46642345628490733
-      Allocation after user 2: [0.1, 0.9]
 
     === Round 2 ===
     Current report matrix:
     2×2 Matrix{Float64}:
      0.0339656  0.566121
      0.1        0.9
-    User 1's turn.
-      => No improvement found; user 1 stays with old report.
+    Current allocation: [0.1, 0.9]
+    Voter 1's turn.
+      => No improvement found; voter 1 stays with old report.
       Old utility = 0.49613893835683387
       New utility = 0.49613893835683387
       Honest utility = 0.34854837493455965
       Incentive Alignment = 0.46642345628490733
-      Allocation after user 1: [0.1, 0.9]
-    User 2's turn.
-      => No improvement found; user 2 stays with old report.
+    Voter 2's turn.
+      => No improvement found; voter 2 stays with old report.
       Old utility = 1.0
       New utility = 0.9999969722338864
       Honest utility = 1.0
       Incentive Alignment = 0.46642345628490733
-      Allocation after user 2: [0.1, 0.9]
     Converged! Maximum improvement in utility < 0.0001.
     Final reports:
     2×2 Matrix{Float64}:
      0.0339656  0.566121
      0.1        0.9
     Final Allocation: [0.1, 0.9]
-    Overall Utility: 1.4961389383568338
+    Mean Utility: 0.7480694691784169
+    Optimality: 0.7480694691784169
+    Envy: 50.386106164316615
+    Incentive Alignment: 0.46642345628490733
+
+
+# Development 
+
+## Dependencies
+
+- just
+- julia
+
+## Running Locally
+
+Once Julia is installed, you can install all the needed packages by running:
+
+    just instantiate
+
+Then to run the simulation for all mechanisms, run
+
+    just sim
+
+To simulate a single mechanism or mechanisms, pass the mechanism file names:
+
+    just sim mechanisms/SAP.jl
+
+Likewise to simulate a single preference profile:
+
+    just sim preferences/CondorcetCycle.jl
+
