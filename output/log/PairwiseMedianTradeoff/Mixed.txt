@@ -9,47 +9,43 @@ Current report matrix:
  0.4       0.1        0.1       0.4
  0.307692  0.0769231  0.307692  0.307692
  0.228571  0.0571429  0.357143  0.357143
-User 1's turn.
-  => No improvement found; user 1 stays with old report.
+Current allocation: [0.33333333333333354, 0.1666666666666666, 0.1666666666666666, 0.33333333333333326]
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
   Old utility = 0.935716396771823
   New utility = 0.935716396771823
   Honest utility = 0.935716396771823
   Incentive Alignment = 1.0
-  Allocation after user 1: [0.33333333333333354, 0.1666666666666666, 0.1666666666666666, 0.33333333333333326]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = 0.8841373724180314
   New utility = 0.8841373724180314
   Honest utility = 0.8841373724180314
   Incentive Alignment = 1.0
-  Allocation after user 2: [0.33333333333333354, 0.1666666666666666, 0.1666666666666666, 0.33333333333333326]
-User 3's turn.
+Voter 3's turn.
   Best response = [0.6766708535887618, 0.004353080744546322, 0.018466587069648214, 0.7268047006586886]
-  => User 3 improves by switching to best response
-  => User 3's new report: [0.6766708535887618, 0.004353080744546322, 0.018466587069648214, 0.7268047006586886]
+  New allocation: [0.3574978538442642, 0.14061614385131574, 0.15933217579782133, 0.3425538265065987]
+  => Voter 3 improves by switching to best response
   Old utility = 0.9884956330873828
   New utility = 0.9931249948586356
   Honest utility = 0.9884956330873828
   Incentive Alignment = 0.9107488702177324
-  Allocation after user 3: [0.3574978538442642, 0.14061614385131574, 0.15933217579782133, 0.3425538265065987]
-User 4's turn.
+Voter 4's turn.
   Best response = [0.2853365384615385, 0.029326923076923056, 0.5088942307692308, 0.5088942307692308]
-  => User 4 improves by switching to best response
-  => User 4's new report: [0.2853365384615385, 0.029326923076923056, 0.5088942307692308, 0.5088942307692308]
+  New allocation: [0.3687651688336268, 0.11389932227425016, 0.15595581874273853, 0.36137969014938465]
+  => Voter 4 improves by switching to best response
   Old utility = 0.9817365116774915
   New utility = 0.9829655295631344
   Honest utility = 0.9817365116774915
   Incentive Alignment = 0.8528767346156828
-  Allocation after user 4: [0.3687651688336268, 0.11389932227425016, 0.15595581874273853, 0.36137969014938465]
-User 5's turn.
+Voter 5's turn.
   Best response = [0.11431731130578549, 0.02877142684966591, 0.4879721751528061, 0.5125305329807037]
-  => User 5 improves by switching to best response
-  => User 5's new report: [0.11431731130578549, 0.02877142684966591, 0.4879721751528061, 0.5125305329807037]
+  New allocation: [0.37765988287315494, 0.09391738069633107, 0.1529191692717305, 0.37550356715878347]
+  => Voter 5 improves by switching to best response
   Old utility = 0.9662618079872071
   New utility = 0.9669688354965542
   Honest utility = 0.9662618079872071
   Incentive Alignment = 0.8059211889912227
-  Allocation after user 5: [0.37765988287315494, 0.09391738069633107, 0.1529191692717305, 0.37550356715878347]
 
 === Round 2 ===
 Current report matrix:
@@ -59,49 +55,45 @@ Current report matrix:
  0.676671  0.00435308  0.0184666  0.726805
  0.285337  0.0293269   0.508894   0.508894
  0.114317  0.0287714   0.487972   0.512531
-User 1's turn.
+Current allocation: [0.37765988287315494, 0.09391738069633107, 0.1529191692717305, 0.37550356715878347]
+Voter 1's turn.
   Best response = [0.8529499461619938, 0.08517392331853049, 0.019324337181061316, 0.257721642350099]
-  => User 1 improves by switching to best response
-  => User 1's new report: [0.8529499461619938, 0.08517392331853049, 0.019324337181061316, 0.257721642350099]
+  New allocation: [0.3878799139557462, 0.08207349737133555, 0.14777823590853256, 0.3822683527643857]
+  => Voter 1 improves by switching to best response
   Old utility = 0.9471612250791003
   New utility = 0.9489554225293174
   Honest utility = 0.9471612250791003
   Incentive Alignment = 0.763034984922854
-  Allocation after user 1: [0.3878799139557462, 0.08207349737133555, 0.14777823590853256, 0.3822683527643857]
-User 2's turn.
+Voter 2's turn.
   Best response = [0.7393133175373077, 0.19946228444576258, 0.00047433197498318244, 0.1570160466432571]
-  => User 2 improves by switching to best response
-  => User 2's new report: [0.7393133175373077, 0.19946228444576258, 0.00047433197498318244, 0.1570160466432571]
+  New allocation: [0.39773800606167414, 0.08407324965068351, 0.11167263684337965, 0.40651610744426264]
+  => Voter 2 improves by switching to best response
   Old utility = 0.8792492341701589
   New utility = 0.8857498000112324
   Honest utility = 0.8792492341701589
   Incentive Alignment = 0.7462248595187719
-  Allocation after user 2: [0.39773800606167414, 0.08407324965068351, 0.11167263684337965, 0.40651610744426264]
-User 3's turn.
+Voter 3's turn.
   Best response = [0.8082941309594027, 0.01160892676407153, 0.01830656240816544, 0.8117804614568321]
-  => User 3 improves by switching to best response
-  => User 3's new report: [0.8082941309594027, 0.01160892676407153, 0.01830656240816544, 0.8117804614568321]
+  New allocation: [0.3992524251395018, 0.10066541373177637, 0.10085994158658913, 0.3992222195421326]
+  => Voter 3 improves by switching to best response
   Old utility = 0.9994790324761095
   New utility = 0.9999981639051788
   Honest utility = 0.9884956330873828
   Incentive Alignment = 0.7170270052805988
-  Allocation after user 3: [0.3992524251395018, 0.10066541373177637, 0.10085994158658913, 0.3992222195421326]
-User 4's turn.
+Voter 4's turn.
   Best response = [0.04238192389779457, 0.0895010034115719, 0.2893016869773659, 0.9089038516346788]
-  => User 4 improves by switching to best response
-  => User 4's new report: [0.04238192389779457, 0.0895010034115719, 0.2893016869773659, 0.9089038516346788]
+  New allocation: [0.37255167467193556, 0.13856480840385707, 0.10939782702680952, 0.3794856898973978]
+  => Voter 4 improves by switching to best response
   Old utility = 0.9651385129456567
   New utility = 0.9669917151678291
   Honest utility = 0.9664154539684882
   Incentive Alignment = 0.64339380418732
-  Allocation after user 4: [0.37255167467193556, 0.13856480840385707, 0.10939782702680952, 0.3794856898973978]
-User 5's turn.
-  => No improvement found; user 5 stays with old report.
+Voter 5's turn.
+  => No improvement found; voter 5 stays with old report.
   Old utility = 0.9466036017707302
   New utility = 0.9466104627396432
   Honest utility = 0.946059962430476
   Incentive Alignment = 0.64339380418732
-  Allocation after user 5: [0.37255167467193556, 0.13856480840385707, 0.10939782702680952, 0.3794856898973978]
 
 === Round 3 ===
 Current report matrix:
@@ -111,49 +103,45 @@ Current report matrix:
  0.808294   0.0116089  0.0183066    0.81178
  0.0423819  0.089501   0.289302     0.908904
  0.114317   0.0287714  0.487972     0.512531
-User 1's turn.
+Current allocation: [0.37255167467193556, 0.13856480840385707, 0.10939782702680952, 0.3794856898973978]
+Voter 1's turn.
   Best response = [0.8753427465998103, 0.0964832689271049, 0.00020502939530787738, 0.4019101867072173]
-  => User 1 improves by switching to best response
-  => User 1's new report: [0.8753427465998103, 0.0964832689271049, 0.00020502939530787738, 0.4019101867072173]
+  New allocation: [0.3766713403190387, 0.13959731439771636, 0.09655323675526527, 0.3871781085279796]
+  => Voter 1 improves by switching to best response
   Old utility = 0.9567916867201046
   New utility = 0.9597075274794571
   Honest utility = 0.9537207571629664
   Incentive Alignment = 0.6280124532334441
-  Allocation after user 1: [0.3766713403190387, 0.13959731439771636, 0.09655323675526527, 0.3871781085279796]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = 0.8992274127066439
   New utility = 0.8992274127066439
   Honest utility = 0.8910163862610028
   Incentive Alignment = 0.6280124532334441
-  Allocation after user 2: [0.3766713403190387, 0.13959731439771636, 0.09655323675526527, 0.3871781085279796]
-User 3's turn.
+Voter 3's turn.
   Best response = [0.9141586286448129, 0.0005795763443306706, 0.008267531461385117, 0.8987159853026889]
-  => User 3 improves by switching to best response
-  => User 3's new report: [0.9141586286448129, 0.0005795763443306706, 0.008267531461385117, 0.8987159853026889]
+  New allocation: [0.38130060560947465, 0.12927195667772934, 0.10094462439602973, 0.38848281331676626]
+  => Voter 3 improves by switching to best response
   Old utility = 0.9981101041992608
   New utility = 0.9989067758408248
   Honest utility = 0.988643829875103
   Incentive Alignment = 0.6006703544222649
-  Allocation after user 3: [0.38130060560947465, 0.12927195667772934, 0.10094462439602973, 0.38848281331676626]
-User 4's turn.
+Voter 4's turn.
   Best response = [0.05153156046244123, 0.045706976180915265, 0.7268545585711567, 0.09067455072798367]
-  => User 4 improves by switching to best response
-  => User 4's new report: [0.05153156046244123, 0.045706976180915265, 0.7268545585711567, 0.09067455072798367]
+  New allocation: [0.3714606734520829, 0.13764509079468956, 0.12075811153527784, 0.3701361242179497]
+  => Voter 4 improves by switching to best response
   Old utility = 0.9642182717509726
   New utility = 0.9712075485752378
   Honest utility = 0.9670555929293604
   Incentive Alignment = 0.6245863844432666
-  Allocation after user 4: [0.3714606734520829, 0.13764509079468956, 0.12075811153527784, 0.3701361242179497]
-User 5's turn.
+Voter 5's turn.
   Best response = [0.09142209400947826, 0.030241945610902297, 0.5411325177447374, 0.5351568646835344]
-  => User 5 improves by switching to best response
-  => User 5's new report: [0.09142209400947826, 0.030241945610902297, 0.5411325177447374, 0.5351568646835344]
+  New allocation: [0.36935218989216334, 0.13988674471908247, 0.12172944398844222, 0.3690316214003121]
+  => Voter 5 improves by switching to best response
   Old utility = 0.9513264400355644
   New utility = 0.9515082065002957
   Honest utility = 0.9486558924857132
   Incentive Alignment = 0.613206767052227
-  Allocation after user 5: [0.36935218989216334, 0.13988674471908247, 0.12172944398844222, 0.3690316214003121]
 
 === Round 4 ===
 Current report matrix:
@@ -163,47 +151,43 @@ Current report matrix:
  0.914159   0.000579576  0.00826753   0.898716
  0.0515316  0.045707     0.726855     0.0906746
  0.0914221  0.0302419    0.541133     0.535157
-User 1's turn.
+Current allocation: [0.36935218989216334, 0.13988674471908247, 0.12172944398844222, 0.3690316214003121]
+Voter 1's turn.
   Best response = [0.8908695391168477, 0.03144321578671759, 0.007037198678854011, 0.7781105205303249]
-  => User 1 improves by switching to best response
-  => User 1's new report: [0.8908695391168477, 0.03144321578671759, 0.007037198678854011, 0.7781105205303249]
+  New allocation: [0.387101163863021, 0.10903036868857685, 0.10752931920488358, 0.3963391482435184]
+  => Voter 1 improves by switching to best response
   Old utility = 0.9540568311717963
   New utility = 0.9588231195261738
   Honest utility = 0.9443281782496166
   Incentive Alignment = 0.5502458198475797
-  Allocation after user 1: [0.387101163863021, 0.10903036868857685, 0.10752931920488358, 0.3963391482435184]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = 0.8924629096663158
   New utility = 0.8924968693975367
   Honest utility = 0.8810602851662371
   Incentive Alignment = 0.5502458198475797
-  Allocation after user 2: [0.387101163863021, 0.10903036868857685, 0.10752931920488358, 0.3963391482435184]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
   Old utility = 0.9997770521715348
   New utility = 0.9997932487987277
   Honest utility = 0.9881456686967474
   Incentive Alignment = 0.5502458198475797
-  Allocation after user 3: [0.387101163863021, 0.10903036868857685, 0.10752931920488358, 0.3963391482435184]
-User 4's turn.
+Voter 4's turn.
   Best response = [0.11124607065978463, 0.04751901650936649, 0.719892441720413, 0.07282014360186054]
-  => User 4 improves by switching to best response
-  => User 4's new report: [0.11124607065978463, 0.04751901650936649, 0.719892441720413, 0.07282014360186054]
+  New allocation: [0.39413294568466806, 0.1097756570385237, 0.10788834639179698, 0.38820305088501117]
+  => Voter 4 improves by switching to best response
   Old utility = 0.9678101918872793
   New utility = 0.9679436193049054
   Honest utility = 0.9641871826295707
   Incentive Alignment = 0.5549702429570338
-  Allocation after user 4: [0.39413294568466806, 0.1097756570385237, 0.10788834639179698, 0.38820305088501117]
-User 5's turn.
+Voter 5's turn.
   Best response = [0.03898134810055772, 0.05807494470187659, 0.9796204496216657, 0.17312034839446724]
-  => User 5 improves by switching to best response
-  => User 5's new report: [0.03898134810055772, 0.05807494470187659, 0.9796204496216657, 0.17312034839446724]
+  New allocation: [0.3706023606281046, 0.15061253534132138, 0.12636046951146176, 0.3524246345191124]
+  => Voter 5 improves by switching to best response
   Old utility = 0.9479912382396022
   New utility = 0.9510303075802914
   Honest utility = 0.9474652565725197
   Incentive Alignment = 0.4780592741588016
-  Allocation after user 5: [0.3706023606281046, 0.15061253534132138, 0.12636046951146176, 0.3524246345191124]
 
 === Round 5 ===
 Current report matrix:
@@ -213,47 +197,43 @@ Current report matrix:
  0.914159   0.000579576  0.00826753   0.898716
  0.111246   0.047519     0.719892     0.0728201
  0.0389813  0.0580749    0.97962      0.17312
-User 1's turn.
+Current allocation: [0.3706023606281046, 0.15061253534132138, 0.12636046951146176, 0.3524246345191124]
+Voter 1's turn.
   Best response = [0.9652486020694611, 0.05413946486825545, 0.0038719914031492063, 0.486866643311414]
-  => User 1 improves by switching to best response
-  => User 1's new report: [0.9652486020694611, 0.05413946486825545, 0.0038719914031492063, 0.486866643311414]
+  New allocation: [0.38573814521716365, 0.15061094588940088, 0.12683963233036236, 0.33681127656307297]
+  => Voter 1 improves by switching to best response
   Old utility = 0.9537978455359558
   New utility = 0.9573697902151515
   Honest utility = 0.9492938189020519
   Incentive Alignment = 0.5159750523715436
-  Allocation after user 1: [0.38573814521716365, 0.15061094588940088, 0.12683963233036236, 0.33681127656307297]
-User 2's turn.
+Voter 2's turn.
   Best response = [0.820029269568284, 0.04074191470508674, 0.0007071310738247639, 0.09485275547258136]
-  => User 2 improves by switching to best response
-  => User 2's new report: [0.820029269568284, 0.04074191470508674, 0.0007071310738247639, 0.09485275547258136]
+  New allocation: [0.42068861133432234, 0.11503916009786468, 0.11134368707184271, 0.35292854149597025]
+  => Voter 2 improves by switching to best response
   Old utility = 0.9061690011132906
   New utility = 0.9094795060853952
   Honest utility = 0.8970691331644646
   Incentive Alignment = 0.49814907624736443
-  Allocation after user 2: [0.42068861133432234, 0.11503916009786468, 0.11134368707184271, 0.35292854149597025]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
   Old utility = 0.9987175780805282
   New utility = 0.9987529315881203
   Honest utility = 0.9865585163430771
   Incentive Alignment = 0.49814907624736443
-  Allocation after user 3: [0.42068861133432234, 0.11503916009786468, 0.11134368707184271, 0.35292854149597025]
-User 4's turn.
+Voter 4's turn.
   Best response = [0.05760276842040547, 0.05019373623860822, 0.9859761789788258, 0.14710425374008604]
-  => User 4 improves by switching to best response
-  => User 4's new report: [0.05760276842040547, 0.05019373623860822, 0.9859761789788258, 0.14710425374008604]
+  New allocation: [0.39398956353606457, 0.11752476324917234, 0.11169258930313668, 0.3767930839116265]
+  => Voter 4 improves by switching to best response
   Old utility = 0.9684800004510631
   New utility = 0.9691358240669253
   Honest utility = 0.9641369422305036
   Incentive Alignment = 0.4528091328427692
-  Allocation after user 4: [0.39398956353606457, 0.11752476324917234, 0.11169258930313668, 0.3767930839116265]
-User 5's turn.
-  => No improvement found; user 5 stays with old report.
+Voter 5's turn.
+  => No improvement found; voter 5 stays with old report.
   Old utility = 0.9486023845432566
   New utility = 0.9486795410061366
   Honest utility = 0.941918595852686
   Incentive Alignment = 0.4528091328427692
-  Allocation after user 5: [0.39398956353606457, 0.11752476324917234, 0.11169258930313668, 0.3767930839116265]
 
 === Round 6 ===
 Current report matrix:
@@ -263,43 +243,39 @@ Current report matrix:
  0.914159   0.000579576  0.00826753   0.898716
  0.0576028  0.0501937    0.985976     0.147104
  0.0389813  0.0580749    0.97962      0.17312
-User 1's turn.
+Current allocation: [0.39398956353606457, 0.11752476324917234, 0.11169258930313668, 0.3767930839116265]
+Voter 1's turn.
   Best response = [0.9580785865159728, 0.042885701201038705, 0.003835698499027168, 0.5494083494480122]
-  => User 1 improves by switching to best response
-  => User 1's new report: [0.9580785865159728, 0.042885701201038705, 0.003835698499027168, 0.5494083494480122]
+  New allocation: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
+  => Voter 1 improves by switching to best response
   Old utility = 0.960733009094406
   New utility = 0.9610148525545593
   Honest utility = 0.9494020036388137
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 1: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = 0.8989356998918431
   New utility = 0.8989376272635575
   Honest utility = 0.8875636979030687
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 2: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
   Old utility = 0.9993854504574585
   New utility = 0.999453645344648
   Honest utility = 0.9870274023135858
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 3: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 4's turn.
-  => No improvement found; user 4 stays with old report.
+Voter 4's turn.
+  => No improvement found; voter 4 stays with old report.
   Old utility = 0.9689391673129583
   New utility = 0.9689391673129583
   Honest utility = 0.9639074306464959
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 4: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 5's turn.
-  => No improvement found; user 5 stays with old report.
+Voter 5's turn.
+  => No improvement found; voter 5 stays with old report.
   Old utility = 0.948398886356584
   New utility = 0.9484808555157537
   Honest utility = 0.9414779380554624
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 5: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
 
 === Round 7 ===
 Current report matrix:
@@ -309,41 +285,37 @@ Current report matrix:
  0.914159   0.000579576  0.00826753   0.898716
  0.0576028  0.0501937    0.985976     0.147104
  0.0389813  0.0580749    0.97962      0.17312
-User 1's turn.
-  => No improvement found; user 1 stays with old report.
+Current allocation: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
   Old utility = 0.9610148525545593
   New utility = 0.9610148525545593
   Honest utility = 0.9494020036388137
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 1: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = 0.8989356998918431
   New utility = 0.8989376272635575
   Honest utility = 0.8875636979030687
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 2: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
   Old utility = 0.9993854504574585
   New utility = 0.999453645344648
   Honest utility = 0.9870274023135858
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 3: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 4's turn.
-  => No improvement found; user 4 stays with old report.
+Voter 4's turn.
+  => No improvement found; voter 4 stays with old report.
   Old utility = 0.9689391673129583
   New utility = 0.9689391673129583
   Honest utility = 0.9639074306464959
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 4: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
-User 5's turn.
-  => No improvement found; user 5 stays with old report.
+Voter 5's turn.
+  => No improvement found; voter 5 stays with old report.
   Old utility = 0.948398886356584
   New utility = 0.9484808555157537
   Honest utility = 0.9414779380554624
   Incentive Alignment = 0.4453274865297878
-  Allocation after user 5: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
 Converged! Maximum improvement in utility < 0.0001.
 Final reports:
 5×4 Matrix{Float64}:
@@ -355,5 +327,5 @@ Final reports:
 Final Allocation: [0.3951655384352899, 0.11614916059091307, 0.11103927828475434, 0.3776460226890427]
 Mean Utility: 0.9553348113146807
 Optimality: 0.9553348113146807
-Envy: 0.10044975056561545
+Envy: 10.044975056561544
 Incentive Alignment: 0.4453274865297878

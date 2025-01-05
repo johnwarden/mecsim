@@ -7,27 +7,25 @@ Current report matrix:
  0.3  0.15  0.12
  0.1  0.12  0.21
  0.2  0.3   0.2
-User 1's turn.
-  => No improvement found; user 1 stays with old report.
+Current allocation: [0.3, 0.3, 0.21]
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
   Old utility = 0.7588652482269505
   New utility = 0.7588652482269506
   Honest utility = 0.7588652482269505
   Incentive Alignment = 1.0
-  Allocation after user 1: [0.3, 0.3, 0.21]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
   Old utility = -0.05693430656934318
   New utility = -0.05693430656934318
   Honest utility = -0.05693430656934318
   Incentive Alignment = 1.0
-  Allocation after user 2: [0.3, 0.3, 0.21]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
   Old utility = 0.9405882352941176
   New utility = 0.9405882352941176
   Honest utility = 0.9405882352941176
   Incentive Alignment = 1.0
-  Allocation after user 3: [0.3, 0.3, 0.21]
 Converged! Maximum improvement in utility < 0.0001.
 Final reports:
 3×3 Matrix{Float64}:
@@ -37,5 +35,5 @@ Final reports:
 Final Allocation: [0.3, 0.3, 0.21]
 Mean Utility: 0.5475063923172416
 Optimality: 0.5475063923172416
-Envy: 0.9975225418634608
+Envy: 99.75225418634608
 Incentive Alignment: 1.0

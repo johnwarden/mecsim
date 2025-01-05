@@ -1,5 +1,5 @@
 Optional points: [0.8999999999999999 0.09999999999999996; 0.8999999999999999 0.09999999999999996; 0.1 0.9]
-Starting allocation: [0.5635083268962916, 0.4364916731037085]
+Starting allocation: [0.6551724137931034, 0.3448275862068966]
 
 === Round 1 ===
 Current report matrix:
@@ -7,35 +7,33 @@ Current report matrix:
  0.9  0.1
  0.9  0.1
  0.1  0.9
-User 1's turn.
-  => No improvement found; user 1 stays with old report.
-  Old utility = 0.9210737412858832
-  New utility = 0.9210737412858832
-  Honest utility = 0.9210737412858832
+Current allocation: [0.6551724137931034, 0.3448275862068966]
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+  Old utility = 0.953585416517561
+  New utility = 0.953585416517561
+  Honest utility = 0.953585416517561
   Incentive Alignment = 1.0
-  Allocation after user 1: [0.5635083268962916, 0.4364916731037085]
-User 2's turn.
-  => No improvement found; user 2 stays with old report.
-  Old utility = 0.9210737412858832
-  New utility = 0.9210737412858832
-  Honest utility = 0.9210737412858832
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+  Old utility = 0.953585416517561
+  New utility = 0.953585416517561
+  Honest utility = 0.953585416517561
   Incentive Alignment = 1.0
-  Allocation after user 2: [0.5635083268962916, 0.4364916731037085]
-User 3's turn.
-  => No improvement found; user 3 stays with old report.
-  Old utility = 0.86415479739009
-  New utility = 0.86415479739009
-  Honest utility = 0.86415479739009
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+  Old utility = 0.813049373977992
+  New utility = 0.813049373977992
+  Honest utility = 0.813049373977992
   Incentive Alignment = 1.0
-  Allocation after user 3: [0.5635083268962916, 0.4364916731037085]
 Converged! Maximum improvement in utility < 0.0001.
 Final reports:
 3×2 Matrix{Float64}:
  0.9  0.1
  0.9  0.1
  0.1  0.9
-Final Allocation: [0.5635083268962916, 0.4364916731037085]
-Mean Utility: 0.9021007599872854
-Optimality: 0.9021007599872854
-Envy: 0.056918943895793106
+Final Allocation: [0.6551724137931034, 0.3448275862068966]
+Mean Utility: 0.9067400690043713
+Optimality: 0.9067400690043713
+Envy: 14.053604253956898
 Incentive Alignment: 1.0
