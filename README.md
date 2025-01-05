@@ -47,24 +47,20 @@ The following is a summary of the results of the simulation, showing the mean re
 
 The results don't necessarily show us which mechanism is "best", because results depends so much on what users actual preference profiles are. But it is interesting to note how close to optimal many mechanisms are for a variety of preference profiles.
 
-    ================================================================================
-    OVERALL SUMMARY ACROSS ALL PREFERENCES
-    ================================================================================
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │         4.0 │            90.0 │                95.6 │          16.1 │               64.3 │
-    │ CoordinatewiseMedian   │         1.7 │           100.0 │                98.6 │          12.4 │               91.4 │
-    │ GeometricMedian        │         3.5 │            90.0 │                98.6 │          13.3 │               84.1 │
-    │ PairwiseMeanTradeoff   │         2.9 │           100.0 │                88.9 │          20.8 │               69.9 │
-    │ PairwiseMedianTradeoff │         4.3 │            90.0 │                89.7 │          22.1 │               77.1 │
-    │ PairwiseProbability    │         1.8 │           100.0 │                88.5 │          19.7 │               94.6 │
-    │ QuadraticFunding       │         4.0 │            90.0 │                89.6 │          21.1 │               59.4 │
-    │ QuadraticVariant       │         3.9 │            90.0 │                89.5 │          21.3 │               66.4 │
-    │ SAP                    │         1.6 │           100.0 │                93.0 │          28.3 │               87.0 │
-    │ SAPScaled              │         5.7 │            50.0 │                86.2 │          34.1 │               79.2 │
+    │ CoordinatewiseMean     │        3.82 │            90.9 │                95.0 │          16.7 │               64.2 │
+    │ CoordinatewiseMedian   │        1.73 │           100.0 │                97.7 │          13.4 │               88.9 │
+    │ GeometricMedian        │        3.36 │            90.9 │                97.7 │          14.2 │               82.2 │
+    │ PairwiseMeanTradeoff   │        2.82 │           100.0 │                88.9 │          21.1 │               71.6 │
+    │ PairwiseMedianTradeoff │        4.09 │            90.9 │                89.6 │          22.1 │               78.2 │
+    │ PairwiseProbability    │        1.73 │           100.0 │                88.5 │          20.0 │               95.1 │
+    │ QuadraticFunding       │        3.82 │            90.9 │                89.6 │          21.3 │               59.8 │
+    │ QuadraticVariant       │        3.73 │            90.9 │                89.5 │          21.5 │               68.5 │
+    │ SAP                    │        1.91 │           100.0 │                89.7 │          26.9 │               86.1 │
+    │ SAPScaled              │        6.09 │            45.5 │                84.7 │          36.4 │               79.7 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
-
 
 ### Description of Output Columns 
 
@@ -118,19 +114,20 @@ Here are the mean results for each mechanism across all Quadratic preference pro
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        5.75 │            75.0 │                90.7 │          28.0 │               56.0 │
-    │ CoordinatewiseMedian   │        1.25 │           100.0 │                99.0 │           6.1 │               94.2 │
-    │ GeometricMedian        │        2.75 │           100.0 │                98.6 │          11.8 │               80.9 │
-    │ PairwiseMeanTradeoff   │         4.0 │           100.0 │                74.9 │          40.3 │               58.9 │
-    │ PairwiseMedianTradeoff │        4.25 │            75.0 │                74.9 │          40.0 │               70.0 │
-    │ PairwiseProbability    │         2.0 │           100.0 │                73.9 │          39.3 │               89.9 │
-    │ QuadraticFunding       │         5.5 │            75.0 │                75.0 │          40.2 │               49.3 │
-    │ QuadraticVariant       │         5.0 │            75.0 │                75.0 │          39.9 │               53.0 │
-    │ SAP                    │         1.5 │           100.0 │                89.9 │          30.3 │               92.0 │
-    │ SAPScaled              │        5.75 │            50.0 │                73.0 │          45.5 │               72.2 │
+    │ CoordinatewiseMean     │         5.0 │            80.0 │                90.4 │          27.0 │               57.5 │
+    │ CoordinatewiseMedian   │         1.4 │           100.0 │                97.0 │           9.5 │               88.0 │
+    │ GeometricMedian        │         2.6 │           100.0 │                96.6 │          14.1 │               77.4 │
+    │ PairwiseMeanTradeoff   │         3.6 │           100.0 │                77.7 │          36.9 │               65.0 │
+    │ PairwiseMedianTradeoff │         3.8 │            80.0 │                77.7 │          36.6 │               73.8 │
+    │ PairwiseProbability    │         1.8 │           100.0 │                76.9 │          36.1 │               91.9 │
+    │ QuadraticFunding       │         4.8 │            80.0 │                77.8 │          36.7 │               52.1 │
+    │ QuadraticVariant       │         4.4 │            80.0 │                77.8 │          36.5 │               60.3 │
+    │ SAP                    │         2.2 │           100.0 │                83.2 │          27.0 │               89.1 │
+    │ SAPScaled              │         6.6 │            40.0 │                72.3 │          48.4 │               74.5 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
-Note that many mechanisms produce sub-optimal results with quadratic profiles but work well with square root profiles. Mechanisms such as Pairwise Probability are designed under the assumption that user's *relative* preferences between two items are constant -- which is not the case with quadratic profiles.
+
+Note that many mechanisms produce sub-optimal results with quadratic profiles but work well with square root profiles. Mechanisms such as Pairwise Probability are designed under the assumption that user's *relative* preferences between two items are more or less constant -- which is not the case with quadratic profiles.
 
 ### Detailed Simulation Logs
 
