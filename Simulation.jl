@@ -102,20 +102,20 @@ function simulate(
 
     total_utility(alloc) = sum(Utility(i, alloc) for i in 1:n)
 
-    logln(logIO, "Optimal points: $optimal_points")
-    logln(logIO, "Starting allocation: $alloc")
+    println(logIO, "Optimal points: $optimal_points")
+    println(logIO, "Starting allocation: $alloc")
 
     for round_idx in 1:max_rounds
-        logln(logIO, "\n=== Round $round_idx ===")
-        logln(logIO, "Current report matrix:")
+        println(logIO, "\n=== Round $round_idx ===")
+        println(logIO, "Current report matrix:")
         show(IOContext(logIO), "text/plain", current_reports)
-        logln(logIO, "")
-        logln(logIO, "Current allocation: $alloc")
+        println(logIO, "")
+        println(logIO, "Current allocation: $alloc")
 
         round_converged = true
 
         for u in 1:n
-            logln(logIO, "Voter $u's turn.")
+            println(logIO, "Voter $u's turn.")
             old_utility = Utility(u, alloc)
 
             # Evaluate honest reporting:
@@ -154,14 +154,14 @@ function simulate(
 
 
             if (new_utility > old_utility) && (abs(new_utility - old_utility) > termination_threshold)
-                logln(logIO, "  Best response = $best_resp")
-                logln(logIO, "  New allocation: $new_alloc")
-                logln(logIO, "  => Voter $u improves by switching to best response")
+                println(logIO, "  Best response = $best_resp")
+                println(logIO, "  New allocation: $new_alloc")
+                println(logIO, "  => Voter $u improves by switching to best response")
                 current_reports = updated_reports
                 alloc = new_alloc
                 round_converged = false
             else
-                logln(logIO, "  => No improvement found; voter $u stays with old report.")
+                println(logIO, "  => No improvement found; voter $u stays with old report.")
             end
 
             # Naive measure of "incentive alignment":
@@ -170,10 +170,10 @@ function simulate(
                 for i in 1:n
             )
 
-            logln(logIO, "  Old utility = $old_utility")
-            logln(logIO, "  New utility = $new_utility")
-            logln(logIO, "  Honest utility = $honest_utility")
-            logln(logIO, "  Incentive Alignment = $incentive_alignment")
+            println(logIO, "  Old utility = $old_utility")
+            println(logIO, "  New utility = $new_utility")
+            println(logIO, "  Honest utility = $honest_utility")
+            println(logIO, "  Incentive Alignment = $incentive_alignment")
             push!(alloc_history, alloc)
         end
 
@@ -188,7 +188,7 @@ function simulate(
 
         if round_converged
             converged = true
-            logln(logIO, "Converged! Maximum improvement in utility < $termination_threshold.")
+            println(logIO, "Converged! Maximum improvement in utility < $termination_threshold.")
             break
         end
     end
@@ -196,11 +196,11 @@ function simulate(
     final_reports = current_reports
     print(" ✅")
 
-    logln(logIO, "Final reports:")
+    println(logIO, "Final reports:")
     show(IOContext(logIO), "text/plain", current_reports)
-    logln(logIO, "")
-    logln(logIO, "Final Allocation: $alloc")
-    logln(logIO, "Mean Utility: $(total_utility(alloc)/n)")
+    println(logIO, "")
+    println(logIO, "Final Allocation: $alloc")
+    println(logIO, "Mean Utility: $(total_utility(alloc)/n)")
 
     # Calculate optimality (1.0 would be the maximum possible normalized utility)
     optimality = total_utility(alloc)/n  # Since utilities are already normalized
@@ -212,9 +212,9 @@ function simulate(
     # Incentive alignment was already being tracked throughout the simulation
     # It's the mean Euclidean distance between honest and final reports
 
-    logln(logIO, "Optimality: $optimality")
-    logln(logIO, "Envy: $envy") 
-    logln(logIO, "Incentive Alignment: $incentive_alignment")
+    println(logIO, "Optimality: $optimality")
+    println(logIO, "Envy: $envy") 
+    println(logIO, "Incentive Alignment: $incentive_alignment")
 
     # 3D Plot if dimension == 3
     ah = Matrix(transpose(hcat(alloc_history...)))

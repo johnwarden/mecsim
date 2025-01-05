@@ -1,4 +1,4 @@
-Optional points: [0.25 0.15 0.3; 0.25 0.15 0.3; 0.25 0.15 0.3]
+Optimal points: [0.25 0.15 0.3; 0.25 0.15 0.3; 0.25 0.15 0.3]
 Starting allocation: [0.25, 0.15, 0.3]
 
 === Round 1 ===

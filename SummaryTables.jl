@@ -32,7 +32,9 @@ function print_preference_summary!(
     pref_name::String,
     preference_info::NamedTuple
 )
-    push!(final_table_texts, "\nPreference: $pref_name")
+    push!(final_table_texts, "\n#####################################")
+    push!(final_table_texts, "# Preference Profile: $pref_name")
+    push!(final_table_texts, "#####################################")
     push!(final_table_texts, "\nOptimal Points and Utilities:")
 
     opt_data = preference_info.optimal
@@ -129,11 +131,12 @@ end
 Print the overall summary across all preferences at the end.
 """
 function print_overall_summary!(
+    output,
     overall_results::Dict{String, Vector{Tuple{Int,Bool,Float64,Float64,Float64,Float64}}}
 )
-    println("\n", "="^80)
-    println("OVERALL SUMMARY ACROSS ALL PREFERENCES")
-    println("="^80)
+    println(output,"\n", "="^80)
+    println(output,"OVERALL SUMMARY ACROSS ALL PREFERENCES")
+    println(output,"="^80)
 
     mechanism_summary_rows = []
 
@@ -177,6 +180,6 @@ function print_overall_summary!(
         summary_header,
         alignment = [:l, :r, :r, :r, :r, :r]
     )
-    print(overall_summary_table_text)
+    print(output, overall_summary_table_text)
 end
 

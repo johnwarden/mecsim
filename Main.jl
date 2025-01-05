@@ -76,14 +76,6 @@ isempty(preference_files) && throw("No preference files loaded.")
 # -----------------------------------------------------------------------------
 
 """
-Log a message with a newline to the given `io`.
-"""
-function logln(io::IO, msg::AbstractString)
-    println(io, msg)
-end
-
-
-"""
 Show a real-time progress line in the console, using a carriage return.
 """
 function progress_update(
@@ -212,12 +204,19 @@ for pref_file in preference_files
     print_preference_summary!(final_table_texts, pref_name, preference_info)
 end
 
-# Finally, print all preference-level summaries:
-for table_str in final_table_texts
-    println(table_str)
+summary_output_file = joinpath("output", "summary.txt")
+
+open(summary_output_file, "w") do summary_output
+
+    # Finally, print all preference-level summaries:
+    for table_str in final_table_texts
+        println(table_str)
+        println(summary_output, table_str)
+    end
+
+    # Print overall summary:
+    print_overall_summary!(stdout, overall_results)
+    print_overall_summary!(summary_output, overall_results)
+    println("\nDone.")
+
 end
-
-# Print overall summary:
-print_overall_summary!(overall_results)
-println("\nDone.")
-

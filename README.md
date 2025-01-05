@@ -59,7 +59,7 @@ The following is the results of the simulation, showing the mean results for eac
 
 It is interesting to note how close to optimal many mechanisms are for a large variety of preference profiles.
 
-### Results for Quadratic Preference Profiles
+### Summary Results for Quadratic Preference Profiles
 
 
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
@@ -77,7 +77,7 @@ It is interesting to note how close to optimal many mechanisms are for a large v
     │ SAPScaled              │        5.75 │            50.0 │                73.0 │          45.5 │               72.2 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
-### Results for Square Root Preference Profiles
+### Summary Results for Square Root Preference Profiles
 
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
@@ -94,7 +94,6 @@ It is interesting to note how close to optimal many mechanisms are for a large v
     │ SAPScaled              │        5.67 │            50.0 │                95.0 │          26.4 │               83.9 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
-
 ### Description of Output Columns 
 
 - Equilibrium is the % of profiles for which equilibrium is reached
@@ -102,6 +101,12 @@ It is interesting to note how close to optimal many mechanisms are for a large v
 - Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0.
 - Envy is the difference between the utility of the voter who has the maximum utility in the final allocation and the voter with the minimum
 - Incentive Alignment is a mean Euclidian distance between voters' "honest" reports and final reports.
+
+### Detailed Output
+
+Summary results for each preference profile are available [here](https://github.com/johnwarden/mecsim/blob/master/output/summary.txt)
+
+Detailed simulation logs for each mechanism/preference combination are available [here](https://github.com/johnwarden/mecsim/blob/master/output/log)
 
 ## Defining Optimality
 
@@ -188,7 +193,7 @@ return SAP
     overall_optimal_point = [0.5620173672946042, 0.43798263270539584]
     [Running] Pref=HighConflictTwoVoters | Mech=SAP | Round=2 | Alloc=0.10,0.90,... | Optimality=86.5 | Align=46.6 ✅
 
-    Preference: HighConflictTwoVoters
+    Preference Profile: HighConflictTwoVoters
 
     Optimal Points and Utilities:
     ┌──────┬────────────────────┬─────────────────┐
@@ -305,11 +310,7 @@ Likewise to simulate a single preference profile:
 
 ## Output Files
 
-The simulation outputs files organized by mechanism:
-
-- `output/log/[mechanism_name]/[preference_name].txt`: Detailed log of the simulation
-
-The simulation also generates preference visualization plots in:
-
-- `output/plots/preferences/[preference_name].png`
+- Summary tables: `output/log/summary.txt`
+- Detailed log files organized by mechanism: `output/log/[mechanism_name]/[preference_name].txt`
+- Preference visualization plots: `output/plots/preferences/[preference_name].png`
 
