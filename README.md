@@ -8,7 +8,7 @@ The most surprising result of the simulation is that, for a wide variety of pref
 
 ### Incentive Compatible Budget Allocation
 
-The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been stymieing academics for decades. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Never mind that there are many different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Never mind that there are many different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
 
 This may seem counter-intuitive. Normally when you vote, if you vote for the person you want to win, that person is more likely to win! So there is no incentive to lie. We say that majority voting (between two candidates) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for exactly what you want.
 
@@ -20,7 +20,7 @@ If there are only two projects, there *is* a [strategyproof mechanism that uses 
 
 So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we recognize it as a kind of game, where people make a proposal they think will produce the best results for themselves, given the current set of proposals and the mechanism for aggregating them. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
 
-Here is the point where we move from theory to experiment. The results of these simulations show that, yes, things kind of do balance out.
+Here is the point where we move from theory to experiment. These simulations show that, yes, things kind of do balance out.
 
 ## Goals of the Simulation
 
@@ -35,7 +35,7 @@ Using a variety of profiles of user preferences, the simulation tells us if:
 
 `n` users need to allocate a budget across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
 
-User submits their proposed allocation vectors and the mechanism outputs a final allocation with a total less than the budget.
+User submits their proposed allocation vectors and the mechanism outputs a final allocation with a total <= 1.0.
 
 Users then take turns updating their reports by best-responding: maximizing their own utility given the reports of other users.
 
@@ -45,9 +45,9 @@ The simulation terminates if no user is able to improve their utility more than 
 
 I've implemented two different classes of preference profiles, with a variety of concrete profiles under each.
 
-### Square root profiles
+### Square Root Profiles
 
-Square root profiles have the form $`Uᵢ(x) = ∑ⱼ b_{i,j}√x_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but they never turn negative. In these scenarios, voters would always prefer to use up the whole budget.
+Square root profiles have the form $`Uᵢ(x) = ∑ⱼ b_{i,j}√x_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but they never turn negative. This means voters always prefer to "use up" the whole budget -- users optimal allocation vectors will always sum to one, and mechanisms that produce final allocations that sum to less than 1.0 will not be Pareto efficient.
 
 ### Quadratic Profiles
 
@@ -105,22 +105,12 @@ It is interesting to note how close to optimal many mechanisms are for a large v
 
 ## Defining Optimality
 
-The mean optimality is calculated based on total utility (the sum of utilities for all voters). But Kenneth Arrow famously argued that individual subjective utilities can't be added togeter: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
+The mean optimality is calculated based on total utility (the sum of utilities for all voters). But Kenneth Arrow famously argued that individual subjective utilities can't be added together: “it seems to make no sense to add the utility of one individual, a psychic magnitude in his mind, with the utility of another individual”.
 
 So instead of considering voter's subjective utility as an absolute quantity, we consider each voter's utility as a percentage of their maximum possibility utility.
 
 This is consistent with many intuitive notions of what is fair. For example, if each voter gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would be weighted towards voters with higher absolute values of subjective utility.
 
-
-### Output Files
-
-The simulation outputs files organized by mechanism:
-
-- `output/log/[mechanism_name]/[preference_name].txt`: Detailed log of the simulation
-
-The simulation also generates preference visualization plots in:
-
-- `output/plots/preferences/[preference_name].png`
 
 ## Limitations and Caveats
 
@@ -140,13 +130,13 @@ The simulation also generates preference visualization plots in:
 
 To implement a new mechanism or preference profile, add a .jl file under the `mechanisms/` or `preferences/` folders directory.
 
-The mechanism is simply a function that inputs an allocation matrix and outputs a vector. 
+A mechanism is a function that takes an allocation matrix as an input and returns a single allocation vector. The final allocations will be capped by the simulator so that the sum is <= 1.0. 
 
-A preference profile is 1) a function that outputs the utility for a given voter allocation vector and 2) a set of optimal points. Helper function will create a square-root profile where $`Uᵢ = ∑ⱼb_{i,j}*x_{i,j}²`$ for some matrix of coefficients b. 
-
-In this preference profile, voter 1 strongly prefers item 1, and voter 2 strongly prefers item 2.
+A preference profile is defined by 1) utility for a given voter allocation vector and 2) a set of optimal points. Helper function will create a square-root profile or quadratic profile for some matrix of coefficients b. 
 
 #### Example Preferences: `preferences/HighConflictTwoVoters.jl`
+
+In this preference profile, voter 1 strongly prefers item 1 over item 2, and voter 2 strongly prefers item 2 over item1.
 
 ```julia
 
@@ -164,7 +154,6 @@ The simulation generates a plot of the preference profile in output/plots
 
 #### Example Mechanism: `SAP.jl`
 
-A mechanism is a function that takes an allocation matrix as an input and returns a single allocation vector. The final allocations will be capped by the simulator so that the sum is <= 1.0. 
 
 ```julia
 
@@ -175,7 +164,7 @@ A mechanism is a function that takes an allocation matrix as an input and return
 # 3. Return those values (may not sum to 1.0)
 function SAP(reports)
     n, m = size(reports)
-    sorted_votes = hcat([sort(reports[:, j]) for j in 1:m]...)
+    sorted_votes = sort(reports, dims=1)
     row_sums = sum.(eachrow(sorted_votes))
     sp = findlast(≤(1.0), row_sums)
     
@@ -233,9 +222,9 @@ return SAP
 
 And a detailed log of the simulation is output to: output/logs/SAP/HighConflictTwoVoters.txt
 
-In this case, voter 2 modifies their proposed allocation to best-respond to voter 1, and an equilibrium is immediately reached.
+In this case, voter 1 modifies their proposed allocation to best-respond to voter 2. After this, the voters are already in equilibrium -- neither voter can improve their utility by changing their vote.
 
-    Optional points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
+    Optimal points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
     Starting allocation: [0.1, 0.038461538461538436]
 
     === Round 1 ===
@@ -313,4 +302,14 @@ To simulate a single mechanism or mechanisms, pass the mechanism file names:
 Likewise to simulate a single preference profile:
 
     just sim preferences/CondorcetCycle.jl
+
+## Output Files
+
+The simulation outputs files organized by mechanism:
+
+- `output/log/[mechanism_name]/[preference_name].txt`: Detailed log of the simulation
+
+The simulation also generates preference visualization plots in:
+
+- `output/plots/preferences/[preference_name].png`
 

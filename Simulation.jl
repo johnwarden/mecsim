@@ -102,7 +102,7 @@ function simulate(
 
     total_utility(alloc) = sum(Utility(i, alloc) for i in 1:n)
 
-    logln(logIO, "Optional points: $optimal_points")
+    logln(logIO, "Optimal points: $optimal_points")
     logln(logIO, "Starting allocation: $alloc")
 
     for round_idx in 1:max_rounds
