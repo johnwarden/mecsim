@@ -3,41 +3,41 @@
 # -----------------------------------------------------------------------------
 
 """
-Returns a copy of `reports` with row `user` replaced by `report`.
+Returns a copy of `reports` with row `voter` replaced by `report`.
 """
 function update_response(
     reports::Matrix{Float64},
-    user::Int,
+    voter::Int,
     report::Vector{Float64}
 )
     n, m = size(reports)
     [
-        (i == user) ? report[j] : reports[i, j]
+        (i == voter) ? report[j] : reports[i, j]
         for i in 1:n, j in 1:m
     ]
 end
 
 
 """
-Given a mechanism, the current matrix of reports, and a user index,
-return that user's best response (as a vector) by local optimization.
+Given a mechanism, the current matrix of reports, and a voter index,
+return that voter's best response (as a vector) by local optimization.
 """
 function find_best_response(
     mechanism_func::Function,
     reports::Matrix{Float64},
-    user::Int;
+    i::Int;
     Utility::Function
 )
     m = size(reports, 2)
-    x0 = reports[user, :]
+    x0 = reports[i, :]
     lower_bounds = fill(0.0, m)
     upper_bounds = fill(1.0, m)
 
     function objective(x)
-        new_reports = update_response(reports, user, x)
+        new_reports = update_response(reports, i, x)
         new_alloc = mechanism_func(new_reports)
         # Negative for maximization:
-        return -Utility(user, new_alloc)
+        return -Utility(i, new_alloc)
     end
 
     function objective_with_boundary(x)
@@ -62,9 +62,9 @@ Run a multi-round simulation for a given mechanism and preference setting.
 - `mechanism_name`: name of the mechanism (for logging).
 - `mechanism_func`: the mechanism function itself.
 - `max_rounds`: maximum number of best-response cycles.
-- `Utility`: user utility function (user i, allocation).
-- `initial_reports`: starting user reports matrix.
-- `optimal_points`: matrix of each user's "honest" optimum.
+- `Utility`: voter utility function (voter i, allocation).
+- `initial_reports`: starting voter reports matrix.
+- `optimal_points`: matrix of each voter's "honest" optimum.
 - `overall_optimal_point`: the overall system optimum allocation.
 - `logIO`: an IO stream to log textual output to.
 - `pref_name`: name of the preference setting (for logging).
@@ -115,7 +115,7 @@ function simulate(
         round_converged = true
 
         for u in 1:n
-            logln(logIO, "User $u's turn.")
+            logln(logIO, "Voter $u's turn.")
             old_utility = Utility(u, alloc)
 
             # Evaluate honest reporting:
@@ -123,7 +123,7 @@ function simulate(
             honest_alloc = capped_mechanism_func(honest_reports)
             honest_utility = Utility(u, honest_alloc)
 
-            # Find best response, starting search at users current report
+            # Find best response, starting search at voters current report
             best_resp = find_best_response(
                 capped_mechanism_func, current_reports, u;
                 Utility = Utility
@@ -133,7 +133,7 @@ function simulate(
             new_utility = Utility(u, new_alloc)
 
 
-            # find the best response again starting with the users's honest honest report
+            # find the best response again starting with the voters's honest honest report
             begin
                 best_resp2 = find_best_response(
                     capped_mechanism_func, honest_reports, u;
@@ -156,12 +156,12 @@ function simulate(
             if (new_utility > old_utility) && (abs(new_utility - old_utility) > termination_threshold)
                 logln(logIO, "  Best response = $best_resp")
                 logln(logIO, "  New allocation: $new_alloc")
-                logln(logIO, "  => User $u improves by switching to best response")
+                logln(logIO, "  => Voter $u improves by switching to best response")
                 current_reports = updated_reports
                 alloc = new_alloc
                 round_converged = false
             else
-                logln(logIO, "  => No improvement found; user $u stays with old report.")
+                logln(logIO, "  => No improvement found; voter $u stays with old report.")
             end
 
             # Naive measure of "incentive alignment":
@@ -227,7 +227,7 @@ end
 # -----------------------------------------------------------------------------
 
 """
-Construct a matrix of pairwise tradeoff proportions from a user's report.
+Construct a matrix of pairwise tradeoff proportions from a voter's report.
 Each entry is the fraction of total "budget" for `i` out of `i + j`.
 """
 function tradeoff_matrix_from_report(report::AbstractVector{T}) where {T<:Real}
