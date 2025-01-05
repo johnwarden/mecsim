@@ -71,7 +71,7 @@ function print_preference_summary!(
         "Mechanism",
         "Rounds",
         "Eq",
-        "Reports",
+        "Final Reports",
         "Alloc",
         "Opt%",
         "Envy%",
