@@ -8,12 +8,12 @@ include("QuadraticPreferences.jl")
 # -----------------------------------------------------------------------------
 
 """
-    constrain_budget(x::Vector{Float64})
+    cap(x::Vector{Float64})
 
 Normalize a vector so its sum is at most 1.0. If sum is already <= 1.0, return
 the original vector.
 """
-function constrain_budget(x::Vector{Float64})
+function cap(x::Vector{Float64})
     sum(x) > 1.0 ? x/sum(x) : x
 end
 
@@ -37,7 +37,7 @@ function optimal_point(utility_function::Function, m::Int)
         Fminbox(LBFGS()),
         Optim.Options(show_trace=false)
     )
-    return constrain_budget(result.minimizer)
+    return cap(result.minimizer)
 end
 
 """

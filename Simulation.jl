@@ -90,10 +90,10 @@ function simulate(
     current_reports = copy(initial_reports)
 
     # Constrain final allocation to remain in [0,1] and sum to 1 if that's required.
-    # (You appear to use `constrain_budget` from Preferences.jl or something similar.)
-    constrained_mechanism_func = x -> constrain_budget(mechanism_func(x))
+    # (You appear to use `cap` from Preferences.jl or something similar.)
+    capped_mechanism_func = x -> cap(mechanism_func(x))
 
-    alloc = constrained_mechanism_func(current_reports)
+    alloc = capped_mechanism_func(current_reports)
     incentive_alignment = 1.0
 
     initial_allocation = alloc
@@ -110,6 +110,7 @@ function simulate(
         logln(logIO, "Current report matrix:")
         show(IOContext(logIO), "text/plain", current_reports)
         logln(logIO, "")
+        logln(logIO, "Current allocation: $alloc")
 
         round_converged = true
 
@@ -117,33 +118,48 @@ function simulate(
             logln(logIO, "User $u's turn.")
             old_utility = Utility(u, alloc)
 
+            # Evaluate honest reporting:
+            honest_reports = update_response(current_reports, u, optimal_points[u, :])
+            honest_alloc = capped_mechanism_func(honest_reports)
+            honest_utility = Utility(u, honest_alloc)
+
+            # Find best response, starting search at users current report
             best_resp = find_best_response(
-                constrained_mechanism_func, current_reports, u;
+                capped_mechanism_func, current_reports, u;
                 Utility = Utility
             )
             updated_reports = update_response(current_reports, u, best_resp)
-            new_alloc = constrained_mechanism_func(updated_reports)
+            new_alloc = capped_mechanism_func(updated_reports)
             new_utility = Utility(u, new_alloc)
 
-            # Evaluate honest reporting:
-            honest_reports = update_response(current_reports, u, optimal_points[u, :])
-            honest_alloc = constrained_mechanism_func(honest_reports)
-            honest_utility = Utility(u, honest_alloc)
+
+            # find the best response again starting with the users's honest honest report
+            begin
+                best_resp2 = find_best_response(
+                    capped_mechanism_func, honest_reports, u;
+                    Utility = Utility
+                )
+                updated_reports2 = update_response(current_reports, u, best_resp)
+                new_alloc2 = capped_mechanism_func(updated_reports)
+                new_utility2 = Utility(u, new_alloc2)
+
+                if new_utility2 > new_utility
+                    updated_reports = udpated_reports2
+                    new_alloc = new_ALLOC2
+                    new_utility = new_utility2
+                end
+            end
+
+
+
 
             if (new_utility > old_utility) && (abs(new_utility - old_utility) > termination_threshold)
-                if honest_utility > new_utility
-                    @warn "This shouldn't happen: honest_utility=$honest_utility, new_utility=$new_utility"
-                    logln(logIO, "  => Reverting user $u to honest report (better than old).")
-                    current_reports = honest_reports
-                    alloc = honest_alloc
-                else
-                    logln(logIO, "  Best response = $best_resp")
-                    logln(logIO, "  => User $u improves by switching to best response")
-                    current_reports = updated_reports
-                    alloc = new_alloc
-                end
+                logln(logIO, "  Best response = $best_resp")
+                logln(logIO, "  New allocation: $new_alloc")
+                logln(logIO, "  => User $u improves by switching to best response")
+                current_reports = updated_reports
+                alloc = new_alloc
                 round_converged = false
-                logln(logIO, "  => User $u's new report: $(current_reports[u, :])")
             else
                 logln(logIO, "  => No improvement found; user $u stays with old report.")
             end
@@ -158,7 +174,6 @@ function simulate(
             logln(logIO, "  New utility = $new_utility")
             logln(logIO, "  Honest utility = $honest_utility")
             logln(logIO, "  Incentive Alignment = $incentive_alignment")
-            logln(logIO, "  Allocation after user $u: $alloc")
             push!(alloc_history, alloc)
         end
 
@@ -192,7 +207,7 @@ function simulate(
 
     # Calculate envy as difference between max and min utilities
     final_utilities = [Utility(i, alloc) for i in 1:n]
-    envy = maximum(final_utilities) - minimum(final_utilities)
+    envy = (maximum(final_utilities) - minimum(final_utilities))*100
 
     # Incentive alignment was already being tracked throughout the simulation
     # It's the mean Euclidean distance between honest and final reports
