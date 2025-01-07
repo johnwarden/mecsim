@@ -11,6 +11,8 @@ return (reports::Matrix{Float64}) -> begin
     # Build a list of tradeoff matrices
     T = [tradeoff_matrix_from_report(reports[i, :]) for i in 1:n]
 
+    useOfBudget = median(sum(reports, dims=2))
+
     # median_tradeoffs
     median_tradeoffs = [ 
         i == j ? 0.0 : median(T[u][i, j] for u in 1:n)
@@ -20,11 +22,11 @@ return (reports::Matrix{Float64}) -> begin
     # Pick the last eigenvector, which seems to be real-valued
     E = eigen(median_tradeoffs)
 
-    vec = real(E.vectors[:, m])
+    v = real(E.vectors[:, m])
 
-    if minimum(vec) < 0
-        vec = vec * -1 
+    if minimum(v) < 0
+        v = v * -1 
     end
 
-    return vec
+    return v ./ sum(v) .* useOfBudget
 end
