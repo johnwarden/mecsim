@@ -18,6 +18,8 @@ return (reports::Matrix{Float64}) -> begin
         i == j ? 0.0 : median(T[u][i, j] for u in 1:n)
         for i in 1:m, j in 1:m 
     ]
+    # median_tradeoffs = median_tradeoffs ./ sum(median_tradeoffs, dims=1)
+    # M = median_tradeoffs ./ sum(median_tradeoffs, dims=1)
 
     # Pick the last eigenvector, which seems to be real-valued
     E = eigen(median_tradeoffs)

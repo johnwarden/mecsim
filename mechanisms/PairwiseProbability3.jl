@@ -22,24 +22,27 @@ return (reports) -> begin
     T = [pairwise_matrix_from_reports(reports[i, :]) for i in 1:n]
 
 
+
+
     # For each pair, calculate the probability of a user preferring i over j, with laplace smoothing using Jeffrey's prior Beta(0.5,0.5)
     pairwise_percentages = [ 
         i == j ? 0 : (sum(T[u][i, j] for u in 1:n) + .5)/(n + 1)
         for i in 1:m, j in 1:m 
     ]
-    pairwise_percentages = pairwise_percentages ./ sum(pairwise_percentages, dims=1)
-    M = pairwise_percentages ./ sum(pairwise_percentages, dims=2)
-
-
+    # pairwise_percentages = pairwise_percentages ./ sum(pairwise_percentages, dims=1)
+    # M = pairwise_percentages ./ sum(pairwise_percentages, dims=2)
+    M = pairwise_percentages
  
     # Pick the last eigenvector, which seems to be real-valued
     E = eigen(M)
-    vec = real(E.vectors[:, m])
+    v = real(E.vectors[:, m])
 
-    if minimum(vec) < 0
-        vec = vec * -1 
+    if minimum(v) < 0
+        v = v * -1 
     end
 
-    return vec
+    useOfBudget = median(sum(reports, dims=2))
+    return v ./ sum(v) .* useOfBudget
+
 end
 

@@ -53,10 +53,11 @@ The results don't necessarily show us which mechanism is "best", because results
     │ CoordinatewiseMean     │        3.32 │            94.7 │                96.1 │          12.2 │               68.3 │
     │ CoordinatewiseMedian   │        1.74 │           100.0 │                97.4 │          11.2 │               89.8 │
     │ GeometricMedian        │        4.05 │            89.5 │                97.6 │          11.7 │               79.6 │
-    │ PairwiseMeanTradeoff   │        2.74 │           100.0 │                87.4 │          16.4 │               72.0 │
-    │ PairwiseMedianTradeoff │         4.0 │            94.7 │                88.0 │          16.4 │               75.2 │
+    │ PairwiseMeanTradeoff   │        2.84 │           100.0 │                98.9 │           6.2 │               70.8 │
+    │ PairwiseMedianTradeoff │        4.11 │            94.7 │                99.4 │           7.6 │               77.9 │
     │ PairwiseProbability    │        1.68 │           100.0 │                87.2 │          15.5 │               96.1 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                83.7 │          15.7 │              100.0 │
+    │ PairwiseProbability2   │        1.37 │           100.0 │                95.2 │           5.7 │               91.8 │
+    │ PairwiseProbability3   │        1.84 │           100.0 │                97.6 │           6.5 │               90.1 │
     │ QuadraticFunding       │        3.58 │            94.7 │                93.0 │          15.4 │               64.7 │
     │ QuadraticVariant       │        2.58 │           100.0 │                93.3 │           6.8 │               81.5 │
     │ SAP                    │        1.95 │           100.0 │                91.7 │          19.5 │               87.8 │
@@ -66,7 +67,6 @@ The results don't necessarily show us which mechanism is "best", because results
 ### Description of Output Columns 
 
 - Equilibrium is the % of profiles for which equilibrium is reached
-- Utility is the mean utility-per-voter
 - Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0.
 - Envy is the difference between the utility of the voter who has the maximum utility in the final allocation and the voter with the minimum
 - Incentive Alignment is a mean Euclidian distance between voters' "honest" reports and final reports.
@@ -96,10 +96,11 @@ Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are
     │ CoordinatewiseMean     │        2.83 │           100.0 │                98.8 │           8.2 │               69.8 │
     │ CoordinatewiseMedian   │         2.0 │           100.0 │                98.4 │          16.6 │               89.6 │
     │ GeometricMedian        │         4.0 │            83.3 │                98.6 │          14.2 │               86.3 │
-    │ PairwiseMeanTradeoff   │        2.17 │           100.0 │                98.2 │           7.8 │               77.2 │
-    │ PairwiseMedianTradeoff │        4.33 │           100.0 │                99.6 │          10.1 │               81.9 │
+    │ PairwiseMeanTradeoff   │        2.17 │           100.0 │                98.2 │           7.8 │               76.4 │
+    │ PairwiseMedianTradeoff │        4.67 │            83.3 │                99.6 │           9.9 │               82.2 │
     │ PairwiseProbability    │        1.67 │           100.0 │                98.2 │           6.6 │               97.7 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                92.1 │           7.3 │              100.0 │
+    │ PairwiseProbability2   │         1.0 │           100.0 │                92.1 │           7.3 │              100.0 │
+    │ PairwiseProbability3   │        1.33 │           100.0 │                96.3 │           8.0 │               97.9 │
     │ QuadraticFunding       │         3.0 │           100.0 │                99.4 │           8.4 │               66.2 │
     │ QuadraticVariant       │         1.0 │           100.0 │                91.9 │           4.7 │              100.0 │
     │ SAP                    │        1.67 │           100.0 │                95.1 │          26.9 │               83.7 │
@@ -120,10 +121,11 @@ This is appropriate for budget allocation settings where there are diminishing m
     │ CoordinatewiseMean     │        2.62 │           100.0 │                99.1 │           5.9 │               73.8 │
     │ CoordinatewiseMedian   │        1.75 │           100.0 │                98.4 │           8.1 │               91.1 │
     │ GeometricMedian        │         5.0 │            87.5 │                99.1 │           8.3 │               76.0 │
-    │ PairwiseMeanTradeoff   │        2.62 │           100.0 │                86.9 │           9.9 │               72.5 │
-    │ PairwiseMedianTradeoff │        3.88 │           100.0 │                87.2 │           8.6 │               71.1 │
+    │ PairwiseMeanTradeoff   │        2.75 │           100.0 │                99.5 │           3.7 │               73.0 │
+    │ PairwiseMedianTradeoff │        4.12 │           100.0 │                99.8 │           5.7 │               76.8 │
     │ PairwiseProbability    │        1.62 │           100.0 │                86.8 │           9.3 │               97.4 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                83.4 │           8.8 │              100.0 │
+    │ PairwiseProbability2   │        1.62 │           100.0 │                97.0 │           3.3 │               88.5 │
+    │ PairwiseProbability3   │        1.88 │           100.0 │                98.9 │           3.7 │               88.9 │
     │ QuadraticFunding       │        3.25 │           100.0 │                99.1 │           7.4 │               71.4 │
     │ QuadraticVariant       │        2.88 │           100.0 │                92.2 │           8.3 │               77.7 │
     │ SAP                    │         2.0 │           100.0 │                95.6 │           9.3 │               90.6 │
@@ -143,16 +145,16 @@ Quadratic profiles have the form $`Vᵢ(y) = ∑ⱼ 2b_{i,j}y_j - y_j^2`$. These
     │ CoordinatewiseMean     │         5.0 │            80.0 │                88.0 │          27.0 │               57.5 │
     │ CoordinatewiseMedian   │         1.4 │           100.0 │                94.5 │           9.5 │               88.0 │
     │ GeometricMedian        │         2.6 │           100.0 │                94.1 │          14.1 │               77.4 │
-    │ PairwiseMeanTradeoff   │         3.6 │           100.0 │                75.4 │          36.9 │               65.0 │
-    │ PairwiseMedianTradeoff │         3.8 │            80.0 │                75.4 │          36.6 │               73.8 │
+    │ PairwiseMeanTradeoff   │         3.8 │           100.0 │                98.9 │           8.2 │               60.4 │
+    │ PairwiseMedianTradeoff │         3.4 │           100.0 │                98.7 │           7.7 │               74.8 │
     │ PairwiseProbability    │         1.8 │           100.0 │                74.6 │          36.1 │               91.9 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                74.0 │          37.0 │              100.0 │
+    │ PairwiseProbability2   │         1.4 │           100.0 │                95.8 │           7.7 │               87.1 │
+    │ PairwiseProbability3   │         2.4 │           100.0 │                97.0 │           9.2 │               82.6 │
     │ QuadraticFunding       │         4.8 │            80.0 │                75.5 │          36.7 │               52.1 │
     │ QuadraticVariant       │         4.0 │           100.0 │                96.7 │           6.8 │               65.5 │
     │ SAP                    │         2.2 │           100.0 │                81.6 │          27.0 │               88.3 │
     │ SAPScaled              │         6.8 │            40.0 │                70.5 │          48.4 │               72.5 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
-
 
 ### Detailed Simulation Logs
 
