@@ -50,17 +50,17 @@ The results don't necessarily show us which mechanism is "best", because results
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        3.42 │            94.7 │                95.9 │          11.4 │               72.9 │
-    │ CoordinatewiseMedian   │        1.53 │           100.0 │                97.7 │          10.5 │               92.8 │
-    │ GeometricMedian        │        3.26 │            89.5 │                97.7 │          11.0 │               84.9 │
-    │ PairwiseMeanTradeoff   │        2.58 │           100.0 │                75.4 │          17.3 │               72.6 │
-    │ PairwiseMedianTradeoff │        4.37 │            94.7 │                76.0 │          17.2 │               69.2 │
-    │ PairwiseProbability    │        1.79 │           100.0 │                75.2 │          16.6 │               96.8 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                72.1 │          16.4 │              100.0 │
-    │ QuadraticFunding       │        3.68 │            94.7 │                90.8 │          15.3 │               66.0 │
-    │ QuadraticVariant       │        2.68 │           100.0 │                91.1 │           7.0 │               77.5 │
-    │ SAP                    │        1.58 │           100.0 │                92.8 │          18.6 │               91.2 │
-    │ SAPScaled              │        6.26 │            47.4 │                72.6 │          26.9 │               69.9 │
+    │ CoordinatewiseMean     │        3.32 │            94.7 │                96.1 │          12.2 │               68.3 │
+    │ CoordinatewiseMedian   │        1.74 │           100.0 │                97.4 │          11.2 │               89.8 │
+    │ GeometricMedian        │        4.05 │            89.5 │                97.6 │          11.7 │               79.6 │
+    │ PairwiseMeanTradeoff   │        2.74 │           100.0 │                87.4 │          16.4 │               72.0 │
+    │ PairwiseMedianTradeoff │         4.0 │            94.7 │                88.0 │          16.4 │               75.2 │
+    │ PairwiseProbability    │        1.68 │           100.0 │                87.2 │          15.5 │               96.1 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                83.7 │          15.7 │              100.0 │
+    │ QuadraticFunding       │        3.58 │            94.7 │                93.0 │          15.4 │               64.7 │
+    │ QuadraticVariant       │        2.58 │           100.0 │                93.3 │           6.8 │               81.5 │
+    │ SAP                    │        1.95 │           100.0 │                91.7 │          19.5 │               87.8 │
+    │ SAPScaled              │        6.42 │            42.1 │                83.9 │          30.9 │               76.0 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
 ### Description of Output Columns 
@@ -117,17 +117,17 @@ This is appropriate for budget allocation settings where there are diminishing m
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        2.88 │           100.0 │                98.7 │           4.1 │               84.8 │
-    │ CoordinatewiseMedian   │        1.25 │           100.0 │                99.1 │           6.6 │               98.2 │
-    │ GeometricMedian        │        3.12 │            87.5 │                99.2 │           6.6 │               88.4 │
-    │ PairwiseMeanTradeoff   │        2.25 │           100.0 │                58.3 │          12.1 │               73.9 │
-    │ PairwiseMedianTradeoff │        4.75 │           100.0 │                58.6 │          10.4 │               56.8 │
-    │ PairwiseProbability    │        1.88 │           100.0 │                58.2 │          11.9 │               99.1 │
-    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                55.9 │          10.4 │              100.0 │
-    │ QuadraticFunding       │         3.5 │           100.0 │                93.9 │           7.0 │               74.5 │
-    │ QuadraticVariant       │        3.12 │           100.0 │                87.0 │           8.9 │               68.1 │
-    │ SAP                    │        1.12 │           100.0 │                98.1 │           7.2 │               98.7 │
-    │ SAPScaled              │        6.38 │            50.0 │                57.0 │          13.8 │               57.6 │
+    │ CoordinatewiseMean     │        2.62 │           100.0 │                99.1 │           5.9 │               73.8 │
+    │ CoordinatewiseMedian   │        1.75 │           100.0 │                98.4 │           8.1 │               91.1 │
+    │ GeometricMedian        │         5.0 │            87.5 │                99.1 │           8.3 │               76.0 │
+    │ PairwiseMeanTradeoff   │        2.62 │           100.0 │                86.9 │           9.9 │               72.5 │
+    │ PairwiseMedianTradeoff │        3.88 │           100.0 │                87.2 │           8.6 │               71.1 │
+    │ PairwiseProbability    │        1.62 │           100.0 │                86.8 │           9.3 │               97.4 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                83.4 │           8.8 │              100.0 │
+    │ QuadraticFunding       │        3.25 │           100.0 │                99.1 │           7.4 │               71.4 │
+    │ QuadraticVariant       │        2.88 │           100.0 │                92.2 │           8.3 │               77.7 │
+    │ SAP                    │         2.0 │           100.0 │                95.6 │           9.3 │               90.6 │
+    │ SAPScaled              │        6.75 │            37.5 │                83.9 │          23.3 │               72.2 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
 

@@ -4,7 +4,7 @@
 # of mechanisms, where users tend to arrive at an equilibrium that users most
 # of the budget.
 return quasilinear_sqrt_preferences([
-    .3  .15  .12
-    .10  .12  .21
-    .2  .3  .2
+    .6  .3  .24
+    .20  .24  .22
+    .4  .6  .20
 ])
