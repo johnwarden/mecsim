@@ -1,5 +1,6 @@
 using Optim, Plots
 
+include("QuasilinearSqrtPreferences.jl")
 include("SqrtPreferences.jl")
 include("QuadraticPreferences.jl")
 

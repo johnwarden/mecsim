@@ -1,146 +1,159 @@
 using LinearAlgebra
 
 # -----------------------------------------------------------------------------
-#                           Preference Creation
+#                         Single-user Quadratic Solver
 # -----------------------------------------------------------------------------
+"""
+    optimal_point_quadratic(b::Vector{Float64}, c::Float64)
 
+Given the utility function
+
+  U(x) = ∑ᵢ (2*bᵢ*xᵢ - c*xᵢ²)
+
+subject to xᵢ ≥ 0,  ∑ᵢ xᵢ = 1,
+
+returns the allocation `x` (a vector) that maximizes U(x).
+"""
+function optimal_point_quadratic(b::Vector{Float64}, c::Float64)
+    m = length(b)
+
+    # Unconstrained maximum for each coordinate: x_j = b_j / c
+    # Check whether the unconstrained solution is feasible (∑ x_j ≤ 1 and x_j >= 0).
+    x_uncon = b ./ c
+    if all(x_uncon .>= 0) && sum(x_uncon) <= 1.0
+        return x_uncon
+    end
+
+    # Otherwise, solve the KKT system with the constraint ∑ x_j = 1, x_j ≥ 0.
+    # The stationarity condition is: derivative wrt x_j = (2*b_j - 2*c*x_j) - λ = 0
+    # => x_j = (b_j - λ/2)/c, plus the budget ∑ x_j = 1, and x_j ≥ 0.
+
+    function solve_kkt(fixedAtZero::Set{Int})
+        active = setdiff(1:m, fixedAtZero)
+        mA = length(active)
+
+        # sum_{j in active} x_j = 1 => sum_{j in active} (b_j - λ/2)/c = 1
+        # => (1/c) [∑(b_j) - mA*(λ/2)] = 1
+        # => ∑(b_j) - mA*λ/2 = c
+        # => λ/2 = (∑(b_j) - c)/mA
+        # => λ = 2*(∑(b_j) - c)/mA
+        sumB = sum(b[j] for j in active)
+        λ = 2 * (sumB - c) / mA
+        λdiv2 = λ / 2
+
+        # Build the candidate solution
+        x_sol = zeros(m)
+        for j in 1:m
+            if j in fixedAtZero
+                x_sol[j] = 0
+            else
+                x_sol[j] = (b[j] - λdiv2)/c
+            end
+        end
+        return x_sol
+    end
+
+    fixedAtZero = Set{Int}()
+    while true
+        x_sol = solve_kkt(fixedAtZero)
+        # If all coordinates are nonnegative, we have our solution.
+        neg_inds = findall(x -> x < 0, x_sol)
+        if isempty(neg_inds)
+            return x_sol
+        else
+            # Fix those negative ones to zero and re-solve
+            foreach(i -> push!(fixedAtZero, i), neg_inds)
+        end
+    end
+
+    @show x_sol
+    return x_sol
+end
+
+
+# -----------------------------------------------------------------------------
+#                     Total Quadratic Utility (All Users)
+# -----------------------------------------------------------------------------
+"""
+    overall_optimal_point_quadratic(pref_matrix::Matrix{Float64}, optimal_utilities::Vector{Float64})
+
+Given:
+- `pref_matrix[i,j]` for user i's linear coefficient on x_j in the unscaled utility,
+- `optimal_utilities[i]` = user i's maximum utility (for normalization),
+
+computes the aggregate objective
+
+  T(x) = ∑ᵢ [1/optimal_utilities[i]] * ∑ⱼ (2*pref_matrix[i,j]*xⱼ - xⱼ²)
+
+and returns the `x` that maximizes T(x) subject to xⱼ ≥ 0, ∑ⱼ xⱼ = 1.
+
+Refactored to use `optimal_point_quadratic(b, c)` internally.
+"""
+function overall_optimal_point_quadratic(pref_matrix::Matrix{Float64},
+                                          optimal_utilities::Vector{Float64})
+    n, m = size(pref_matrix)
+
+    # C[i] = 1 / (optimal utility of user i)
+    C = 1.0 ./ optimal_utilities
+
+    # We want to maximize ∑ⱼ (2*b_j*x_j - c*x_j²),
+    # with b_j = ∑ᵢ C[i]*pref_matrix[i,j], and c = ∑ᵢ C[i].
+    b = [sum(C .* pref_matrix[:, j]) for j in 1:m]
+    c = sum(C)
+
+    # Call our unified quadratic solver with these b, c
+    return optimal_point_quadratic(b, c)
+end
+
+
+# -----------------------------------------------------------------------------
+#            Example: Using the above in quadratic_preferences(...)
+# -----------------------------------------------------------------------------
 """
     quadratic_preferences(pref_matrix::Matrix{Float64})
 
-Create a preference profile from a preference matrix where utility functions are of the form:
-`uᵢ(x) = ∑ⱼ (2*pref_matrix[i,j]x[j] - x[j]^2)`
+High-level function that:
+1) Creates each user's single-user utility (and their "optimal" point),
+2) Normalizes those utilities,
+3) Finds the overall optimum by calling `overall_optimal_point_quadratic`.
 
-Returns:
-- normalized_utility::Function - Scaled utility function for each user
-- optimal_points::Matrix{Float64} - Matrix of each user's optimal allocation
-- overall_optimal_point::Vector{Float64} - Allocation maximizing total utility
+Returns a dummy example of how you'd integrate all pieces in your code.
 """
 function quadratic_preferences(pref_matrix::Matrix{Float64})
     n, m = size(pref_matrix)
+
+    # Single-user utilities: uᵢ(x) = ∑ⱼ (2 * pref_matrix[i,j] * x[j] - x[j]^2).
     utilities::Vector{Function} = [
-        x -> sum((2*pref_matrix[i,j]*x[j] - x[j]^2) for j in 1:m)
+        x -> sum( (2*pref_matrix[i,j] * x[j] - x[j]^2 ) for j in 1:m )
         for i in 1:n
     ]
 
-    optimal_points = vcat(
-        [optimal_point_quadratic(pref_matrix[i,:])' for i in 1:n]...
-    )
+    # Single-user optimum for each user i, ignoring sum(x)=1? Or with sum(x)=1?
+    # If you previously used your single-user code `optimal_point_quadratic(...)`,
+    # we can just call it with b = pref_matrix[i,:], c=1.0, etc.
+    optimal_points = [
+        optimal_point_quadratic(pref_matrix[i,:], 1.0)'
+        for i in 1:n
+    ]
+    optimal_points = vcat(optimal_points...)  # put them in one matrix
 
-    total_utility(alloc) = sum(Utility(i, alloc) for i in 1:n)
+    # Each user's maximum utility
+    optimal_utilities = [
+        utilities[i](optimal_points[i,:]) for i in 1:n
+    ]
 
+    # The total utility function is sum( uᵢ(x) / optimal_utilities[i] ).
+    # We find the point that maximizes it using overall_optimal_point_quadratic.
+    overall_optimal_point = overall_optimal_point_quadratic(pref_matrix, optimal_utilities)
 
-    overall_optimal_point = overall_optimal_point_quadratic(pref_matrix)
+    # Return something that packages everything up
 
-
+    @show optimal_point
+    @show overall_optimal_point
     return make_preference_profile(
-        utilities, 
-        m; 
+        utilities,
+        m;
         optimal_points=optimal_points,
         overall_optimal_point=overall_optimal_point
     )
-end
-
-function optimal_point_quadratic(c)
-    m = length(c)
-
-    # The quadratic preference formula is Utility(x) = ∑ⱼ -xⱼ^2 + 2cⱼx. The max for each xⱼ is at xⱼ = cⱼ. If the optimal point for all xⱼ falls within the budget, return that.
-    if sum(c) <= 1.0
-           return c
-    end
-
-    # Otherwise, find the optimal point subject to constraint that ∑ⱼxⱼ = 1. The derivatives will all be equal at the maximum point.
-    # So solve system of equations  { -2xⱼ + 2cⱼ = λ  for each i , ∑ⱼ xⱼ = 1 } and {xⱼ = 0 for i ∈ fixedAtZero}.
-    function solve(fixedAtZero)
-           # Create a matrix to representing the left-hand side of these equations
-           A = hcat([
-                       [
-                           [j == i for j in 1:m]; (i in fixedAtZero) ? 0 : 1  # x_i + lambda or x_i
-                       ]
-                       for i in 1:m
-                   ]...,
-                   [[1 for j in 1:m]; 0]            # x₁ + x₂ ... xₙ
-               )'
-
-           # And a vector containing the right-hand side
-           rhs = vcat([(i in fixedAtZero) ? 0 : c[i] for i in 1:m], 1)
-           solution = A \ rhs
-           solution[1:m]
-    end
-
-    fixedAtZero = []
-
-    done = false
-    result = zeros(m)
-    while(true)
-           result = solve(fixedAtZero)
-           # index of smallest element in result that is less than 0
-           if minimum(result)  >= 0
-                   break
-           end
-           minimumIndex = argmin(result)
-           push!(fixedAtZero, minimumIndex)
-    end
-
-    result
-end
-
-function overall_optimal_point_quadratic(pref_matrix::Matrix{Float64})
-    n, m = size(pref_matrix)
-
-    # c_j = sum of pref_matrix[i,j] over i
-    c = [sum(pref_matrix[:, j]) for j in 1:m]
-
-    # Unconstrained optimum => x_j = c_j / n
-    x_unconstrained = c ./ n
-
-    # Check if feasible: sum(x_j) ≤ 1 and all(x_j >= 0)
-    if sum(x_unconstrained) <= 1.0 && all(x_unconstrained .>= 0)
-        return x_unconstrained
-    end
-
-    # Otherwise, solve subject to ∑ x_j = 1 and x_j >= 0
-    function solve_overall(fixedAtZero)
-        # We want to solve { -2 n x_j + 2 c_j = λ  for j ∉ fixedAtZero
-        #                    x_j = 0             for j ∈ fixedAtZero
-        #                    ∑ x_j = 1 }.
-        #
-        # Re-arrange: -2 n x_j - λ = -2 c_j  =>  -2 n x_j = -2 c_j + λ
-        # We do an analogous approach to "solve", but scaled by n.
-
-        A = zeros(m+1, m+1)
-        b = zeros(m+1)
-
-        for j in 1:m
-            if j in fixedAtZero
-                # x_j = 0
-                A[j,j] = 1
-                b[j]   = 0
-            else
-                # -2 n x_j + 2 c_j = λ  =>  -2n x_j - λ = -2 c_j
-                A[j,j]   = -2n   # coefficient for x_j
-                A[j,m+1] = -1    # coefficient for λ
-                b[j]     = -2c[j]
-            end
-        end
-
-        # sum_j x_j = 1
-        for j in 1:m
-            A[m+1,j] = 1
-        end
-        b[m+1] = 1
-
-        sol = A \ b
-        return sol[1:m]
-    end
-
-    fixedAtZero = []
-    while true
-        x_candidate = solve_overall(fixedAtZero)
-        if all(x_candidate .>= 0)
-            return x_candidate
-        end
-        # Otherwise, fix the most negative coordinate at zero and re-solve
-        idx = argmin(x_candidate)
-        push!(fixedAtZero, idx)
-    end
 end
