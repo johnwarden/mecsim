@@ -2,19 +2,19 @@
 
 This repository contains a simulator for comparing budget allocation mechanisms. It simulates an iterative process where users strategically modify their reported preferred allocations in an attempt to maximize their individual utility.
 
-Interestingly, for a wide variety of preference profiles and mechanisms, users arrive at an equilibrium that is close to the overall-utility-maximizing optimal allocation -- even though users individual reports different significantly from their individual optimal allocations.
+Interestingly, for a wide variety of preference profiles and mechanisms, users arrive at an equilibrium that is close to the overall-utility-maximizing allocation -- even though users individual reports different significantly from their individual optimal allocations.
 
 ## Motivation
 
 ### Incentive Compatible Budget Allocation
 
-The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Never mind that there are many different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Not only are there different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
 
 This may seem counter-intuitive. Normally when you vote, if you vote for the person you want to win, that person is more likely to win! So there is no incentive to lie. We say that majority voting (between two candidates) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for exactly what you want.
 
-But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average for the group is 40%; your favorite project is under-funded while other projects are over-funded. So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, thereby raising the final average of your favorite project and lowering the average for the others. 
+But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average vote for the group is 40%. If the final mechanism is a simple mean, then your favorite project will be under-funded (while other projects are over-funded). So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, raising the mean for your favorite project and bringing the results closer to your ideal.
 
-If there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get ugly. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism for choosing among more than two alternatives that was strategyproof and not severely limited in certain ways. 
+Now if there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get complicated. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism for choosing among more than two alternatives that was strategyproof and not severely limited in certain ways. 
 
 ### Alternatives
 
@@ -35,9 +35,9 @@ Using a variety of profiles of user preferences, the simulation tells us if:
 
 `n` users need to allocate a budget across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
 
-User submits their proposed allocation vectors and the mechanism outputs a final allocation with a total <= 1.0.
+User submits their proposed allocation vectors and the mechanism outputs a final allocation. If the allocation is greater than the budget of 1.0, then the allocation vector is scaled down so that the sum equals 1.0.
 
-Users then take turns updating their reports by best-responding: maximizing their own utility given the reports of other users.
+Users then take turns updating their reports by attempting to best-respond: to maximizing their own utility given the reports of other users. The best response is found using Nelder-Mead.
 
 The simulation terminates if no user is able to improve their utility more than some threshold, or when a maximum number of rounds is reached.
 
@@ -50,16 +50,17 @@ The results don't necessarily show us which mechanism is "best", because results
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        3.82 │            90.9 │                95.0 │          16.7 │               64.2 │
-    │ CoordinatewiseMedian   │        1.73 │           100.0 │                97.7 │          13.4 │               88.9 │
-    │ GeometricMedian        │        3.36 │            90.9 │                97.7 │          14.2 │               82.2 │
-    │ PairwiseMeanTradeoff   │        2.82 │           100.0 │                88.9 │          21.1 │               71.6 │
-    │ PairwiseMedianTradeoff │        4.09 │            90.9 │                89.6 │          22.1 │               78.2 │
-    │ PairwiseProbability    │        1.73 │           100.0 │                88.5 │          20.0 │               95.1 │
-    │ QuadraticFunding       │        3.82 │            90.9 │                89.6 │          21.3 │               59.8 │
-    │ QuadraticVariant       │        3.73 │            90.9 │                89.5 │          21.5 │               68.5 │
-    │ SAP                    │        1.91 │           100.0 │                89.7 │          26.9 │               86.1 │
-    │ SAPScaled              │        6.09 │            45.5 │                84.7 │          36.4 │               79.7 │
+    │ CoordinatewiseMean     │        3.42 │            94.7 │                95.9 │          11.4 │               72.9 │
+    │ CoordinatewiseMedian   │        1.53 │           100.0 │                97.7 │          10.5 │               92.8 │
+    │ GeometricMedian        │        3.26 │            89.5 │                97.7 │          11.0 │               84.9 │
+    │ PairwiseMeanTradeoff   │        2.58 │           100.0 │                75.4 │          17.3 │               72.6 │
+    │ PairwiseMedianTradeoff │        4.37 │            94.7 │                76.0 │          17.2 │               69.2 │
+    │ PairwiseProbability    │        1.79 │           100.0 │                75.2 │          16.6 │               96.8 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                72.1 │          16.4 │              100.0 │
+    │ QuadraticFunding       │        3.68 │            94.7 │                90.8 │          15.3 │               66.0 │
+    │ QuadraticVariant       │        2.68 │           100.0 │                91.1 │           7.0 │               77.5 │
+    │ SAP                    │        1.58 │           100.0 │                92.8 │          18.6 │               91.2 │
+    │ SAPScaled              │        6.26 │            47.4 │                72.6 │          26.9 │               69.9 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
 ### Description of Output Columns 
@@ -85,9 +86,9 @@ I've implemented two different classes of preference profiles, with a variety of
 
 ### Square Root Preference Profiles
 
-Square root profiles have the form $`Uᵢ(x) = ∑ⱼ b_{i,j}√x_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget, and this their optimal allocation vectors will always sum to one.
+Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget, and this their optimal allocation vectors will always sum to one.
 
-Here are the mean results for each mechanism across all Square Root preference profiles.
+**Mean results for Square Root preference profiles.**
 
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
@@ -98,36 +99,60 @@ Here are the mean results for each mechanism across all Square Root preference p
     │ PairwiseMeanTradeoff   │        2.17 │           100.0 │                98.2 │           7.8 │               77.2 │
     │ PairwiseMedianTradeoff │        4.33 │           100.0 │                99.6 │          10.1 │               81.9 │
     │ PairwiseProbability    │        1.67 │           100.0 │                98.2 │           6.6 │               97.7 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                92.1 │           7.3 │              100.0 │
     │ QuadraticFunding       │         3.0 │           100.0 │                99.4 │           8.4 │               66.2 │
-    │ QuadraticVariant       │        3.17 │           100.0 │                99.2 │           9.0 │               75.4 │
+    │ QuadraticVariant       │         1.0 │           100.0 │                91.9 │           4.7 │              100.0 │
     │ SAP                    │        1.67 │           100.0 │                95.1 │          26.9 │               83.7 │
     │ SAPScaled              │        5.67 │            50.0 │                95.0 │          26.4 │               83.9 │
+    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+
+### Quasilinear Square Root Preference Profiles
+
+Quasilinear (Square root) profiles have the form $`Vᵢ(y) = 1 - ∑ⱼy_j + ∑ⱼ b_{i,j}√y_j`$. These are the same as square root preference except that unused budget has utility (equal to the amount of unused budget). So preferences are "dollar-valued". Users will prefer to use up all the budget as long as there are projects where marginal return is greater than 1.0.
+
+This is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, and where the money doesn't come from nowhere. This would be appropriate for equity situations (DAOs, corporations, HOAs, etc.), where unused budget is retained in the corporation and shared by equity holders.
+
+**Mean results for Quasilinear Square Root preference profiles.**
+
+    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
+    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
+    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
+    │ CoordinatewiseMean     │        2.88 │           100.0 │                98.7 │           4.1 │               84.8 │
+    │ CoordinatewiseMedian   │        1.25 │           100.0 │                99.1 │           6.6 │               98.2 │
+    │ GeometricMedian        │        3.12 │            87.5 │                99.2 │           6.6 │               88.4 │
+    │ PairwiseMeanTradeoff   │        2.25 │           100.0 │                58.3 │          12.1 │               73.9 │
+    │ PairwiseMedianTradeoff │        4.75 │           100.0 │                58.6 │          10.4 │               56.8 │
+    │ PairwiseProbability    │        1.88 │           100.0 │                58.2 │          11.9 │               99.1 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                55.9 │          10.4 │              100.0 │
+    │ QuadraticFunding       │         3.5 │           100.0 │                93.9 │           7.0 │               74.5 │
+    │ QuadraticVariant       │        3.12 │           100.0 │                87.0 │           8.9 │               68.1 │
+    │ SAP                    │        1.12 │           100.0 │                98.1 │           7.2 │               98.7 │
+    │ SAPScaled              │        6.38 │            50.0 │                57.0 │          13.8 │               57.6 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
 
 ### Quadratic Preference Profiles
 
-Quadratic profiles have the form $`Uᵢ(Y) = ∑ⱼ 2b_{i,j}x_j - x_j^2`$. These are concave and single-peaked, which is appropriate for budget allocation settings where marginal utilities eventually turn negative. In these settings, voters may not always prefer to use up the whole budget (depending on where the peak is).
+Quadratic profiles have the form $`Vᵢ(y) = ∑ⱼ 2b_{i,j}y_j - y_j^2`$. These are concave and single-peaked, which may be appropriate for budget allocation settings where marginal utilities eventually turn negative -- there can be "too much of a good thing" for some items. In these settings, voters may not always prefer to use up the whole budget (depending on where the peak is).
 
-Here are the mean results for each mechanism across all Quadratic preference profiles.
+**Mean results for Quadratic preference profiles.**
 
     ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
     │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
     ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │         5.0 │            80.0 │                90.4 │          27.0 │               57.5 │
-    │ CoordinatewiseMedian   │         1.4 │           100.0 │                97.0 │           9.5 │               88.0 │
-    │ GeometricMedian        │         2.6 │           100.0 │                96.6 │          14.1 │               77.4 │
-    │ PairwiseMeanTradeoff   │         3.6 │           100.0 │                77.7 │          36.9 │               65.0 │
-    │ PairwiseMedianTradeoff │         3.8 │            80.0 │                77.7 │          36.6 │               73.8 │
-    │ PairwiseProbability    │         1.8 │           100.0 │                76.9 │          36.1 │               91.9 │
-    │ QuadraticFunding       │         4.8 │            80.0 │                77.8 │          36.7 │               52.1 │
-    │ QuadraticVariant       │         4.4 │            80.0 │                77.8 │          36.5 │               60.3 │
-    │ SAP                    │         2.2 │           100.0 │                83.2 │          27.0 │               89.1 │
-    │ SAPScaled              │         6.6 │            40.0 │                72.3 │          48.4 │               74.5 │
+    │ CoordinatewiseMean     │         5.0 │            80.0 │                88.0 │          27.0 │               57.5 │
+    │ CoordinatewiseMedian   │         1.4 │           100.0 │                94.5 │           9.5 │               88.0 │
+    │ GeometricMedian        │         2.6 │           100.0 │                94.1 │          14.1 │               77.4 │
+    │ PairwiseMeanTradeoff   │         3.6 │           100.0 │                75.4 │          36.9 │               65.0 │
+    │ PairwiseMedianTradeoff │         3.8 │            80.0 │                75.4 │          36.6 │               73.8 │
+    │ PairwiseProbability    │         1.8 │           100.0 │                74.6 │          36.1 │               91.9 │
+    │ PairwiseProbabilityAlt │         1.0 │           100.0 │                74.0 │          37.0 │              100.0 │
+    │ QuadraticFunding       │         4.8 │            80.0 │                75.5 │          36.7 │               52.1 │
+    │ QuadraticVariant       │         4.0 │           100.0 │                96.7 │           6.8 │               65.5 │
+    │ SAP                    │         2.2 │           100.0 │                81.6 │          27.0 │               88.3 │
+    │ SAPScaled              │         6.8 │            40.0 │                70.5 │          48.4 │               72.5 │
     └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
 
-
-Note that many mechanisms produce sub-optimal results with quadratic profiles but work well with square root profiles. Mechanisms such as Pairwise Probability are designed under the assumption that user's *relative* preferences between two items are more or less constant -- which is not the case with quadratic profiles.
 
 ### Detailed Simulation Logs
 

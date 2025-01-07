@@ -37,6 +37,7 @@ function print_preference_summary!(
     push!(final_table_texts, "#####################################")
     push!(final_table_texts, "\nOptimal Points and Utilities:")
 
+
     opt_data = preference_info.optimal
     mech_data = preference_info.mechanisms
 

@@ -1,0 +1,39 @@
+Optimal points: [0.998003992015968 0.0015968063872255141 0.0003992015968063985; 0.510199745006375 0.48958776030599227 0.00021249468763281479; 0.998003992015968 0.0015968063872255141 0.0003992015968063985]
+Starting allocation: [0.3333333333333332, 0.33333333333333337, 0.3333333333333333]
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.998004  0.00159681  0.000399202
+ 0.5102    0.489588    0.000212495
+ 0.998004  0.00159681  0.000399202
+Current allocation: [0.3333333333333332, 0.33333333333333337, 0.3333333333333333]
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+  Old utility = 0.6113802105152847
+  New utility = 0.6113802105152847
+  Honest utility = 0.6113802105152847
+  Incentive Alignment = 1.0
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+  Old utility = 0.8247825935815852
+  New utility = 0.8247825935815853
+  Honest utility = 0.8247825935815852
+  Incentive Alignment = 1.0
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+  Old utility = 0.6113802105152847
+  New utility = 0.6113802105152847
+  Honest utility = 0.6113802105152847
+  Incentive Alignment = 1.0
+Converged! Maximum improvement in utility < 0.0001.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.998004  0.00159681  0.000399202
+ 0.5102    0.489588    0.000212495
+ 0.998004  0.00159681  0.000399202
+Final Allocation: [0.3333333333333332, 0.33333333333333337, 0.3333333333333333]
+Mean Utility: 0.6825143382040516
+Optimality: 0.6825143382040516
+Envy: 21.340238306630056
+Incentive Alignment: 1.0
