@@ -1,0 +1,51 @@
+Overall optimal point: [0.7942370702031549, 0.1723051666644642, 0.0334577631323809]
+Overall optimal utility: 0.997564521392153
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.782609  0.195652  0.0217391
+ 0.64      0.16      0.04
+Current allocation: [0.33333333333333315, 0.3333333333333333, 0.33333333333333326]
+Current user utilities: [0.8432740427115678, 0.8512565307587486, 0.8785764965929087]
+Current overall optimalities: 0.8597963723597284
+Voter 1's turn.
+  Best response = [0.5377620133340134, 0.23642826388130475, 0.07914305885234285]
+  New allocation: [0.2844444453558869, 0.28444444535588703, 0.284444445355887]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.8432740427115678
+  New utility = 0.8459270610357565
+  Honest utility = 0.8432740427115678
+  Incentive Alignment = 0.894543584114385
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.537762  0.236428  0.0791431
+ 0.782609  0.195652  0.0217391
+ 0.64      0.16      0.04
+Current allocation: [0.2844444453558869, 0.28444444535588703, 0.284444445355887]
+Current user utilities: [0.8459270610357565, 0.8404191503348855, 0.8913043476403308]
+Current overall optimalities: 0.8613145662042752
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.537762  0.236428  0.0791431
+ 0.782609  0.195652  0.0217391
+ 0.64      0.16      0.04
+Final Allocation: [0.2844444453558869, 0.28444444535588703, 0.284444445355887]
+Mean Utility: 0.8592168530036576
+Optimality: 0.8592168530036576
+Envy: 5.088519730544538
+Incentive Alignment: 0.894543584114385

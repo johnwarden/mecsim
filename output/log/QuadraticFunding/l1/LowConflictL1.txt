@@ -1,0 +1,333 @@
+Overall optimal point: [0.782609, 0.190476, 0.0333333]
+Overall optimal utility: 0.9467910333333333
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.782609  0.195652  0.0217391
+ 0.761905  0.190476  0.047619
+Current allocation: [0.7941980540370148, 0.1723277990053319, 0.03347414695765318]
+Current user utilities: [0.9217294080740297, 0.9533516980106639, 0.9354138919259704]
+Current overall optimalities: 0.9894809234782094
+Voter 1's turn.
+  Best response = [0.8734745683077415, 0.03923899823408564, 0.029848143340482223]
+  New allocation: [0.8333330491612128, 0.1333334626703836, 0.03333348816840363]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.9217294080740297
+  New utility = 0.9999993
+  Honest utility = 0.9217294080740297
+  Incentive Alignment = 0.965880645780062
+Voter 2's turn.
+  Best response = [0.4706432199812787, 0.3748212589669862, 0.0006051710731147819]
+  New allocation: [0.7826091751760917, 0.19565167717362106, 0.021739147650287192]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.8753630253407672
+  New utility = 0.9999994543472421
+  Honest utility = 0.8753630253407672
+  Incentive Alignment = 0.8457552880105151
+Voter 3's turn.
+  Best response = [0.6203890653907362, 0.15509781296228795, 0.163785217513141]
+  New allocation: [0.7619049952356846, 0.1904759374235434, 0.047619067340771995]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9482402953005744
+  New utility = 0.9999998653184559
+  Honest utility = 0.9482402953005744
+  Incentive Alignment = 0.783596918628822
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.873475  0.039239  0.0298481
+ 0.470643  0.374821  0.000605171
+ 0.620389  0.155098  0.163785
+Current allocation: [0.7619049952356846, 0.1904759374235434, 0.047619067340771995]
+Current user utilities: [0.8571432904713692, 0.948239965318456, 0.9999998653184559]
+Current overall optimalities: 0.9876812032575162
+Voter 1's turn.
+  Best response = [0.9999997918844866, 5.277458018774265e-16, 0.044996151226056956]
+  New allocation: [0.8112647986455834, 0.1341883863853421, 0.05454681496907437]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.8571432904713692
+  New utility = 0.9558628972911669
+  Honest utility = 0.7661584220584143
+  Incentive Alignment = 0.7464643485045416
+Voter 2's turn.
+  Best response = [0.5026781023937935, 0.7647073685486535, 1.0890998955392246e-16]
+  New allocation: [0.7580895265448155, 0.19563688272104598, 0.04627359073413855]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.8770728727706844
+  New utility = 0.950930918531723
+  Honest utility = 0.7746768374995205
+  Incentive Alignment = 0.6550719349226092
+Voter 3's turn.
+  Best response = [0.6947721880035449, 0.15744041501511918, 0.17935859391065231]
+  New allocation: [0.7619051100040221, 0.19047604378771898, 0.04761884620825885]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.989678234557908
+  New utility = 0.9999996924165179
+  Honest utility = 0.9479822963607177
+  Incentive Alignment = 0.6667289457685733
+
+=== Round 3 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 1.0       5.27746e-16  0.0449962
+ 0.502678  0.764707     1.0891e-16
+ 0.694772  0.15744      0.179359
+Current allocation: [0.7619051100040221, 0.19047604378771898, 0.04761884620825885]
+Current user utilities: [0.8571435200080443, 0.9482404075834822, 0.9999996924165179]
+Current overall optimalities: 0.9876813789033717
+Voter 1's turn.
+  Best response = [0.9998480036313446, 1.236092374811267e-16, 0.010887397227457324]
+  New allocation: [0.7733243642315384, 0.19334239299392297, 0.03333324277453866]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.8571435200080443
+  New utility = 0.8799819140121541
+  Honest utility = 0.662157913783596
+  Incentive Alignment = 0.6664820326128239
+Voter 2's turn.
+  Best response = [0.6010356093061993, 0.7617185067613559, 2.849866008679928e-14]
+  New allocation: [0.7826089851531426, 0.18534958302784682, 0.032041431819010445]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9768116144509227
+  New utility = 0.979395236361979
+  Honest utility = 0.7734345635726343
+  Incentive Alignment = 0.6797091153405734
+Voter 3's turn.
+  Best response = [0.6499464486758133, 0.1746590817752252, 0.29268264360753005]
+  New allocation: [0.7619056586578254, 0.19047538190640959, 0.04761895943576502]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9585920296937147
+  New utility = 0.9999986826843492
+  Honest utility = 0.9283275983287435
+  Incentive Alignment = 0.6402468506506785
+
+=== Round 4 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999848  1.23609e-16  0.0108874
+ 0.601036  0.761719     2.84987e-14
+ 0.649946  0.174659     0.292683
+Current allocation: [0.7619056586578254, 0.19047538190640959, 0.04761895943576502]
+Current user utilities: [0.8571446173156508, 0.94824018112847, 0.9999986826843492]
+Current overall optimalities: 0.9876813300085365
+Voter 1's turn.
+  Best response = [0.9998849374351495, 3.3451595658725963e-16, 2.0169808604915058e-11]
+  New allocation: [0.7728463464233197, 0.19320777659862637, 0.033945876978053784]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.8571446173156508
+  New utility = 0.8790259928466396
+  Honest utility = 0.6449506111525222
+  Incentive Alignment = 0.6397670295543132
+Voter 2's turn.
+  Best response = [0.7154539684232919, 0.75836967578698, 1.6893846136046526e-13]
+  New allocation: [0.7826089992575389, 0.18482164719170463, 0.03256935355075655]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9755863460438923
+  New utility = 0.978339392898487
+  Honest utility = 0.7837608107042848
+  Incentive Alignment = 0.6490152275463886
+Voter 3's turn.
+  Best response = [0.6422220696677083, 0.20497692012821614, 0.437964181177419]
+  New allocation: [0.7619046972572822, 0.19047629797329613, 0.04761900476942171]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9585920014849223
+  New utility = 0.9999993945145643
+  Honest utility = 0.9078627640888306
+  Incentive Alignment = 0.6027993772959653
+
+=== Round 5 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.715454  0.75837      1.68938e-13
+ 0.642222  0.204977     0.437964
+Current allocation: [0.7619046972572822, 0.19047629797329613, 0.04761900476942171]
+Current user utilities: [0.8571426945145644, 0.9482400904611565, 0.9999993945145643]
+Current overall optimalities: 0.9876808717454356
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.7626899467531749, 0.8211361821530829, 4.0463918731239684e-14]
+  New allocation: [0.7579448005415029, 0.19565199227228808, 0.046403207186209154]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482400904611565
+  New utility = 0.9506716856275819
+  Honest utility = 0.7934947715600118
+  Incentive Alignment = 0.583115619970911
+Voter 3's turn.
+  Best response = [0.7254157388105974, 0.20823208576675184, 0.4640849350124616]
+  New allocation: [0.7619045988857758, 0.19047661333124666, 0.04761878778297747]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9896480154554239
+  New utility = 0.9999987733375065
+  Honest utility = 0.9149033528451931
+  Incentive Alignment = 0.5798156565755411
+
+=== Round 6 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.76269   0.821136     4.04639e-14
+ 0.725416  0.208232     0.464085
+Current allocation: [0.7619045988857758, 0.19047661333124666, 0.04761878778297747]
+Current user utilities: [0.8571424977715516, 0.9482405244340449, 0.9999987733375065]
+Current overall optimalities: 0.9876807365705242
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.9999996599284025, 0.8950858732411092, 7.315765564386289e-11]
+  New allocation: [0.7698653179173758, 0.18619724946259086, 0.04393743262003335]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482405244340449
+  New utility = 0.9556032347599333
+  Honest utility = 0.7885228448555309
+  Incentive Alignment = 0.5442881588480638
+Voter 3's turn.
+  Best response = [0.7575117972044239, 0.23917612764773635, 0.51489128824318]
+  New allocation: [0.7619050311895083, 0.19047605784657975, 0.04761891096391187]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9840793641652484
+  New utility = 0.9999998219278239
+  Honest utility = 0.9074741805338704
+  Incentive Alignment = 0.5271596655868914
+
+=== Round 7 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 1.0       0.895086     7.31577e-11
+ 0.757512  0.239176     0.514891
+Current allocation: [0.7619050311895083, 0.19047605784657975, 0.04761891096391187]
+Current user utilities: [0.8571433623790167, 0.9482402780721761, 0.9999998219278239]
+Current overall optimalities: 0.9876813234074837
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.9974803531031353, 0.9399810082862542, 5.0850409981267615e-15]
+  New allocation: [0.7569955357859492, 0.19565193497815392, 0.04735252923589687]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482402780721761
+  New utility = 0.9487730415282063
+  Honest utility = 0.7971657609676863
+  Incentive Alignment = 0.5130708395159281
+Voter 3's turn.
+  Best response = [0.9168116127223304, 0.2586384977107802, 0.5461817442233868]
+  New allocation: [0.7619050062137745, 0.19047599561076153, 0.04761899817546393]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9896481300436921
+  New utility = 0.999999987572451
+  Honest utility = 0.9140356526860443
+  Incentive Alignment = 0.4941772676964664
+
+=== Round 8 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.99748   0.939981     5.08504e-15
+ 0.916812  0.258638     0.546182
+Current allocation: [0.7619050062137745, 0.19047599561076153, 0.04761899817546393]
+Current user utilities: [0.8571433124275492, 0.9482401036490722, 0.999999987572451]
+Current overall optimalities: 0.9876813027306421
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.9974803536033892, 0.9886020009603773, 2.0104743036988036e-15]
+  New allocation: [0.7570338690459343, 0.1956515818353036, 0.047314549118762136]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482401036490722
+  New utility = 0.9488490017624758
+  Honest utility = 0.7938380320468456
+  Incentive Alignment = 0.47857499685020105
+Voter 3's turn.
+  Best response = [0.8800183499433778, 0.22477212331196111, 0.5390328151457017]
+  New allocation: [0.761905083771181, 0.19047592860153184, 0.047618987627287106]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9896488363293928
+  New utility = 0.9999998324576379
+  Honest utility = 0.9139726638469781
+  Incentive Alignment = 0.48521938457541713
+
+=== Round 9 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.99748   0.988602     2.01047e-15
+ 0.880018  0.224772     0.539033
+Current allocation: [0.761905083771181, 0.19047592860153184, 0.047618987627287106]
+Current user utilities: [0.8571434675423621, 0.9482401247454257, 0.9999998324576379]
+Current overall optimalities: 0.9876813101579599
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.9999994912656686, 0.9965452842443671, 9.477671955588107e-16]
+  New allocation: [0.7612728343481401, 0.1911885080598389, 0.047538657592021]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482401247454257
+  New utility = 0.948400784815958
+  Honest utility = 0.7839420931594082
+  Incentive Alignment = 0.4824451022486302
+Voter 3's turn.
+  Best response = [0.8580930961676964, 0.21609853545186727, 0.5351871653141582]
+  New allocation: [0.761905205870759, 0.1904756462944428, 0.047619147834798196]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9985749838803222
+  New utility = 0.9999992925888856
+  Honest utility = 0.9139560686767162
+  Incentive Alignment = 0.48542696884267267
+
+=== Round 10 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.999999  0.996545     9.47767e-16
+ 0.858093  0.216099     0.535187
+Current allocation: [0.761905205870759, 0.1904756462944428, 0.047619147834798196]
+Current user utilities: [0.857143711741518, 0.9482398043304037, 0.9999992925888856]
+Current overall optimalities: 0.9876810932552514
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.9999994912647113, 0.9999972316623638, 1.2259982907257253e-14]
+  New allocation: [0.7615624641810034, 0.1908397989703335, 0.047597736848663134]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9482398043304037
+  New utility = 0.9482826263026738
+  Honest utility = 0.7820131379656557
+  Incentive Alignment = 0.484316716502678
+Voter 3's turn.
+  Best response = [0.82394844219302, 0.20596119246403316, 0.5283964134285785]
+  New allocation: [0.7619050824827994, 0.19047600172155194, 0.04761891579564858]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.999272402059333
+  New utility = 0.9999998315912972
+  Honest utility = 0.913951675467398
+  Incentive Alignment = 0.48852148267948864
+
+=== Round 11 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.999999  0.999997     1.226e-14
+ 0.823948  0.205961     0.528396
+Current allocation: [0.7619050824827994, 0.19047600172155194, 0.04761891579564858]
+Current user utilities: [0.8571434649655989, 0.9482402684087028, 0.9999998315912972]
+Current overall optimalities: 0.9876813595247746
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.999885  3.34516e-16  2.01698e-11
+ 0.999999  0.999997     1.226e-14
+ 0.823948  0.205961     0.528396
+Final Allocation: [0.7619050824827994, 0.19047600172155194, 0.04761891579564858]
+Mean Utility: 0.9351278549885329
+Optimality: 0.9351278549885329
+Envy: 14.285636662569834
+Incentive Alignment: 0.48852148267948864

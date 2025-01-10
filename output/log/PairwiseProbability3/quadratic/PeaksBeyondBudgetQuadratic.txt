@@ -1,0 +1,51 @@
+Overall optimal point: [0.4786279265535859, 0.34335279755100895, 0.17801927589540478]
+Overall optimal utility: 0.9182371345186716
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.166667  0.766667  0.0666667
+ 0.9       0.1       0.0
+ 0.416667  0.166667  0.416667
+Current allocation: [0.42599547300132734, 0.3534066157942774, 0.22059791120439495]
+Current user utilities: [0.9025818384043629, 0.880921048313998, 0.9657267896826444]
+Current overall optimalities: 0.9980100539214622
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  Best response = [0.41666666666666663, 0.16666666666666663, 0.4944444444444444]
+  New allocation: [0.391418336745627, 0.3301350110093417, 0.2784466522450313]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9657267896826444
+  New utility = 0.9783046769715233
+  Honest utility = 0.9657267896826444
+  Incentive Alignment = 0.9740740740740742
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.166667  0.766667  0.0666667
+ 0.9       0.1       0.0
+ 0.416667  0.166667  0.494444
+Current allocation: [0.391418336745627, 0.3301350110093417, 0.2784466522450313]
+Current user utilities: [0.8935766891243995, 0.8619223063371448, 0.9783046769715233]
+Current overall optimalities: 0.9924101918277327
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.166667  0.766667  0.0666667
+ 0.9       0.1       0.0
+ 0.416667  0.166667  0.494444
+Final Allocation: [0.391418336745627, 0.3301350110093417, 0.2784466522450313]
+Mean Utility: 0.9112678908110224
+Optimality: 0.9112678908110224
+Envy: 11.63823706343785
+Incentive Alignment: 0.9740740740740742

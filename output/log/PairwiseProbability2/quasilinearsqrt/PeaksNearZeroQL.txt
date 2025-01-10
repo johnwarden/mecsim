@@ -1,0 +1,51 @@
+Overall optimal point: [0.038873783629417465, 0.035195290250779436, 0.012108220823378315]
+Overall optimal utility: 0.9881926990123672
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.09  0.0225  0.0144
+ 0.01  0.0144  0.0121
+ 0.04  0.09    0.01
+Current allocation: [0.04229999999999998, 0.042299999999999977, 0.042300000000000004]
+Current user utilities: [0.9828408796998097, 0.9733159296555144, 0.9823715487845943]
+Current overall optimalities: 0.9912130029823745
+Voter 1's turn.
+  Best response = [0.07631907509011925, 0.009349425787315365, 0.022631499204107876]
+  New allocation: [0.03610000002718083, 0.03610000002718083, 0.03610000002718082]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.9828408796998097
+  New utility = 0.9834945425503593
+  Honest utility = 0.9828408796998097
+  Incentive Alignment = 0.9931050510624697
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.0763191  0.00934943  0.0226315
+ 0.01       0.0144      0.0121
+ 0.04       0.09        0.01
+Current allocation: [0.03610000002718083, 0.03610000002718083, 0.03610000002718082]
+Current user utilities: [0.9834945425503593, 0.981283164462775, 0.9821929824599048]
+Current overall optimalities: 0.9940607374851552
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.0763191  0.00934943  0.0226315
+ 0.01       0.0144      0.0121
+ 0.04       0.09        0.01
+Final Allocation: [0.03610000002718083, 0.03610000002718083, 0.03610000002718082]
+Mean Utility: 0.9823235631576797
+Optimality: 0.9823235631576797
+Envy: 0.22113780875843148
+Incentive Alignment: 0.9931050510624697

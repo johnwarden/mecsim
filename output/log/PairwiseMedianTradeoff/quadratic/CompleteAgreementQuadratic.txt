@@ -1,0 +1,29 @@
+Overall optimal point: [0.25, 0.15, 0.3]
+Overall optimal utility: 1.0
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.25  0.15  0.3
+ 0.25  0.15  0.3
+ 0.25  0.15  0.3
+Current allocation: [0.24589894065828471, 0.18702536708667836, 0.2670756922550369]
+Current user utilities: [0.9858759626507853, 0.9858759626507853, 0.9858759626507853]
+Current overall optimalities: 0.9858759626507853
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.25  0.15  0.3
+ 0.25  0.15  0.3
+ 0.25  0.15  0.3
+Final Allocation: [0.24589894065828471, 0.18702536708667836, 0.2670756922550369]
+Mean Utility: 0.9858759626507853
+Optimality: 0.9858759626507853
+Envy: 0.0
+Incentive Alignment: 1.0

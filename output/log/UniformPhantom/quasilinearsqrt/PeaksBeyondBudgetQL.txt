@@ -1,0 +1,51 @@
+Overall optimal point: [0.4121551982994346, 0.33597547743028366, 0.25186932427028164]
+Overall optimal utility: 0.9815186883330123
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.244482  0.550085  0.205433
+ 0.611387  0.220099  0.168514
+ 0.377022  0.245956  0.377022
+Current allocation: [0.36123975774848593, 0.31938012112575703, 0.31938012112575703]
+Current user utilities: [0.9724774029456996, 0.9670784388174394, 0.9963267085583843]
+Current overall optimalities: 0.9970543896988029
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  Best response = [0.37795388520393625, 0.11087156648927163, 0.4374690379490545]
+  New allocation: [0.37966864155153457, 0.31016567922423277, 0.31016567922423277]
+  => Voter 3 improves by switching to best response
+  Old utility = 0.9963267085583843
+  New utility = 0.9965081253801644
+  Honest utility = 0.9963267085583843
+  Incentive Alignment = 0.9506681510066514
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.244482  0.550085  0.205433
+ 0.611387  0.220099  0.168514
+ 0.377954  0.110872  0.437469
+Current allocation: [0.37966864155153457, 0.31016567922423277, 0.31016567922423277]
+Current user utilities: [0.9701507739839518, 0.9716931030040559, 0.9965081253801644]
+Current overall optimalities: 0.9978930397336935
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.244482  0.550085  0.205433
+ 0.611387  0.220099  0.168514
+ 0.377954  0.110872  0.437469
+Final Allocation: [0.37966864155153457, 0.31016567922423277, 0.31016567922423277]
+Mean Utility: 0.9794506674560574
+Optimality: 0.9794506674560574
+Envy: 2.6357351396212647
+Incentive Alignment: 0.9506681510066514

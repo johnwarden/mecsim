@@ -1,0 +1,51 @@
+Overall optimal point: [0.7942370702031549, 0.1723051666644642, 0.0334577631323809]
+Overall optimal utility: 0.997564521392153
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.782609  0.195652  0.0217391
+ 0.64      0.16      0.04
+Current allocation: [0.7567287784700784, 0.19565217391129866, 0.04761904761862295]
+Current user utilities: [0.995463398162136, 0.9973866001788534, 0.9961904330837563]
+Current overall optimalities: 0.998779316133318
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.8375647579436377, 0.18322720551274382, 0.023584521829627315]
+  New allocation: [0.7619047619047619, 0.19047619047619047, 0.047619047619047616]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9973866001788534
+  New utility = 0.9974086507360697
+  Honest utility = 0.9973866001788534
+  Incentive Alignment = 0.9812088848071109
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.837565  0.183227  0.0235845
+ 0.64      0.16      0.04
+Current allocation: [0.7619047619047619, 0.19047619047619047, 0.047619047619047616]
+Current user utilities: [0.9960238411119947, 0.9974086507360697, 0.9962121075990955]
+Current overall optimalities: 0.9989811971510226
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.837565  0.183227  0.0235845
+ 0.64      0.16      0.04
+Final Allocation: [0.7619047619047619, 0.19047619047619047, 0.047619047619047616]
+Mean Utility: 0.9965481998157198
+Optimality: 0.9965481998157198
+Envy: 0.13848096240749452
+Incentive Alignment: 0.9812088848071109

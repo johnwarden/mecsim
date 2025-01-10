@@ -1,0 +1,51 @@
+Overall optimal point: [0.06169707004093471, 0.007074213000655244, 2.5000000000000008e-5]
+Overall optimal utility: 0.9893013536289234
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.0625    0.0001  2.5e-5
+ 0.060025  0.0576  2.5e-5
+ 0.0625    0.0001  2.5e-5
+Current allocation: [0.5202913631633715, 0.47950052029136314, 0.0002081165452653486]
+Current user utilities: [0.352569893489082, 0.6137591826751406, 0.352569893489082]
+Current overall optimalities: 0.4443873328099545
+Voter 1's turn.
+  Best response = [0.9610209540457836, 8.805597365117875e-5, 0.00997659570111456]
+  New allocation: [0.998003992015968, 0.001596806387225549, 0.00039920159680638726]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.352569893489082
+  New utility = 0.4710031763319025
+  Honest utility = 0.352569893489082
+  Incentive Alignment = 0.70047464598895
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.961021  8.8056e-5  0.0099766
+ 0.060025  0.0576     2.5e-5
+ 0.0625    0.0001     2.5e-5
+Current allocation: [0.998003992015968, 0.001596806387225549, 0.00039920159680638726]
+Current user utilities: [0.4710031763319025, 0.45532265273450945, 0.4710031763319025]
+Current overall optimalities: 0.47081340121917925
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.961021  8.8056e-5  0.0099766
+ 0.060025  0.0576     2.5e-5
+ 0.0625    0.0001     2.5e-5
+Final Allocation: [0.998003992015968, 0.001596806387225549, 0.00039920159680638726]
+Mean Utility: 0.46577633513277145
+Optimality: 0.46577633513277145
+Envy: 1.5680523597393026
+Incentive Alignment: 0.70047464598895

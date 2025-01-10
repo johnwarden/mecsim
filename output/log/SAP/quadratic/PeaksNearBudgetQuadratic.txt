@@ -1,0 +1,57 @@
+Overall optimal point: [0.33278913988044456, 0.2918902690037436, 0.37532059111581173]
+Overall optimal utility: 0.9978721932067103
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.276667  0.326667  0.396667
+ 0.36      0.28      0.36
+ 0.366667  0.266667  0.366667
+Current allocation: [0.2766666666666666, 0.26666666666666666, 0.36]
+Current user utilities: [0.9269002564246542, 0.9213302608477553, 0.9238213627992632]
+Current overall optimalities: 0.9259876160972581
+Voter 1's turn.
+  Best response = [0.4179029492455417, 0.4197676611796981, 0.4955812757201645]
+  New allocation: [0.36, 0.26666666666666666, 0.36]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.9269002564246542
+  New utility = 0.9804780354502406
+  Honest utility = 0.9269002564246542
+  Incentive Alignment = 0.9346806285494779
+Voter 2's turn.
+  Best response = [0.54972141535789, 0.30420603778882394, 0.3666606112122143]
+  New allocation: [0.36666666666666675, 0.26666666666666666, 0.3666606112122143]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9897165788813646
+  New utility = 0.9998073322130708
+  Honest utility = 0.9897165788813646
+  Incentive Alignment = 0.8708888566553297
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.417903  0.419768  0.495581
+ 0.549721  0.304206  0.366661
+ 0.366667  0.266667  0.366667
+Current allocation: [0.36666666666666675, 0.26666666666666666, 0.3666606112122143]
+Current user utilities: [0.9893827640670125, 0.9998073322130708, 0.9999956507481819]
+Current overall optimalities: 0.9985199064496001
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.417903  0.419768  0.495581
+ 0.549721  0.304206  0.366661
+ 0.366667  0.266667  0.366667
+Final Allocation: [0.36666666666666675, 0.26666666666666666, 0.3666606112122143]
+Mean Utility: 0.9963952490094217
+Optimality: 0.9963952490094217
+Envy: 1.0612886681169331
+Incentive Alignment: 0.8708888566553297

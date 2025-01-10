@@ -1,0 +1,51 @@
+Overall optimal point: [0.4786279265535859, 0.34335279755100895, 0.17801927589540478]
+Overall optimal utility: 0.9182371345186716
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.166667  0.766667  0.0666667
+ 0.9       0.1       0.0
+ 0.416667  0.166667  0.416667
+Current allocation: [0.4166666666666667, 0.16666666666666666, 0.06666666666666685]
+Current user utilities: [0.5735111662531017, 0.6625275938189849, 0.6540856031128407]
+Current overall optimalities: 0.6861424252083157
+Voter 1's turn.
+  Best response = [0.017687666823229132, 0.07516279244691164, 0.35795154948540514]
+  New allocation: [0.4166666666666667, 0.16666666666666666, 0.4166666666666667]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.5735111662531017
+  New utility = 0.7971464019851114
+  Honest utility = 0.5735111662531017
+  Incentive Alignment = 0.7450012563399122
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.0176877  0.0751628  0.357952
+ 0.9        0.1        0.0
+ 0.416667   0.166667   0.416667
+Current allocation: [0.4166666666666667, 0.16666666666666666, 0.4166666666666667]
+Current user utilities: [0.7971464019851114, 0.849889624724062, 1.0]
+Current overall optimalities: 0.9609122840571086
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.0176877  0.0751628  0.357952
+ 0.9        0.1        0.0
+ 0.416667   0.166667   0.416667
+Final Allocation: [0.4166666666666667, 0.16666666666666666, 0.4166666666666667]
+Mean Utility: 0.8823453422363912
+Optimality: 0.8823453422363912
+Envy: 20.285359801488855
+Incentive Alignment: 0.7450012563399122

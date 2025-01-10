@@ -1,0 +1,63 @@
+Overall optimal point: [0.9, 0.1]
+Overall optimal utility: 0.4666666666666666
+
+=== Round 1 ===
+Current report matrix:
+3×2 Matrix{Float64}:
+ 0.9  0.1
+ 0.9  0.1
+ 0.1  0.9
+Current allocation: [0.5444444444444446, 0.2777777777777778]
+Current user utilities: [0.4666666666666668, 0.4666666666666668, -0.06666666666666687]
+Current overall optimalities: 0.6190476190476191
+Voter 1's turn.
+  Best response = [0.8600640730663096, 1.8910408598611908e-14]
+  New allocation: [0.569980236459406, 0.1777778194582429]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.4666666666666668
+  New utility = 0.592202417001163
+  Honest utility = 0.4666666666666668
+  Incentive Alignment = 0.9641068278544213
+Voter 2's turn.
+  Best response = [0.8600677020673839, 8.345745092991794e-14]
+  New allocation: [0.5961012293407862, 0.10000009693157458]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.592202417001163
+  New utility = 0.6961011324092117
+  Honest utility = 0.592202417001163
+  Incentive Alignment = 0.928214104329756
+Voter 3's turn.
+  Best response = [1.2379658454080042e-15, 0.8600515902697226]
+  New allocation: [0.44444446130643667, 0.11111121328596063]
+  => Voter 3 improves by switching to best response
+  Old utility = -0.29610113240921176
+  New utility = -0.13333324802047608
+  Honest utility = -0.29610113240921176
+  Incentive Alignment = 0.892319388779386
+
+=== Round 2 ===
+Current report matrix:
+3×2 Matrix{Float64}:
+ 0.860064     1.89104e-14
+ 0.860068     8.34575e-14
+ 1.23797e-15  0.860052
+Current allocation: [0.44444446130643667, 0.11111121328596063]
+Current user utilities: [0.533333248020476, 0.533333248020476, -0.13333324802047608]
+Current overall optimalities: 0.6666666057289115
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×2 Matrix{Float64}:
+ 0.860064     1.89104e-14
+ 0.860068     8.34575e-14
+ 1.23797e-15  0.860052
+Final Allocation: [0.44444446130643667, 0.11111121328596063]
+Mean Utility: 0.31111108267349197
+Optimality: 0.31111108267349197
+Envy: 66.66664960409521
+Incentive Alignment: 0.892319388779386

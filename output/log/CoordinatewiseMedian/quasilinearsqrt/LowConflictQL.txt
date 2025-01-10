@@ -1,0 +1,51 @@
+Overall optimal point: [0.7942370702031549, 0.1723051666644642, 0.0334577631323809]
+Overall optimal utility: 0.997564521392153
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.782609  0.195652  0.0217391
+ 0.64      0.16      0.04
+Current allocation: [0.7776177741205512, 0.1892614688335733, 0.03312075704587533]
+Current user utilities: [0.9970753943711081, 0.9993726593698148, 0.995517492354084]
+Current overall optimalities: 0.9997567348390872
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  Best response = [0.962862149803792, 0.22659678894832144, 6.055454452400318e-6]
+  New allocation: [0.7834034270904585, 0.18433750885918423, 0.03225906405035725]
+  => Voter 2 improves by switching to best response
+  Old utility = 0.9993726593698148
+  New utility = 0.9993983235304943
+  Honest utility = 0.9993726593698148
+  Incentive Alignment = 0.9386076339514325
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.962862  0.226597  6.05545e-6
+ 0.64      0.16      0.04
+Current allocation: [0.7834034270904585, 0.18433750885918423, 0.03225906405035725]
+Current user utilities: [0.9975493791577089, 0.9993983235304943, 0.9953700372552712]
+Current overall optimalities: 0.9998744194068235
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.833333  0.133333  0.0333333
+ 0.962862  0.226597  6.05545e-6
+ 0.64      0.16      0.04
+Final Allocation: [0.7834034270904585, 0.18433750885918423, 0.03225906405035725]
+Mean Utility: 0.9974392466478248
+Optimality: 0.9974392466478248
+Envy: 0.4028286275223114
+Incentive Alignment: 0.9386076339514325

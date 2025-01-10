@@ -1,0 +1,51 @@
+Overall optimal point: [0.06169707004093471, 0.007074213000655244, 2.5000000000000008e-5]
+Overall optimal utility: 0.9893013536289234
+
+=== Round 1 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.0625    0.0001  2.5e-5
+ 0.060025  0.0576  2.5e-5
+ 0.0625    0.0001  2.5e-5
+Current allocation: [0.6664670658453056, 0.33313373251197237, 0.00039920159680638726]
+Current user utilities: [0.3951822316358083, 0.6059753698198257, 0.3951822316358083]
+Current overall optimalities: 0.47048011136661694
+Voter 1's turn.
+  Best response = [0.19950658449867986, 0.09828551811648772, 0.0002846321628391268]
+  New allocation: [0.6661892188643744, 0.33285588553450407, 0.0009548956011214701]
+  => Voter 1 improves by switching to best response
+  Old utility = 0.3951822316358083
+  New utility = 0.3952003980489302
+  Honest utility = 0.3951822316358083
+  Incentive Alignment = 0.9438145258267495
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+
+=== Round 2 ===
+Current report matrix:
+3×3 Matrix{Float64}:
+ 0.199507  0.0982855  0.000284632
+ 0.060025  0.0576     2.5e-5
+ 0.0625    0.0001     2.5e-5
+Current allocation: [0.6661892188643744, 0.33285588553450407, 0.0009548956011214701]
+Current user utilities: [0.3952003980489302, 0.6058950793497707, 0.3952003980489302]
+Current overall optimalities: 0.47046530036096806
+Voter 1's turn.
+  => No improvement found; voter 1 stays with old report.
+Voter 2's turn.
+  => No improvement found; voter 2 stays with old report.
+Voter 3's turn.
+  => No improvement found; voter 3 stays with old report.
+Converged! Maximum improvement in utility < 1.0e-5.
+Final reports:
+3×3 Matrix{Float64}:
+ 0.199507  0.0982855  0.000284632
+ 0.060025  0.0576     2.5e-5
+ 0.0625    0.0001     2.5e-5
+Final Allocation: [0.6661892188643744, 0.33285588553450407, 0.0009548956011214701]
+Mean Utility: 0.4654319584825437
+Optimality: 0.4654319584825437
+Envy: 21.06946813008405
+Incentive Alignment: 0.9438145258267495
