@@ -11,7 +11,6 @@ return (reports::Matrix{Float64}) -> begin
     # Build a list of tradeoff matrices
     T = [tradeoff_matrix_from_report(reports[i, :]) for i in 1:n]
 
-    useOfBudget = median(sum(reports, dims=2))
 
     # median_tradeoffs
     median_tradeoffs = [ 
@@ -30,5 +29,6 @@ return (reports::Matrix{Float64}) -> begin
         v = v * -1 
     end
 
-    return v ./ sum(v) .* useOfBudget
+    portion_of_budget = median(min.(sum(reports, dims=2), 1))
+    return v ./ sum(v) .* portion_of_budget
 end

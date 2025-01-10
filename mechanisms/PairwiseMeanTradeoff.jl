@@ -6,20 +6,18 @@ using LinearAlgebra, Statistics
 # 3. Return eigenvector of resulting matrix
 return reports -> begin
     n, m = size(reports)
-    T = [tradeoff_matrix_from_report(reports[i, :]) for i in 1:n]
-   
-       useOfBudget = median(sum(reports, dims=2))
+    T = [tradeoff_matrix_from_report(reports[i, :]) for i in 1:n] 
  
     mean_tradeoffs = [
-        i == j ? 0.0 : mean(T[u][i, j] for u in 1:n)
+        mean(T[u][i, j] for u in 1:n)
         for i in 1:m, j in 1:m
     ]
     
     vec = real(eigen(mean_tradeoffs).vectors[:, m])
-    
+
     v = minimum(vec) < 0 ? -vec : vec
 
-    return v ./ sum(v) .* useOfBudget
-
+    portion_of_budget = median(min.(sum(reports, dims=2), 1))
+    return v ./ sum(v) .* portion_of_budget
 
 end

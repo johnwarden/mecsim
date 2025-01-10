@@ -58,11 +58,8 @@ end
 function piecewise_uniform_mechanism(reports::Matrix{Float64})
     n, m = size(reports)
 
-    # portion_of_budget = median(min.(sum(reports, dims=2), 1))
-
     norm_reports = reports ./ sum(reports, dims=2)
-
-    
+ 
     # Find t* that makes medians sum to 1
     t_star = find_optimal_t(norm_reports)
     

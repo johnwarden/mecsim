@@ -22,8 +22,6 @@ return (reports) -> begin
     T = [pairwise_matrix_from_reports(reports[i, :]) for i in 1:n]
 
 
-    useOfBudget = median(sum(reports, dims=2))
-
 
     # For each pair, calculate the probability of a user preferring i over j, with laplace smoothing using Jeffrey's prior Beta(0.5,0.5)
     pairwise_percentages = [ 
@@ -43,7 +41,8 @@ return (reports) -> begin
         v = v * -1 
     end
 
-    return v ./ sum(v) .* useOfBudget
+    portion_of_budget = median(min.(sum(reports, dims=2), 1))
+    return v ./ sum(v) .* portion_of_budget
 
 end
 
