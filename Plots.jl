@@ -4,18 +4,23 @@ function plot_preference_profile(
     utility::Function,
     n::Int,
     m::Int,
+    base_dir::String,
     pref_name::String
 )
     # Extract preference domain from path
     path_parts = split(pref_name, "/")
-    pref_domain = lowercase(path_parts[1])
+    pref_class = lowercase(path_parts[1])
     
     # Create output directory with preference domain subdirectory
-    out_dir = joinpath("output", "plots", "preferences", pref_domain)
+    out_dir = joinpath(base_dir, "plots", "preferences", pref_class)
     mkpath(out_dir)
 
     # Get just the preference name without the class directory
     plot_name = path_parts[end]
+
+
+    @show out_dir
+    @show plot_name
 
     # Determine a grid layout so it forms a roughly square shape
     rows = cols = ceil(Int, sqrt(n))

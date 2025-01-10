@@ -138,7 +138,7 @@ for pref_file in preference_files
     Utility, optimal_points, overall_optimal_point = pref_profile
 
     (n, m) = size(optimal_points)
-    plot_preference_profile(Utility, n, m, String(pref_name))
+    plot_preference_profile(Utility, n, m, OUTPUT_DIR, String(pref_name))
 
     println("optimalPoints = ")
     display(optimal_points)
