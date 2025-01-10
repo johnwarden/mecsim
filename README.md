@@ -1,30 +1,30 @@
-# Budget Allocation Mechanism Simulator
+# Participatory Budget Aggregation Mechanism Simulator
 
-This repository contains a simulator for comparing budget allocation mechanisms. It simulates an iterative process where users strategically modify their reported preferred allocations in an attempt to maximize their individual utility.
+This repository contains a simulator for comparing budget aggregation mechanisms. It simulates an iterative process where each user proposes an aggregation vector, and then strategically modify their proposals in response to other users' proposals in an attempt to maximize their individual utility.
 
-Interestingly, for a wide variety of preference profiles and mechanisms, users arrive at an equilibrium that is close to the overall-utility-maximizing allocation -- even though users individual reports different significantly from their individual optimal allocations.
+Interestingly, for a wide variety of preference profiles and mechanisms, users arrive at an equilibrium that is close to the overall-utility-maximizing allocation -- even though users final proposals different significantly from their individual optimal allocations.
 
 ## Motivation
 
 ### Incentive Compatible Budget Allocation
 
-The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists  tried this, they ran into difficulties. Not only are there different ways you can define the "average"; the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists tried this, they ran into difficulties. Setting aside the different ways you can define "average", the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
 
-This may seem counter-intuitive. Normally when you vote, if you vote for the person you want to win, that person is more likely to win! So there is no incentive to lie. We say that majority voting (between two candidates) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for exactly what you want.
-
+This may seem counter-intuitive. In a simple majority vote between two alternatives, if you vote for the alternative you prefer, that alternative is more likely to be chosen! So there is no incentive to lie. We say that majority voting (between two alternatives) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for what you want.
+ 
 But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average vote for the group is 40%. If the final mechanism is a simple mean, then your favorite project will be under-funded (while other projects are over-funded). So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, raising the mean for your favorite project and bringing the results closer to your ideal.
 
-Now if there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get complicated. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a mechanism for choosing among more than two alternatives that was strategyproof and not severely limited in certain ways. 
+Now if there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get complicated. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a strategyproof mechanism for choosing among more than two alternatives that was not either dictatorial, or that limited what kind of preferences users could have.
 
 ### Alternatives
 
-So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we recognize it as a kind of game, where people make a proposal they think will produce the best results for themselves, given the current set of proposals and the mechanism for aggregating them. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
+So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we acknowledge it as a negotiation, where people make a proposal they think will produce the best results for themselves, given the current set of proposals of other users. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
 
-Here is the point where we move from theory to experiment. These simulations show that, yes, things kind of do balance out.
+Here is the point where we move from theory to experiment. These simulations show that, yes, things actually do balance out pretty nicely!
 
 ## Goals of the Simulation
 
-Using a variety of profiles of user preferences, the simulation tells us if:
+Using a variety of profiles of user preferences, and a variety of different aggregation formulas (mechanisms), the simulation tells us if:
 
 - if an equilibrium is reached
 - how close the final allocation is to the overall [optimal](#defining-optimality)
@@ -33,13 +33,13 @@ Using a variety of profiles of user preferences, the simulation tells us if:
 
 ## Setup
 
-`n` users need to allocate a budget across `m` items. Each user has a utility functions that returns their total utility given their allocation vector.
-
-User submits their proposed allocation vectors and the mechanism outputs a final allocation. If the allocation is greater than the budget of 1.0, then the allocation vector is scaled down so that the sum equals 1.0.
-
-Users then take turns updating their reports by attempting to best-respond: to maximizing their own utility given the reports of other users. The best response is found using Nelder-Mead.
-
-The simulation terminates if no user is able to improve their utility more than some threshold, or when a maximum number of rounds is reached.
+- `n` users need to allocate a budget across `m` items. 
+- The budget is capped at 1.0. 
+- Each user has a utility functions that returns their total utility given their allocation vector.
+- User submits their proposed allocation vectors and the mechanism outputs a final allocation. 
+- If the final allocation is greater than the budget of 1.0, then the allocation vector is scaled down so that the sum equals 1.0.
+- Users then take turns updating their reports by attempting to best-respond: to maximizing their own utility given the reports of other users. The best response is found using Nelder-Mead.
+- The simulation terminates if no user is able to improve their utility more than some threshold, or when a maximum number of rounds is reached.
 
 ## Summary of Results
 
@@ -71,7 +71,8 @@ The results don't necessarily show us which mechanism is "best", because results
 ### Description of Output Columns 
 
 - Equilibrium is the % of profiles for which equilibrium is reached
-- Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0.
+- Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0
+- "vs. Honest" is the difference in utility of the equilibrium allocation and the allocation that would result if all users reported honestly. A positive number means that strategic reporting has had a net positive effect on social welfare. 
 - Envy is the difference between the utility of the voter who has the maximum utility in the final allocation and the voter with the minimum
 - Incentive Alignment is a mean Euclidian distance between voters' "honest" reports and final reports.
 
@@ -222,7 +223,7 @@ return sqrt_preferences([
 
 The simulation generates a plot of the preference profile in output/plots
 
-![Condorcet Cycle Preference Profile](output/plots/preferences/HighConflictTwoVoters.png)
+![Condorcet Cycle Preference Profile](output/plots/preferences/sqrt/HighConflictTwoVoters.png)
 
 #### Example Mechanism: `SAP.jl`
 
@@ -292,7 +293,7 @@ return SAP
 
 #### Simulation Output
 
-And a detailed log of the simulation is output to: output/logs/SAP/HighConflictTwoVoters.txt
+And a detailed log of the simulation is output to: output/log/SAP/sqrt/HighConflictTwoVoters.txt
 
 In this case, voter 1 modifies their proposed allocation to best-respond to voter 2. After this, the voters are already in equilibrium -- neither voter can improve their utility by changing their vote.
 
