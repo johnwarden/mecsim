@@ -87,7 +87,7 @@ function progress_update(
     incentive_alignment::Float64
 )
     @printf(
-        "\r[Running] Pref=%s | Mech=%s | Round=%d | Alloc=%.2f,%.2f,... | Optimality=%.1f | Align=%.1f",
+        "\r[Running] Pref=%s | Mech=%s | Round=%d | Alloc=%.2f,%.2f,... | Optim=%.1f | Align=%.1f",
         pref_name,
         mechanism_name,
         round_num,
@@ -104,19 +104,34 @@ end
 # -----------------------------------------------------------------------------
 
 final_table_texts = String[]
-overall_results = Dict{String, Vector{Tuple{Int,Bool,Float64,Float64,Float64,Float64}}}()
+overall_results = Dict{String, Vector{NamedTuple}}()
+
+# Create output directories for each preference class
+for pref_file in preference_files
+    pref_parts = split(pref_file, "preferences/")
+    if length(pref_parts) > 1
+        path_parts = split(pref_parts[2], "/")
+        pref_class = lowercase(path_parts[1])
+        mkpath(joinpath("output", "logs", pref_class))
+        mkpath(joinpath("output", "plots", "preferences", pref_class))
+    end
+end
 
 for pref_file in preference_files
     pref_name = endswith(pref_file, ".jl") ?
-        String(chop(basename(pref_file), tail=3)) :
-        basename(pref_file)
+        String(chop(pref_file, tail=3)) :
+        pref_file
+    
+    # Extract relative path from "preferences" directory
+    pref_parts = split(pref_name, "preferences/")
+    pref_name = length(pref_parts) > 1 ? string(pref_parts[end]) : pref_name
 
     println("Loading preferences $pref_file")
     pref_profile = include(pref_file)
     Utility, optimal_points, overall_optimal_point = pref_profile
 
     (n, m) = size(optimal_points)
-    plot_preference_profile(Utility, n, m, pref_name)
+    plot_preference_profile(Utility, n, m, String(pref_name))
 
     println("optimalPoints = ")
     display(optimal_points)
@@ -126,10 +141,9 @@ for pref_file in preference_files
     total_utility(alloc) = sum(Utility(i, alloc) for i in 1:n)
     max_utility = total_utility(overall_optimal_point)
 
-    user_opt_utilities = Float64[]
-    for i in 1:n
-        push!(user_opt_utilities, Utility(i, optimal_points[i, :]))
-    end
+    user_opt_utilities = [ Utility(i, optimal_points[i, :]) for i in 1:n ]
+
+
     rows_data = NamedTuple[]
     initial_reports = copy(optimal_points)
 
@@ -141,17 +155,22 @@ for pref_file in preference_files
         progress_update(mechanism_name, pref_name, 0, zeros(m), 0.0, 1.0)
         mechanism_func = include(mech_file)
 
-        out_dir = joinpath("output/log", mechanism_name)
+        # Extract preference class from path
+        path_parts = split(pref_name, "/")
+        pref_class = lowercase(path_parts[1])
+        pref_basename = path_parts[end]
+        
+        # Create log directory with preference class subdirectory
+        out_dir = joinpath("output", "log", mechanism_name, pref_class)
         if !isdir(out_dir)
             mkpath(out_dir)
         end
-        out_file = joinpath(out_dir, pref_name * ".txt")
+        out_file = joinpath(out_dir, pref_basename * ".txt")
 
         open(out_file, "w") do log_file
-            final_reports, alloc_history, converged, incentive_alignment, envy = simulate(
+            final_reports, alloc_history, converged, incentive_alignment, envy, honest_alloc = simulate(
                 mechanism_name,
                 mechanism_func;
-                max_rounds = 10,
                 Utility = Utility,
                 initial_reports = initial_reports,
                 optimal_points = optimal_points,
@@ -164,44 +183,56 @@ for pref_file in preference_files
             num_rounds = Int(size(alloc_history, 1) ÷ n)
             mean_utility = total_utility(final_alloc) / n
             opt_percent = (total_utility(final_alloc) / max_utility) * 100
+            honest_opt_percent = (total_utility(honest_alloc) / max_utility) * 100
 
             push!(rows_data, (
-                mechanism_name      = mechanism_name,
-                num_rounds         = num_rounds,
-                converged         = converged,
-                final_reports     = round.(final_reports, digits=3),
-                final_alloc       = round.(final_alloc, digits=3),
-                mean_utility      = round(mean_utility, digits=3),
+                mechanism_name = mechanism_name,
+                num_rounds = num_rounds,
+                converged = converged,
+                final_reports = round.(final_reports, digits=3),
+                final_alloc = round.(final_alloc, digits=3),
+                mean_utility = round(mean_utility, digits=3),
                 optimality_percent = round(opt_percent, digits=1),
-                envy             = round(envy, digits=3),
+                honest_optimality_percent = round(honest_opt_percent, digits=1),
+                envy = round(envy, digits=3),
                 incentive_alignment = round(incentive_alignment * 100, digits=1)
             ))
 
             if !haskey(overall_results, mechanism_name)
-                overall_results[mechanism_name] = Vector{Tuple{Int,Bool,Float64,Float64,Float64,Float64}}()
+                overall_results[mechanism_name] = Vector{NamedTuple}()
             end
             push!(
                 overall_results[mechanism_name],
-                (num_rounds, converged, mean_utility, opt_percent, incentive_alignment, envy)
+                (
+                    rounds=num_rounds, 
+                    converged=converged,
+                    mean_utility=mean_utility,
+                    optimality=opt_percent,
+                    honest_optimality=honest_opt_percent,
+                    incentive_alignment=incentive_alignment,
+                    envy=envy,
+                    preference=pref_name
+                )
             )
             println()  # end progress line
         end
     end
 
-    # Build data for summary
-    optimal_info = (
-        user_opt_allocations   = optimal_points,
-        user_opt_utilities     = user_opt_utilities,
-        overall_opt_allocation = overall_optimal_point,
-        overall_max_utility    = max_utility
-    )
-    preference_info = (
-        optimal    = optimal_info,
-        mechanisms = rows_data
-    )
 
     # Print preference-level summaries
-    print_preference_summary!(final_table_texts, pref_name, preference_info)
+    preference_profile_summary!(
+        final_table_texts,
+        pref_name,
+        optimal_points,
+        user_opt_utilities,
+        overall_optimal_point,
+        max_utility
+    )
+    print_mechanism_outcomes!(
+        final_table_texts,
+        pref_name,
+        rows_data
+    )
 end
 
 summary_output_file = joinpath("output", "summary.txt")

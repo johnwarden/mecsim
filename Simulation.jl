@@ -92,6 +92,9 @@ function simulate(
     # (You appear to use `cap` from Preferences.jl or something similar.)
     capped_mechanism_func = x -> cap(mechanism_func(x))
 
+    # Calculate honest allocation at the start using optimal points as reports
+    honest_allocation = capped_mechanism_func(optimal_points)
+    
     alloc = capped_mechanism_func(current_reports)
     incentive_alignment = 1.0
 
@@ -101,8 +104,10 @@ function simulate(
 
     total_utility(alloc) = sum(Utility(i, alloc) for i in 1:n)
 
-    println(logIO, "Optimal points: $optimal_points")
-    println(logIO, "Starting allocation: $alloc")
+    # println(logIO, "Starting/honest allocation: $alloc")
+    # println(logIO, "Starting/honest optimality: $(total_utility(alloc)/n)")
+    println(logIO, "Overall optimal point: $overall_optimal_point")
+    println(logIO, "Overall optimal utility: $(total_utility(overall_optimal_point)/n)")
 
     for round_idx in 1:max_rounds
         println(logIO, "\n=== Round $round_idx ===")
@@ -110,6 +115,12 @@ function simulate(
         show(IOContext(logIO), "text/plain", current_reports)
         println(logIO, "")
         println(logIO, "Current allocation: $alloc")
+
+        user_utilities = [ Utility(i, alloc) for i in 1:n ]
+        println(logIO, "Current user utilities: $user_utilities")
+
+        overall_optimality = total_utility(alloc)/total_utility(overall_optimal_point)
+        println(logIO, "Current overall optimalities: $overall_optimality")
 
         round_converged = true
 
@@ -153,26 +164,29 @@ function simulate(
 
 
             if (new_utility > old_utility) && (abs(new_utility - old_utility) > termination_threshold)
-                println(logIO, "  Best response = $best_resp")
-                println(logIO, "  New allocation: $new_alloc")
-                println(logIO, "  => Voter $u improves by switching to best response")
                 current_reports = updated_reports
                 alloc = new_alloc
                 round_converged = false
+
+                # Naive measure of "incentive alignment":
+                incentive_alignment = mean(
+                    1 - norm(current_reports[i, :] - optimal_points[i, :])
+                    for i in 1:n
+                )
+
+                println(logIO, "  Best response = $best_resp")
+                println(logIO, "  New allocation: $new_alloc")
+                println(logIO, "  => Voter $u improves by switching to best response")
+
+                println(logIO, "  Old utility = $old_utility")
+                println(logIO, "  New utility = $new_utility")
+                println(logIO, "  Honest utility = $honest_utility")
+                println(logIO, "  Incentive Alignment = $incentive_alignment")
+
             else
                 println(logIO, "  => No improvement found; voter $u stays with old report.")
             end
 
-            # Naive measure of "incentive alignment":
-            incentive_alignment = mean(
-                1 - norm(current_reports[i, :] - optimal_points[i, :])
-                for i in 1:n
-            )
-
-            println(logIO, "  Old utility = $old_utility")
-            println(logIO, "  New utility = $new_utility")
-            println(logIO, "  Honest utility = $honest_utility")
-            println(logIO, "  Incentive Alignment = $incentive_alignment")
             push!(alloc_history, alloc)
         end
 
@@ -218,7 +232,7 @@ function simulate(
     # 3D Plot if dimension == 3
     ah = Matrix(transpose(hcat(alloc_history...)))
 
-    return (final_reports, ah, converged, incentive_alignment, envy)
+    return (final_reports, ah, converged, incentive_alignment, envy, honest_allocation)
 end
 
 # -----------------------------------------------------------------------------

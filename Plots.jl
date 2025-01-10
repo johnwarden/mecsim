@@ -6,10 +6,16 @@ function plot_preference_profile(
     m::Int,
     pref_name::String
 )
-
-    # Create output directory
-    out_dir = "output/plots/preferences"
+    # Extract preference class from path
+    path_parts = split(pref_name, "/")
+    pref_class = lowercase(path_parts[1])
+    
+    # Create output directory with preference class subdirectory
+    out_dir = joinpath("output", "plots", "preferences", pref_class)
     mkpath(out_dir)
+
+    # Get just the preference name without the class directory
+    plot_name = path_parts[end]
 
     # Determine a grid layout so it forms a roughly square shape
     rows = cols = ceil(Int, sqrt(n))
@@ -69,5 +75,5 @@ function plot_preference_profile(
     end
 
     # Finally, save everything in one file
-    savefig(plot_obj, joinpath(out_dir, pref_name * ".png"))
+    savefig(plot_obj, joinpath(out_dir, plot_name * ".png"))
 end
