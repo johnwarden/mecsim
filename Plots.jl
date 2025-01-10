@@ -18,10 +18,6 @@ function plot_preference_profile(
     # Get just the preference name without the class directory
     plot_name = path_parts[end]
 
-
-    @show out_dir
-    @show plot_name
-
     # Determine a grid layout so it forms a roughly square shape
     rows = cols = ceil(Int, sqrt(n))
 

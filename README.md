@@ -251,7 +251,6 @@ return SAP
 ```
 
 #### Run the Simulation
-
     ❯ just sim mechanisms/SAP.jl preferences/sqrt/HighConflictTwoVoters.jl
     time julia --project Main.jl mechanisms/SAP.jl preferences/sqrt/HighConflictTwoVoters.jl
     Loading preferences /Users/jwarden/Dropbox/social-protocols/mecsim/preferences/sqrt/HighConflictTwoVoters.jl
@@ -260,37 +259,38 @@ return SAP
      0.961538  0.0384615
      0.1       0.9
     overall_optimal_point = [0.5620173672946042, 0.43798263270539584]
-    [Running] Pref=HighConflictTwoVoters | Mech=SAP | Round=2 | Alloc=0.10,0.90,... | Optimality=86.5 | Align=46.6 ✅
+    [Running] Pref=sqrt/HighConflictTwoVoters | Mech=SAP | Round=2 | Alloc=0.10,0.90,... | Optim=86.5 | Align=46.6 ✅
 
-    Preference Profile: HighConflictTwoVoters
+    #####################################
+    # Preference Profile: sqrt/HighConflictTwoVoters
+    #####################################
 
-    Optimal Points and Utilities:
-    ┌──────┬────────────────────┬─────────────────┐
-    │ User │ Optimal Allocation │ Optimal Utility │
-    ├──────┼────────────────────┼─────────────────┤
-    │    1 │   [0.962, 0.038]   │             1.0 │
-    │    2 │     [0.1, 0.9]     │             1.0 │
-    │  ALL │   [0.562, 0.438]   │           0.865 │
-    └──────┴────────────────────┴─────────────────┘
+    Preference Profile Summary:
+    ┌─────────┬────────────────────┬─────────────────┐
+    │    User │ Optimal Allocation │ Optimal Utility │
+    ├─────────┼────────────────────┼─────────────────┤
+    │       1 │   [0.962, 0.038]   │             1.0 │
+    │       2 │     [0.1, 0.9]     │             1.0 │
+    │ OVERALL │   [0.562, 0.438]   │           0.865 │
+    └─────────┴────────────────────┴─────────────────┘
 
 
-    Mechanism Outcomes for HighConflictTwoVoters:
-    ┌───────────┬────────┬────┬─────────────────────────┬───────────┬──────┬───────┬────────┐
-    │ Mechanism │ Rounds │ Eq │ Reports                 │ Alloc     │ Opt% │ Envy% │ Align% │
-    ├───────────┼────────┼────┼─────────────────────────┼───────────┼──────┼───────┼────────┤
-    │ SAP       │      2 │ ✓  │ [0.03,0.57];[0.10,0.90] │ 0.10,0.90 │ 86.5 │  50.4 │   46.6 │
-    └───────────┴────────┴────┴─────────────────────────┴───────────┴──────┴───────┴────────┘
+    Mechanism Outcomes for sqrt/HighConflictTwoVoters:
+    ┌───────────┬────────┬────┬─────────────────────────┬──────────────────┬──────┬────────────┬───────┬────────┐
+    │ Mechanism │ Rounds │ Eq │ Final Reports           │ Final Allocation │ Opt% │ vs. Honest │ Envy% │ Align% │
+    ├───────────┼────────┼────┼─────────────────────────┼──────────────────┼──────┼────────────┼───────┼────────┤
+    │ SAP       │      2 │ ✓  │ [0.03,0.57];[0.10,0.90] │ 0.10,0.90        │ 86.5 │      +49.8 │  50.4 │   46.6 │
+    └───────────┴────────┴────┴─────────────────────────┴──────────────────┴──────┴────────────┴───────┴────────┘
 
 
     ================================================================================
-    OVERALL SUMMARY ACROSS ALL PREFERENCES
+    SUMMARY BY PREFERENCE DOMAIN
     ================================================================================
-    ┌───────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
-    │ Mechanism │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
-    ├───────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ SAP       │         2.0 │           100.0 │                86.5 │          50.4 │               46.6 │
-    └───────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
-
+    ┌───────────┬───────────────────┬─────────────┬─────────────────┬─────────────────────┬────────────┬───────────────┬────────────────────┐
+    │ Mechanism │ Preference Domain │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ vs. Honest │ Mean Envy (%) │ Mean Alignment (%) │
+    ├───────────┼───────────────────┼─────────────┼─────────────────┼─────────────────────┼────────────┼───────────────┼────────────────────┤
+    │ SAP       │ sqrt              │         2.0 │           100.0 │                86.5 │      +49.8 │          50.4 │               46.6 │
+    └───────────┴───────────────────┴─────────────┴─────────────────┴─────────────────────┴────────────┴───────────────┴────────────────────┘
 
 #### Simulation Output
 
@@ -298,8 +298,8 @@ And a detailed log of the simulation is output to: output/log/SAP/sqrt/HighConfl
 
 In this case, voter 1 modifies their proposed allocation to best-respond to voter 2. After this, the voters are already in equilibrium -- neither voter can improve their utility by changing their vote.
 
-    Optimal points: [0.9615384615384615 0.038461538461538436; 0.1 0.9]
-    Starting allocation: [0.1, 0.038461538461538436]
+    Overall optimal point: [0.5620173672946042, 0.43798263270539584]
+    Overall optimal utility: 0.8649100931185952
 
     === Round 1 ===
     Current report matrix:
@@ -307,6 +307,8 @@ In this case, voter 1 modifies their proposed allocation to best-respond to vote
      0.961538  0.0384615
      0.1       0.9
     Current allocation: [0.1, 0.038461538461538436]
+    Current user utilities: [0.34854837493455965, 0.28605210188381264]
+    Current overall optimalities: 0.3668592156961665
     Voter 1's turn.
       Best response = [0.03396559495192303, 0.5661207932692303]
       New allocation: [0.1, 0.9]
@@ -317,10 +319,6 @@ In this case, voter 1 modifies their proposed allocation to best-respond to vote
       Incentive Alignment = 0.46642345628490733
     Voter 2's turn.
       => No improvement found; voter 2 stays with old report.
-      Old utility = 1.0
-      New utility = 0.9999969722338864
-      Honest utility = 1.0
-      Incentive Alignment = 0.46642345628490733
 
     === Round 2 ===
     Current report matrix:
@@ -328,19 +326,13 @@ In this case, voter 1 modifies their proposed allocation to best-respond to vote
      0.0339656  0.566121
      0.1        0.9
     Current allocation: [0.1, 0.9]
+    Current user utilities: [0.49613893835683387, 1.0]
+    Current overall optimalities: 0.864910093118595
     Voter 1's turn.
       => No improvement found; voter 1 stays with old report.
-      Old utility = 0.49613893835683387
-      New utility = 0.49613893835683387
-      Honest utility = 0.34854837493455965
-      Incentive Alignment = 0.46642345628490733
     Voter 2's turn.
       => No improvement found; voter 2 stays with old report.
-      Old utility = 1.0
-      New utility = 0.9999969722338864
-      Honest utility = 1.0
-      Incentive Alignment = 0.46642345628490733
-    Converged! Maximum improvement in utility < 0.0001.
+    Converged! Maximum improvement in utility < 1.0e-5.
     Final reports:
     2×2 Matrix{Float64}:
      0.0339656  0.566121

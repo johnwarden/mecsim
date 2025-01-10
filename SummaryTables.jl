@@ -105,7 +105,7 @@ function print_overall_summary!(output, overall_results)
 
     header = [
         "Mechanism",
-        "Preference Comain",
+        "Preference Domain",
         "Mean Rounds",
         "Equilibrium (%)",
         "Mean Optimality (%)",
