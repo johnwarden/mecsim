@@ -6,12 +6,12 @@ function plot_preference_profile(
     m::Int,
     pref_name::String
 )
-    # Extract preference class from path
+    # Extract preference domain from path
     path_parts = split(pref_name, "/")
-    pref_class = lowercase(path_parts[1])
+    pref_domain = lowercase(path_parts[1])
     
-    # Create output directory with preference class subdirectory
-    out_dir = joinpath("output", "plots", "preferences", pref_class)
+    # Create output directory with preference domain subdirectory
+    out_dir = joinpath("output", "plots", "preferences", pref_domain)
     mkpath(out_dir)
 
     # Get just the preference name without the class directory

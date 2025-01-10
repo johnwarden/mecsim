@@ -110,14 +110,14 @@ overall_results = Dict{String, Vector{NamedTuple}}()
 const OUTPUT_DIR = joinpath("output", "local")
 mkpath(OUTPUT_DIR)
 
-# Create output directories for each preference class
+# Create output directories for each preference domain
 for pref_file in preference_files
     pref_parts = split(pref_file, "preferences/")
     if length(pref_parts) > 1
         path_parts = split(pref_parts[2], "/")
-        pref_class = lowercase(path_parts[1])
-        mkpath(joinpath(OUTPUT_DIR, "log", pref_class))
-        mkpath(joinpath(OUTPUT_DIR, "plots", "preferences", pref_class))
+        pref_domain = lowercase(path_parts[1])
+        mkpath(joinpath(OUTPUT_DIR, "log", pref_domain))
+        mkpath(joinpath(OUTPUT_DIR, "plots", "preferences", pref_domain))
     end
 end
 
@@ -162,13 +162,13 @@ for pref_file in preference_files
         progress_update(mechanism_name, pref_name, 0, zeros(m), 0.0, 1.0)
         mechanism_func = include(mech_file)
 
-        # Extract preference class from path
+        # Extract preference domain from path
         path_parts = split(pref_name, "/")
-        pref_class = lowercase(path_parts[1])
+        pref_domain = lowercase(path_parts[1])
         pref_basename = path_parts[end]
         
-        # Create log directory with preference class subdirectory
-        out_dir = joinpath(OUTPUT_DIR, "log", mechanism_name, pref_class)
+        # Create log directory with preference domain subdirectory
+        out_dir = joinpath(OUTPUT_DIR, "log", mechanism_name, pref_domain)
         if !isdir(out_dir)
             mkpath(out_dir)
         end

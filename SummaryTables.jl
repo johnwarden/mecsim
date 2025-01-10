@@ -32,7 +32,7 @@ function create_summary_dataframe(overall_results)
     df = DataFrame(
         mechanism = String[],
         preference = String[],
-        preference_class = String[],
+        preference_domain = String[],
         rounds = Int[],
         converged = Bool[],
         mean_utility = Float64[],
@@ -44,14 +44,14 @@ function create_summary_dataframe(overall_results)
 
     for (mech_name, results) in overall_results
         for result in results
-            # Extract preference class from path (first component of relative path)
+            # Extract preference domain from path (first component of relative path)
             path_parts = split(result.preference, "/")
-            pref_class = length(path_parts) > 1 ? path_parts[1] : "Other"
+            pref_domain = length(path_parts) > 1 ? path_parts[1] : "Other"
             
             push!(df, (
                 mech_name,
                 result.preference,
-                pref_class,
+                pref_domain,
                 result.rounds,
                 result.converged,
                 result.mean_utility,
@@ -67,15 +67,15 @@ end
 
 function print_overall_summary!(output, overall_results)
     println(output,"\n", "="^80)
-    println(output,"SUMMARY BY PREFERENCE CLASS")
+    println(output,"SUMMARY BY PREFERENCE DOMAIN")
     println(output,"="^80)
 
     df = create_summary_dataframe(overall_results)
     
-    # Group by mechanism and preference class
-    gdf = groupby(df, [:mechanism, :preference_class])
+    # Group by mechanism and preference domain
+    gdf = groupby(df, [:mechanism, :preference_domain])
     
-    # Create summary by mechanism and preference class
+    # Create summary by mechanism and preference domain
     summary_df = combine(gdf,
         :rounds => mean => :mean_rounds,
         :converged => mean => :eq_percent,
@@ -85,15 +85,15 @@ function print_overall_summary!(output, overall_results)
         :incentive_alignment => mean => :mean_align
     )
     
-    # Sort by mechanism and preference class
-    sort!(summary_df, [:mechanism, :preference_class])
+    # Sort by mechanism and preference domain
+    sort!(summary_df, [:mechanism, :preference_domain])
     
     # Print detailed table
     table_data = Matrix{Any}(undef, nrow(summary_df), 8)
     for (i, row) in enumerate(eachrow(summary_df))
         table_data[i,:] = [
             row.mechanism,
-            row.preference_class,
+            row.preference_domain,
             round(row.mean_rounds, digits=1),
             round(row.eq_percent * 100, digits=1),
             round(row.mean_opt, digits=1),
@@ -105,7 +105,7 @@ function print_overall_summary!(output, overall_results)
 
     header = [
         "Mechanism",
-        "Preference Class",
+        "Preference Comain",
         "Mean Rounds",
         "Equilibrium (%)",
         "Mean Optimality (%)",
