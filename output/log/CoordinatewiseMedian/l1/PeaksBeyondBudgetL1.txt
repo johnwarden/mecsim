@@ -7,9 +7,9 @@ Current report matrix:
  0.166667  0.766667  0.0666667
  0.9       0.1       0.0
  0.416667  0.166667  0.416667
-Current allocation: [0.4166665833334166, 0.16666683333316665, 0.06666665333334267]
-Current user utilities: [0.15000020333309283, 0.3833330966669073, 0.6499990699999258]
-Current overall optimalities: 0.9999994676054212
+Current allocation: [0.416667, 0.166667, 0.0666667]
+Current user utilities: [0.15000000000000002, 0.3833333, 0.6499997]
+Current overall optimalities: 1.0
 Voter 1's turn.
   => No improvement found; voter 1 stays with old report.
 Voter 2's turn.
@@ -22,8 +22,8 @@ Final reports:
  0.166667  0.766667  0.0666667
  0.9       0.1       0.0
  0.416667  0.166667  0.416667
-Final Allocation: [0.4166665833334166, 0.16666683333316665, 0.06666665333334267]
-Mean Utility: 0.39444412333330864
-Optimality: 0.39444412333330864
-Envy: 49.9998866666833
+Final Allocation: [0.416667, 0.166667, 0.0666667]
+Mean Utility: 0.39444433333333334
+Optimality: 0.39444433333333334
+Envy: 49.99996999999999
 Incentive Alignment: 1.0

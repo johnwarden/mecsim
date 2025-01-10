@@ -45,24 +45,28 @@ The simulation terminates if no user is able to improve their utility more than 
 
 The following is a summary of the results of the simulation, showing the mean results for each mechanism across a variety of preference profiles.
 
-The results don't necessarily show us which mechanism is "best", because results depends so much on what users actual preference profiles are. But it is interesting to note how close to optimal many mechanisms are for a variety of preference profiles.
+The results don't necessarily show us which mechanism is "best", because results depends so much on what users actual preference profiles are. But it is interesting to note how close to optimal many of these mechanisms are for a variety of preference profiles -- even when users have widely conflicting preferences.
 
-    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
-    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
-    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        3.32 │            94.7 │                96.1 │          12.2 │               68.3 │
-    │ CoordinatewiseMedian   │        1.74 │           100.0 │                97.4 │          11.2 │               89.8 │
-    │ GeometricMedian        │        4.05 │            89.5 │                97.6 │          11.7 │               79.6 │
-    │ PairwiseMeanTradeoff   │        2.84 │           100.0 │                98.9 │           6.2 │               70.8 │
-    │ PairwiseMedianTradeoff │        4.11 │            94.7 │                99.4 │           7.6 │               77.9 │
-    │ PairwiseProbability    │        1.68 │           100.0 │                87.2 │          15.5 │               96.1 │
-    │ PairwiseProbability2   │        1.37 │           100.0 │                95.2 │           5.7 │               91.8 │
-    │ PairwiseProbability3   │        1.84 │           100.0 │                97.6 │           6.5 │               90.1 │
-    │ QuadraticFunding       │        3.58 │            94.7 │                93.0 │          15.4 │               64.7 │
-    │ QuadraticVariant       │        2.58 │           100.0 │                93.3 │           6.8 │               81.5 │
-    │ SAP                    │        1.95 │           100.0 │                91.7 │          19.5 │               87.8 │
-    │ SAPScaled              │        6.42 │            42.1 │                83.9 │          30.9 │               76.0 │
-    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+    ┌──────────────────────────┬─────────────┬─────────────────┬─────────────────────┬────────────┬───────────────┬────────────────────┐
+    │ Mechanism                │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ vs. Honest │ Mean Envy (%) │ Mean Alignment (%) │
+    ├──────────────────────────┼─────────────┼─────────────────┼─────────────────────┼────────────┼───────────────┼────────────────────┤
+    │ CoordinatewiseMean       │         4.4 │           100.0 │                89.7 │       -2.9 │          21.1 │               65.3 │
+    │ CoordinatewiseMeanScaled │         4.3 │            96.6 │                94.6 │       +1.6 │          17.8 │               71.2 │
+    │ CoordinatewiseMedian     │         2.5 │           100.0 │                98.3 │       +2.9 │          24.3 │               89.2 │
+    │ IndependentMarkets       │         1.6 │           100.0 │                83.5 │       +0.0 │          23.9 │               98.1 │
+    │ Knapsack                 │         3.7 │            96.6 │                95.0 │       +7.7 │          25.4 │               76.0 │
+    │ PairwiseMeanTradeoff     │         3.9 │           100.0 │                94.5 │       +5.6 │          15.5 │               67.6 │
+    │ PairwiseMedianTradeoff   │         5.3 │            93.1 │                95.9 │       +5.7 │          20.5 │               77.4 │
+    │ PairwiseProbability      │         1.7 │           100.0 │                82.3 │       +8.5 │          21.8 │               96.0 │
+    │ PairwiseProbability2     │         1.2 │           100.0 │                80.5 │       -0.0 │          14.6 │               97.3 │
+    │ PairwiseProbability3     │         1.7 │           100.0 │                87.3 │       -0.6 │          16.5 │               95.0 │
+    │ PiecewiseUniformPhantom  │         1.4 │           100.0 │                83.9 │       +0.0 │          23.7 │               98.3 │
+    │ QuadraticFunding         │         4.7 │            96.6 │                88.4 │       +2.5 │          24.3 │               64.8 │
+    │ QuadraticVariant         │         4.7 │            93.1 │                92.4 │       +7.1 │          12.4 │               75.4 │
+    │ SAP                      │         2.1 │           100.0 │                94.4 │       +6.7 │          30.5 │               90.3 │
+    │ SAPScaled                │         8.5 │            51.7 │                83.6 │       -1.6 │          45.4 │               76.6 │
+    │ UniformPhantom           │         2.1 │           100.0 │                83.3 │       +0.4 │          22.7 │               93.8 │
+    └──────────────────────────┴─────────────┴─────────────────┴─────────────────────┴────────────┴───────────────┴────────────────────┘
 
 ### Description of Output Columns 
 
@@ -81,80 +85,98 @@ This is consistent with many intuitive notions of what is fair. For example, if 
 
 ## Results Across Preference Profiles
 
-I've implemented two different classes of preference profiles, with a variety of concrete profiles under each.
-
-
-### Square Root Preference Profiles
-
-Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget, and this their optimal allocation vectors will always sum to one.
-
-**Mean results for Square Root preference profiles.**
-
-    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
-    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
-    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        2.83 │           100.0 │                98.8 │           8.2 │               69.8 │
-    │ CoordinatewiseMedian   │         2.0 │           100.0 │                98.4 │          16.6 │               89.6 │
-    │ GeometricMedian        │         4.0 │            83.3 │                98.6 │          14.2 │               86.3 │
-    │ PairwiseMeanTradeoff   │        2.17 │           100.0 │                98.2 │           7.8 │               76.4 │
-    │ PairwiseMedianTradeoff │        4.67 │            83.3 │                99.6 │           9.9 │               82.2 │
-    │ PairwiseProbability    │        1.67 │           100.0 │                98.2 │           6.6 │               97.7 │
-    │ PairwiseProbability2   │         1.0 │           100.0 │                92.1 │           7.3 │              100.0 │
-    │ PairwiseProbability3   │        1.33 │           100.0 │                96.3 │           8.0 │               97.9 │
-    │ QuadraticFunding       │         3.0 │           100.0 │                99.4 │           8.4 │               66.2 │
-    │ QuadraticVariant       │         1.0 │           100.0 │                91.9 │           4.7 │              100.0 │
-    │ SAP                    │        1.67 │           100.0 │                95.1 │          26.9 │               83.7 │
-    │ SAPScaled              │        5.67 │            50.0 │                95.0 │          26.4 │               83.9 │
-    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+I've implemented three different domains of preference profiles, with a variety of concrete profiles under each. Plots of the preference profiles can be found in ![outputs/plots/preferences](output/plots/preferences/).
 
 ### Quasilinear Square Root Preference Profiles
 
-Quasilinear (Square root) profiles have the form $`Vᵢ(y) = 1 - ∑ⱼy_j + ∑ⱼ b_{i,j}√y_j`$. These are the same as square root preference except that unused budget has utility (equal to the amount of unused budget). So preferences are "dollar-valued". Users will prefer to use up all the budget as long as there are projects where marginal return is greater than 1.0.
+Quasilinear (Square root) profiles have the form $`Vᵢ(y) = 1 - ∑ⱼy_j + ∑ⱼ b_{i,j}√y_j`$. These are the same as square root preference except that unused budget has utility (equal to the amount of unused budget). Users will prefer to use up all the budget as long as there are projects where marginal return is greater than 1.0.
 
 This is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, and where the money doesn't come from nowhere. This would be appropriate for equity situations (DAOs, corporations, HOAs, etc.), where unused budget is retained in the corporation and shared by equity holders.
 
-**Mean results for Quasilinear Square Root preference profiles.**
+### Square Root Preference Profiles
 
-    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
-    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
-    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │        2.62 │           100.0 │                99.1 │           5.9 │               73.8 │
-    │ CoordinatewiseMedian   │        1.75 │           100.0 │                98.4 │           8.1 │               91.1 │
-    │ GeometricMedian        │         5.0 │            87.5 │                99.1 │           8.3 │               76.0 │
-    │ PairwiseMeanTradeoff   │        2.75 │           100.0 │                99.5 │           3.7 │               73.0 │
-    │ PairwiseMedianTradeoff │        4.12 │           100.0 │                99.8 │           5.7 │               76.8 │
-    │ PairwiseProbability    │        1.62 │           100.0 │                86.8 │           9.3 │               97.4 │
-    │ PairwiseProbability2   │        1.62 │           100.0 │                97.0 │           3.3 │               88.5 │
-    │ PairwiseProbability3   │        1.88 │           100.0 │                98.9 │           3.7 │               88.9 │
-    │ QuadraticFunding       │        3.25 │           100.0 │                99.1 │           7.4 │               71.4 │
-    │ QuadraticVariant       │        2.88 │           100.0 │                92.2 │           8.3 │               77.7 │
-    │ SAP                    │         2.0 │           100.0 │                95.6 │           9.3 │               90.6 │
-    │ SAPScaled              │        6.75 │            37.5 │                83.9 │          23.3 │               72.2 │
-    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
-
+Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget, and this 
 
 ### Quadratic Preference Profiles
 
 Quadratic profiles have the form $`Vᵢ(y) = ∑ⱼ 2b_{i,j}y_j - y_j^2`$. These are concave and single-peaked, which may be appropriate for budget allocation settings where marginal utilities eventually turn negative -- there can be "too much of a good thing" for some items. In these settings, voters may not always prefer to use up the whole budget (depending on where the peak is).
 
-**Mean results for Quadratic preference profiles.**
 
-    ┌────────────────────────┬─────────────┬─────────────────┬─────────────────────┬───────────────┬────────────────────┐
-    │ Mechanism              │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ Mean Envy (%) │ Mean Alignment (%) │
-    ├────────────────────────┼─────────────┼─────────────────┼─────────────────────┼───────────────┼────────────────────┤
-    │ CoordinatewiseMean     │         5.0 │            80.0 │                88.0 │          27.0 │               57.5 │
-    │ CoordinatewiseMedian   │         1.4 │           100.0 │                94.5 │           9.5 │               88.0 │
-    │ GeometricMedian        │         2.6 │           100.0 │                94.1 │          14.1 │               77.4 │
-    │ PairwiseMeanTradeoff   │         3.8 │           100.0 │                98.9 │           8.2 │               60.4 │
-    │ PairwiseMedianTradeoff │         3.4 │           100.0 │                98.7 │           7.7 │               74.8 │
-    │ PairwiseProbability    │         1.8 │           100.0 │                74.6 │          36.1 │               91.9 │
-    │ PairwiseProbability2   │         1.4 │           100.0 │                95.8 │           7.7 │               87.1 │
-    │ PairwiseProbability3   │         2.4 │           100.0 │                97.0 │           9.2 │               82.6 │
-    │ QuadraticFunding       │         4.8 │            80.0 │                75.5 │          36.7 │               52.1 │
-    │ QuadraticVariant       │         4.0 │           100.0 │                96.7 │           6.8 │               65.5 │
-    │ SAP                    │         2.2 │           100.0 │                81.6 │          27.0 │               88.3 │
-    │ SAPScaled              │         6.8 │            40.0 │                70.5 │          48.4 │               72.5 │
-    └────────────────────────┴─────────────┴─────────────────┴─────────────────────┴───────────────┴────────────────────┘
+### ℓ1 Preference Profiles
+
+These have the form $`Vᵢ(y) = 1 - l1_norm(y, b\_j)`$. That is, utility is 1 minus the disutility of the l1 distance between users preferred allocation and the actual allocation. These are included because certain mechanisms in the literature have been shown to be strategyproof under this domain of preferences.
+
+================================================================================
+SUMMARY BY PREFERENCE CLASS
+================================================================================
+┌──────────────────────────┬──────────────────┬─────────────┬─────────────────┬─────────────────────┬────────────┬───────────────┬────────────────────┐
+│ Mechanism                │ Preference Class │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ vs. Honest │ Mean Envy (%) │ Mean Alignment (%) │
+├──────────────────────────┼──────────────────┼─────────────┼─────────────────┼─────────────────────┼────────────┼───────────────┼────────────────────┤
+│ CoordinatewiseMean       │ Quadratic        │         6.0 │           100.0 │                88.0 │       -9.3 │          27.0 │               56.4 │
+│ CoordinatewiseMean       │ QuasilinearSqrt  │         4.8 │           100.0 │                99.2 │       -0.6 │           6.0 │               70.6 │
+│ CoordinatewiseMean       │ Sqrt             │         3.2 │           100.0 │                98.8 │       -1.0 │           8.5 │               70.5 │
+│ CoordinatewiseMean       │ l1               │         3.9 │           100.0 │                75.2 │       -2.8 │          41.2 │               61.5 │
+│ CoordinatewiseMeanScaled │ Quadratic        │         5.2 │           100.0 │                98.8 │       -0.2 │           8.7 │               63.2 │
+│ CoordinatewiseMeanScaled │ QuasilinearSqrt  │         3.6 │           100.0 │                99.6 │       -0.2 │           5.2 │               72.8 │
+│ CoordinatewiseMeanScaled │ Sqrt             │         2.7 │           100.0 │                98.6 │       -1.2 │           9.2 │               75.4 │
+│ CoordinatewiseMeanScaled │ l1               │         5.6 │            88.9 │                84.5 │       +6.4 │          41.1 │               71.2 │
+│ CoordinatewiseMedian     │ Quadratic        │         3.2 │           100.0 │                94.5 │       +3.5 │           9.5 │               76.5 │
+│ CoordinatewiseMedian     │ QuasilinearSqrt  │         2.3 │           100.0 │                98.6 │       +3.2 │           8.4 │               89.0 │
+│ CoordinatewiseMedian     │ Sqrt             │         2.7 │           100.0 │                98.4 │       +6.6 │          16.5 │               89.3 │
+│ CoordinatewiseMedian     │ l1               │         2.2 │           100.0 │                99.9 │       -0.0 │          53.7 │               96.2 │
+│ IndependentMarkets       │ Quadratic        │         1.0 │           100.0 │                75.3 │       +0.0 │          36.4 │              100.0 │
+│ IndependentMarkets       │ QuasilinearSqrt  │         2.8 │           100.0 │                88.5 │       -0.0 │           9.9 │               94.3 │
+│ IndependentMarkets       │ Sqrt             │         1.3 │           100.0 │                98.8 │       +0.0 │           8.5 │               99.5 │
+│ IndependentMarkets       │ l1               │         1.0 │           100.0 │                72.8 │       +0.0 │          41.2 │              100.0 │
+│ Knapsack                 │ Quadratic        │         4.2 │           100.0 │                85.1 │       +5.1 │           7.6 │               74.5 │
+│ Knapsack                 │ QuasilinearSqrt  │         3.1 │           100.0 │                97.0 │      +12.5 │           6.8 │               73.4 │
+│ Knapsack                 │ Sqrt             │         4.0 │           100.0 │                96.3 │      +12.7 │          23.5 │               75.7 │
+│ Knapsack                 │ l1               │         3.7 │            88.9 │                97.5 │       +1.0 │          55.1 │               79.8 │
+│ PairwiseMeanTradeoff     │ Quadratic        │         4.0 │           100.0 │                98.9 │       +0.1 │           8.2 │               62.2 │
+│ PairwiseMeanTradeoff     │ QuasilinearSqrt  │         2.8 │           100.0 │                99.5 │       +0.4 │           4.0 │               69.9 │
+│ PairwiseMeanTradeoff     │ Sqrt             │         2.8 │           100.0 │                98.2 │       +0.5 │           8.2 │               75.1 │
+│ PairwiseMeanTradeoff     │ l1               │         5.7 │           100.0 │                84.6 │      +17.4 │          35.9 │               63.5 │
+│ PairwiseMedianTradeoff   │ Quadratic        │         3.4 │           100.0 │                98.7 │       -0.0 │           7.7 │               74.2 │
+│ PairwiseMedianTradeoff   │ QuasilinearSqrt  │         3.9 │           100.0 │                99.7 │       +0.6 │           5.6 │               78.0 │
+│ PairwiseMedianTradeoff   │ Sqrt             │         6.7 │            83.3 │                99.5 │       +1.4 │          10.8 │               80.2 │
+│ PairwiseMedianTradeoff   │ l1               │         6.9 │            88.9 │                88.1 │      +16.9 │          49.1 │               76.7 │
+│ PairwiseProbability      │ Quadratic        │         1.8 │           100.0 │                74.6 │      +55.8 │          36.1 │               91.9 │
+│ PairwiseProbability      │ QuasilinearSqrt  │         1.7 │           100.0 │                88.2 │       +0.1 │           9.0 │               97.4 │
+│ PairwiseProbability      │ Sqrt             │         1.7 │           100.0 │                98.2 │       -1.4 │           7.0 │               97.7 │
+│ PairwiseProbability      │ l1               │         1.8 │           100.0 │                70.1 │       -2.9 │          36.7 │               95.7 │
+│ PairwiseProbability2     │ Quadratic        │         1.2 │           100.0 │                97.4 │       -0.1 │           8.4 │               94.7 │
+│ PairwiseProbability2     │ QuasilinearSqrt  │         1.3 │           100.0 │                97.3 │       +0.2 │           3.3 │               94.9 │
+│ PairwiseProbability2     │ Sqrt             │         1.0 │           100.0 │                92.1 │       +0.0 │           7.6 │              100.0 │
+│ PairwiseProbability2     │ l1               │         1.1 │           100.0 │                46.6 │       -0.2 │          33.9 │               99.1 │
+│ PairwiseProbability3     │ Quadratic        │         2.2 │           100.0 │                98.6 │       +1.8 │           9.9 │               90.2 │
+│ PairwiseProbability3     │ QuasilinearSqrt  │         1.7 │           100.0 │                98.9 │       -0.0 │           4.1 │               94.4 │
+│ PairwiseProbability3     │ Sqrt             │         1.3 │           100.0 │                96.3 │       -0.7 │           8.3 │               97.9 │
+│ PairwiseProbability3     │ l1               │         1.8 │           100.0 │                63.4 │       -2.4 │          38.1 │               96.5 │
+│ PiecewiseUniformPhantom  │ Quadratic        │         1.0 │           100.0 │                75.3 │       +0.0 │          36.4 │              100.0 │
+│ PiecewiseUniformPhantom  │ QuasilinearSqrt  │         1.9 │           100.0 │                88.7 │       +0.1 │           9.9 │               95.9 │
+│ PiecewiseUniformPhantom  │ Sqrt             │         1.7 │           100.0 │                98.9 │       -0.0 │           8.0 │               98.0 │
+│ PiecewiseUniformPhantom  │ l1               │         1.0 │           100.0 │                73.9 │       +0.0 │          40.9 │              100.0 │
+│ QuadraticFunding         │ Quadratic        │         5.8 │            80.0 │                75.5 │       +2.6 │          36.7 │               51.8 │
+│ QuadraticFunding         │ QuasilinearSqrt  │         4.4 │           100.0 │                99.1 │       +5.8 │           7.4 │               70.7 │
+│ QuadraticFunding         │ Sqrt             │         3.7 │           100.0 │                99.4 │       -0.6 │           8.7 │               66.0 │
+│ QuadraticFunding         │ l1               │         5.1 │           100.0 │                77.4 │       +1.2 │          44.9 │               65.2 │
+│ QuadraticVariant         │ Quadratic        │         4.4 │           100.0 │                96.7 │      +20.4 │           6.6 │               64.9 │
+│ QuadraticVariant         │ QuasilinearSqrt  │         3.6 │           100.0 │                92.8 │       +4.2 │           7.8 │               73.9 │
+│ QuadraticVariant         │ Sqrt             │         1.0 │           100.0 │                91.9 │       +0.0 │           4.9 │              100.0 │
+│ QuadraticVariant         │ l1               │         8.3 │            77.8 │                90.0 │       +7.3 │          25.3 │               66.5 │
+│ SAP                      │ Quadratic        │         2.2 │           100.0 │                81.6 │       +6.9 │          27.0 │               88.3 │
+│ SAP                      │ QuasilinearSqrt  │         2.4 │           100.0 │                96.6 │       +3.6 │          10.4 │               89.5 │
+│ SAP                      │ Sqrt             │         1.7 │           100.0 │                95.1 │      +14.5 │          26.9 │               83.3 │
+│ SAP                      │ l1               │         1.9 │           100.0 │                98.7 │       +4.5 │          55.0 │               96.8 │
+│ SAPScaled                │ Quadratic        │         9.8 │            40.0 │                69.8 │       -3.2 │          49.7 │               71.8 │
+│ SAPScaled                │ QuasilinearSqrt  │         8.9 │            44.4 │                85.2 │       -2.5 │          21.7 │               70.6 │
+│ SAPScaled                │ Sqrt             │         7.7 │            66.7 │                95.6 │       -2.9 │          25.9 │               81.8 │
+│ SAPScaled                │ l1               │         7.9 │            55.6 │                81.5 │       +1.1 │          79.8 │               81.7 │
+│ UniformPhantom           │ Quadratic        │         2.2 │           100.0 │                75.5 │       +0.3 │          36.4 │               90.6 │
+│ UniformPhantom           │ QuasilinearSqrt  │         1.9 │           100.0 │                88.5 │       +0.0 │          10.0 │               94.9 │
+│ UniformPhantom           │ Sqrt             │         2.2 │           100.0 │                98.8 │       +0.1 │           8.3 │               95.9 │
+│ UniformPhantom           │ l1               │         2.1 │           100.0 │                72.1 │       +0.9 │          37.4 │               93.1 │
+└──────────────────────────┴──────────────────┴─────────────┴─────────────────┴─────────────────────┴────────────┴───────────────┴────────────────────┘
 
 ### Detailed Simulation Logs
 
