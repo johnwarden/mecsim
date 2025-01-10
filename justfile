@@ -7,3 +7,8 @@ instantiate:
 
 sim +args="":
     time julia --project Main.jl {{args}}
+
+commit-output:
+    cp -r output/local/* output/
+    git add output
+    git commit -m "Update output"

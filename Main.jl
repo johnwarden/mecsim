@@ -106,16 +106,23 @@ end
 final_table_texts = String[]
 overall_results = Dict{String, Vector{NamedTuple}}()
 
+# Create output directories
+const OUTPUT_DIR = joinpath("output", "local")
+mkpath(OUTPUT_DIR)
+
 # Create output directories for each preference class
 for pref_file in preference_files
     pref_parts = split(pref_file, "preferences/")
     if length(pref_parts) > 1
         path_parts = split(pref_parts[2], "/")
         pref_class = lowercase(path_parts[1])
-        mkpath(joinpath("output", "logs", pref_class))
-        mkpath(joinpath("output", "plots", "preferences", pref_class))
+        mkpath(joinpath(OUTPUT_DIR, "log", pref_class))
+        mkpath(joinpath(OUTPUT_DIR, "plots", "preferences", pref_class))
     end
 end
+
+# Update the summary output file path
+summary_output_file = joinpath(OUTPUT_DIR, "summary.txt")
 
 for pref_file in preference_files
     pref_name = endswith(pref_file, ".jl") ?
@@ -161,7 +168,7 @@ for pref_file in preference_files
         pref_basename = path_parts[end]
         
         # Create log directory with preference class subdirectory
-        out_dir = joinpath("output", "log", mechanism_name, pref_class)
+        out_dir = joinpath(OUTPUT_DIR, "log", mechanism_name, pref_class)
         if !isdir(out_dir)
             mkpath(out_dir)
         end
@@ -234,8 +241,6 @@ for pref_file in preference_files
         rows_data
     )
 end
-
-summary_output_file = joinpath("output", "summary.txt")
 
 open(summary_output_file, "w") do summary_output
 
