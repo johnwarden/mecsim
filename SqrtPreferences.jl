@@ -49,13 +49,7 @@ Returns a matrix where each row represents a user's preference coefficients.
 """
 function sqrt_preference_matrix_from_reports(reports::Matrix{Float64})
     function coefficients_from_report(r::Vector{Float64})
-        r = r / sum(r)
-        n = length(r)
-        
-        # Find first non-zero entry as reference point
-        i = findfirst(r .> 0.0)
-        c = [sqrt(r[j] / r[i]) for j in 1:n]
-        
+        c = sqrt.(r) / sum(sqrt.(r))
         # Scale so total utility at ideal point is 1
         return c / dot(c, sqrt.(optimal_point_sqrt_profile(c)))
     end

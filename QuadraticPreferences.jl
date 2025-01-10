@@ -148,8 +148,6 @@ function quadratic_preferences(pref_matrix::Matrix{Float64})
 
     # Return something that packages everything up
 
-    @show optimal_point
-    @show overall_optimal_point
     return make_preference_profile(
         utilities,
         m;
