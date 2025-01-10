@@ -61,7 +61,6 @@ Run a multi-round simulation for a given mechanism and preference setting.
 
 - `mechanism_name`: name of the mechanism (for logging).
 - `mechanism_func`: the mechanism function itself.
-- `max_rounds`: maximum number of best-response cycles.
 - `Utility`: voter utility function (voter i, allocation).
 - `initial_reports`: starting voter reports matrix.
 - `optimal_points`: matrix of each voter's "honest" optimum.
@@ -74,7 +73,6 @@ Returns `(final_reports, allocation_history, converged, incentive_alignment)`.
 function simulate(
     mechanism_name::String,
     mechanism_func::Function;
-    max_rounds::Int = 10,
     Utility::Function,
     initial_reports::Matrix{Float64},
     optimal_points::Matrix{Float64},
@@ -84,7 +82,8 @@ function simulate(
 )
 
     Random.seed!(92834)
-    termination_threshold = 1e-4
+    termination_threshold = 1e-5
+    max_rounds = 15
     n, m = size(initial_reports)
 
     current_reports = copy(initial_reports)
