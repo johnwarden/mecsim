@@ -5,6 +5,8 @@ quadratic_funding = include("QuadraticFunding.jl")
 return reports -> begin
     n, m = size(reports)
 
+    total_spend = mean(min.(sum(reports, dims=2), 1))
+    # total_spend = mean(sum(reports, dims=2))
 
     # With square root preference profiles of the form Vᵢ(y) = ∑ⱼ bᵢⱼ√yⱼ, and
     # an *uncapped* quadratic funding mechanism (where the sum can exceed the
@@ -21,13 +23,23 @@ return reports -> begin
 
 
     B = sqrt_preference_matrix_from_reports(reports) .^ 2
+    # B = ( sqrt.(reports) / sum(sqrt.(reports)) ) .^ 2
+
+    # B = B ./ sum(B, dims=2) .* 4
+
+
 
     # Can scale up by a small constant factor here to improve optimality at expensive of incentive compatibility.
     # scaleDown(x) = x / n * 1.25
 
-    scaleDown(x) = x / n
+    # scaleDown(x) = x / n
 
-    X = vcat([ scaleDown(B[i,:])' for i in 1:n ]...)
+    X = vcat([ B[i,:]' ./ n for i in 1:n ]...)
 
-    return quadratic_funding( X ) ./ n
+    r = quadratic_funding( X ) ./ n
+    r = r  .* total_spend
+
+    r
+    # sum(r) > 1.0 : zeros(m) : r
+
 end
