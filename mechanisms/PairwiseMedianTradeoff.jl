@@ -29,6 +29,6 @@ return (reports::Matrix{Float64}) -> begin
         v = v * -1 
     end
 
-    portion_of_budget = median(min.(sum(reports, dims=2), 1))
-    return v ./ sum(v) .* portion_of_budget
+    total_spend = median(min.(sum(reports, dims=2), 1))
+    return v ./ sum(v) .* total_spend
 end

@@ -22,24 +22,18 @@ return reports -> begin
     # we don't have any discontinuity so the equilibrium doesn't change.
 
 
-    B = sqrt_preference_matrix_from_reports(reports) .^ 2
-    # B = ( sqrt.(reports) / sum(sqrt.(reports)) ) .^ 2
+    # X = sqrt_preference_matrix_from_reports(reports) .^ 2
 
-    # B = B ./ sum(B, dims=2) .* 4
+    X = ( sqrt.(reports) ./ sum(sqrt.(reports), dims=2) ) .^ 2
+    X = X ./ sum(X, dims=2)
 
 
-
-    # Can scale up by a small constant factor here to improve optimality at expensive of incentive compatibility.
-    # scaleDown(x) = x / n * 1.25
-
-    # scaleDown(x) = x / n
-
-    X = vcat([ B[i,:]' ./ n for i in 1:n ]...)
+    X = vcat([ X[i,:]' ./ n for i in 1:n ]...)
 
     r = quadratic_funding( X ) ./ n
     r = r  .* total_spend
 
     r
-    # sum(r) > 1.0 : zeros(m) : r
+    # sum(r) > 1.0 ? zeros(m) : r
 
 end
