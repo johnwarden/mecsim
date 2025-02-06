@@ -1,52 +1,53 @@
-# Participatory Budget Aggregation Mechanism Simulator
+# Budget Aggregation Mechanism Simulator
 
-This repository contains a simulator for comparing budget aggregation mechanisms. It simulates an iterative process where users proposes budgets, and then strategically modify their proposals in response to other users' proposals in an attempt to maximize their individual utility.
+This repository implements a simulator to analyze the performance of a variety of budget allocation mechanisms. It uses an iterative best-response process: voters propose budgets, and then modify their proposals in response to other voters' proposals in an attempt to maximize their individual utility, until a Nash equilibrium or maximum number of iterations is reached.
 
-Interestingly, for a wide variety of preference profiles and mechanisms, users arrive at an equilibrium that is close to the overall-utility-maximizing allocation -- even though users final proposals different significantly from their individual optimal allocations.
+Interestingly, for a wide variety of preference profiles and mechanisms, voters arrive at an equilibrium that is close to the overall-welfare-maximizing allocation -- even though voters' final proposals differ significantly from their individual optimal allocations.
 
 ## Motivation
 
 ### Incentive Compatible Budget Allocation
 
-The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been studied for over a century. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists tried this, they ran into difficulties. Setting aside the different ways you can define "average", the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
+The problem of allocation a limited budget among multiple competing projects (or public goods or policies or whatever) has been extensively study by social choice theorists and game theorists. It first it looks like it should be simple: just ask everybody what they think the allocation should be, and take some sort of average. But when the pioneering social choice theorists tried this, they ran into difficulties. Setting aside the different ways you can define "average", the big problem is that people will do whatever produces the best outcome for themselves. And no matter what aggregation function you use, self-interested people can get better results for themselves by proposing something *different from what they really want the allocation to be*. 
 
-This may seem counter-intuitive. In a simple majority vote between two alternatives, if you vote for the alternative you prefer, that alternative is more likely to be chosen! So there is no incentive to lie. We say that majority voting (between two alternatives) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for what you want.
+This may seem counter-intuitive. In a simple majority vote between two alternatives, if you vote for the alternative you prefer, that alternative is more likely to be chosen! So there is no incentive to vote otherwise. We say that majority voting (between two alternatives) is [**strategyproof**](https://en.wikipedia.org/wiki/Strategyproofness), in that there is no voting strategy better than just voting for what you want.
  
-But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average vote for the group is 40%. If the final mechanism is a simple mean, then your favorite project will be under-funded (while other projects are over-funded). So you would be better off *saying* you think 100% should go to your favorite project and 0% to the others, raising the mean for your favorite project and bringing the results closer to your ideal.
+But budget allocation mechanisms are generally not strategyproof. For example, suppose you think 80% of the budget should go to your favorite project, but the average vote for the group is 40%. If the final mechanism is a simple mean, then your favorite project will be under-funded (while other projects are over-funded). So you may be better off *saying* you think 100% should go to your favorite project and 0% to the others, raising the mean for your favorite project and bringing the results closer to your ideal.
 
-Now if there are only two projects, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get complicated. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a strategyproof mechanism for choosing among more than two alternatives that was not either dictatorial, or that limited what kind of preferences users could have.
+Now if there are only two alternatives, there *is* a [strategyproof mechanism that uses the median](https://en.wikipedia.org/wiki/Median_voter_theorem) instead of the mean. But when there are more than three alternatives, things get complicated. In fact eventually [Allan Gibbard](https://en.wikipedia.org/wiki/Allan_Gibbard) proved that it [just wasn't possible](https://en.wikipedia.org/wiki/Gibbard%27s_theorem) to design a strategyproof mechanism for choosing among more than two alternatives that was not either dictatorial, or that limited what kind of preferences voters could have.
 
 ### Budget Negotiation
 
-So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we acknowledge it as a **negotiation**, where people make a proposal they think will produce the best results for themselves, given the current set of proposals of other users. And then other people respond, trying to maximize their results given what everyone else is doing. Maybe things balance out?
+So what do we do? It doesn't seem acceptable that one person can impose their will on others by lying. Nevertheless, budgets must be allocated! So let's get realistic. What if *everybody lies*? Or at least we don't even pretend that people's proposed budget is their *preferred* budget. Rather we acknowledge it as a **negotiation**, where people make a proposal they think will produce the best results, given the current set of proposals of other voters. And then other people respond, trying to maximize their utility given what everyone else is doing. Maybe things balance out?
 
-Here is the point where we move from theory to experiment. These simulations show that, yes, things actually do balance out pretty nicely!
+Here is the point where we move from theory to experiment. These simulations show that, yes, things actually may balance out pretty nicely!
 
 ## Goals of the Simulation
 
-Using a variety of profiles of user preferences, and a variety of different aggregation formulas (mechanisms), the simulation tells us if:
+Using a variety of profiles of voter preferences, and a variety of different aggregation formulas (mechanisms), the simulation tells us if:
 
 - if an equilibrium is reached
 - how close the final allocation is to the overall [optimal](#defining-optimality)
-- how much better/worse off users are than if they had all been honest
+- how much better/worse off voters are than if they had all voted their preferred allocation
 - if results disproportionately benefit some individuals at the expense of others
 - how incentive-aligned the mechanism is (how close individuals reports are to their "true optimal" allocations)
 
 ## Setup
 
-- `n` users need to allocate a budget across `m` items. 
+- `n` voters need to allocate a budget across `m` items. 
 - The budget is capped at 1.0. 
-- Each user has a utility functions that returns their total utility given their allocation vector.
-- User submits their proposed allocation vectors and the mechanism outputs a final allocation. 
+- Each users submits a proposed allocation, with an amount between 0.0 and 1.0 for each project. A user's total may add up to more than 1.0.
+- User submits their proposed allocation vectors and the mechanism outputs a final allocation.
+- Each voter has a utility functions that returns their total utility given their allocation vector.
 - If the final allocation is greater than the budget of 1.0, then the allocation vector is scaled down so that the sum equals 1.0.
-- Users then take turns updating their reports by attempting to best-respond: to maximizing their own utility given the reports of other users. The best response is found using Nelder-Mead.
-- The simulation terminates if no user is able to improve their utility more than some threshold, or when a maximum number of rounds is reached.
+- Users then take turns updating their reports by attempting to best-respond: to maximizing their own utility given the reports of other voters. The best response is found using Nelder-Mead.
+- The simulation terminates if no voter is able to improve their utility more than some threshold, or when a maximum number of rounds is reached.
 
 ## Summary of Results
 
 The following is a summary of the results of the simulation, showing the mean results for each mechanism across a variety of preference profiles.
 
-The results don't necessarily show us which mechanism is "best", because results depends so much on what users actual preference profiles are. But it is interesting to note how close to optimal many of these mechanisms are for a variety of preference profiles -- even when users have widely conflicting preferences.
+The results don't necessarily show us which mechanism is "best", because results depends so much on what voters actual preference profiles are. But it is interesting to note how close to optimal many of these mechanisms are for a variety of preference profiles -- even when voters have widely conflicting preferences.
 
     ┌──────────────────────────┬─────────────┬─────────────────┬─────────────────────┬────────────┬───────────────┬────────────────────┐
     │ Mechanism                │ Mean Rounds │ Equilibrium (%) │ Mean Optimality (%) │ vs. Honest │ Mean Envy (%) │ Mean Alignment (%) │
@@ -73,7 +74,7 @@ The results don't necessarily show us which mechanism is "best", because results
 
 - Equilibrium is the % of profiles for which equilibrium is reached
 - Optimality is the difference between this and the maximum possible normalized utility. Each voter's utility function is normalized so their maximum utility = 1.0
-- "vs. Honest" is the difference in utility of the equilibrium allocation and the allocation that would result if all users reported honestly. A positive number means that strategic reporting has had a net positive effect on social welfare. 
+- "vs. Honest" is the difference in utility of the equilibrium allocation and the allocation that would result if all voters reported honestly. A positive number means that strategic reporting has had a net positive effect on social welfare. 
 - Envy is the difference between the utility of the voter who has the maximum utility in the final allocation and the voter with the minimum
 - Incentive Alignment is a mean Euclidian distance between voters' "honest" reports and final reports.
 
@@ -83,7 +84,7 @@ The mean optimality is calculated based on total utility (the sum of utilities f
 
 So instead of considering voter's subjective utility as an absolute quantity, we consider each voter's utility as a percentage of their maximum possibility utility.
 
-This is consistent with many intuitive notions of what is fair. For example, if each voter gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would be weighted towards voters with higher absolute values of subjective utility.
+This is consistent with many intuitive notions of what is fair or democratic. For example, if each voter gets 99% of their optimal utility, overall optimality is 99%. If we did not normalize utility, the optimal solution would favor voters with higher absolute values of subjective utility -- implying that the preferences of these voters is more important than that of others (which does not seem very fair).
 
 ### Preference Profiles
 
@@ -91,7 +92,7 @@ I've implemented three different domains of preference profiles, with a variety 
 
 ### Square Root Preference Profiles
 
-Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are additive, concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget, and this 
+Square root profiles have the form $`Vᵢ(y) = ∑ⱼ b_{i,j}√y_j`$. These are additive, concave and monotonically increasing, which is appropriate for budget allocation settings where there are diminishing marginal utility for the competing projects, but marginal utility never turns negative. This means voters always prefer to "use up" the whole budget. 
 
 ### Quasilinear Square Root Preference Profiles
 
@@ -106,7 +107,7 @@ Quadratic profiles have the form $`Vᵢ(y) = ∑ⱼ 2b_{i,j}y_j - y_j^2`$. These
 
 ### ℓ1 Preference Profiles
 
-ℓ1 profiles have the form $`V_i(y) = -\|y - b_i\|_1`$ where $`b_i`$ is user $`i`$'s bliss point. The L1 norm means that utility decreases linearly with distance from the bliss point along each dimension. Several mechanisms in the literature are proven to be strategyproof under ℓ1 profiles.
+ℓ1 profiles have the form $`V_i(y) = -\|y - b_i\|_1`$ where $`b_i`$ is voter $`i`$'s bliss point. The L1 norm means that utility decreases linearly with distance from the bliss point along each dimension. Several mechanisms in the literature are proven to be strategyproof under ℓ1 profiles (results that are born out in these simulations).
 
 ### Results by Preference Profile
 
@@ -193,9 +194,8 @@ Detailed simulation logs for each mechanism/preference combination are available
     - Voters always start by reporting their ideal point and only change their reports in response to other voters.
     - Voters play in a fixed order and always play the current "best response", defined as the response that maximizes utility *given the other players' current responses*. This may not be how a rational voter can maximizes expected utility in real life. Specifically, "best-responding" may be a *bad* move for some mechanisms. For example skipping a turn, and allowing the next voter to best-respond, could produce better outcomes in some cases.
     - There are no attempts by groups to collude.
-
-- So rational agent really trying to optimize their results might find other ways to manipulate the output. 
-- On the other hand, the simulation does show that in most cases there seems to be a nash equilibrium where no voter can profitably deviate.
+- But always best responding is not always the best *strategy* in this sort of games.
+- On the other hand, the simulation does show that in most cases there seems to be a Nash equilibrium where no voter can profitably deviate.
 
 
 ## Example
@@ -307,7 +307,7 @@ In this case, voter 1 modifies their proposed allocation to best-respond to vote
      0.961538  0.0384615
      0.1       0.9
     Current allocation: [0.1, 0.038461538461538436]
-    Current user utilities: [0.34854837493455965, 0.28605210188381264]
+    Current voter utilities: [0.34854837493455965, 0.28605210188381264]
     Current overall optimalities: 0.3668592156961665
     Voter 1's turn.
       Best response = [0.03396559495192303, 0.5661207932692303]
@@ -326,7 +326,7 @@ In this case, voter 1 modifies their proposed allocation to best-respond to vote
      0.0339656  0.566121
      0.1        0.9
     Current allocation: [0.1, 0.9]
-    Current user utilities: [0.49613893835683387, 1.0]
+    Current voter utilities: [0.49613893835683387, 1.0]
     Current overall optimalities: 0.864910093118595
     Voter 1's turn.
       => No improvement found; voter 1 stays with old report.
